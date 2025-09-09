@@ -1,5 +1,5 @@
 from datetime import datetime
-from aiflow import DAG
+from airflow import DAG
 from airflow.operators.bash import BashOperator
 
 with DAG(
