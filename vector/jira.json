@@ -1,0 +1,362 @@
+[
+  {
+    "query": {
+      "status": "To Do",
+      "assignee": "*",
+      "type": "*"
+    },
+    "description": "All planned work items across assignees and types. Backlog items, upcoming tasks, and work queue. Essential for sprint planning and workload management."
+  },
+  {
+    "query": {
+      "status": "In Progress",
+      "assignee": "*",
+      "type": "*"
+    },
+    "description": "Active work items across all assignees and types. Current development, ongoing tasks, and work in flight. Critical for daily standups and progress tracking."
+  },
+  {
+    "query": {
+      "status": "Done",
+      "assignee": "*",
+      "type": "*"
+    },
+    "description": "Completed work items across all assignees and types. Finished tasks, delivered features, and resolved issues. Important for velocity tracking and delivery metrics."
+  },
+  {
+    "query": {
+      "type": "Bug",
+      "status": "*",
+      "assignee": "*"
+    },
+    "description": "All bug reports across statuses and assignees. Defects, issues, and quality problems. Essential for quality tracking and bug triage."
+  },
+  {
+    "query": {
+      "type": "Story",
+      "status": "*",
+      "assignee": "*"
+    },
+    "description": "User stories across all statuses and assignees. Feature requirements, user needs, and functionality development. Critical for feature tracking and delivery."
+  },
+  {
+    "query": {
+      "type": "Task",
+      "status": "*",
+      "assignee": "*"
+    },
+    "description": "General tasks across all statuses and assignees. Work items, action items, and miscellaneous activities. Important for project organization and task management."
+  },
+  {
+    "query": {
+      "type": "Epic",
+      "status": "*",
+      "assignee": "*"
+    },
+    "description": "Epic progress across all statuses and assignees. Large initiatives, feature sets, and strategic work. Essential for roadmap tracking and milestone management."
+  },
+  {
+    "query": {
+      "priority": "High",
+      "status": "*",
+      "assignee": "*"
+    },
+    "description": "High priority items across all statuses and assignees. Important work, urgent tasks, and priority deliverables. Critical for resource allocation and escalation."
+  },
+  {
+    "query": {
+      "priority": "Critical",
+      "status": "*",
+      "type": "*"
+    },
+    "description": "Critical priority items across all statuses and types. Emergency work, blocking issues, and highest priority tasks. Essential for incident response and urgent action."
+  },
+  {
+    "query": {
+      "priority": "Low",
+      "status": "To Do",
+      "assignee": "*"
+    },
+    "description": "Low priority backlog items across all assignees. Nice-to-have features, future improvements, and optional work. Important for backlog grooming and capacity planning."
+  },
+  {
+    "query": {
+      "assignee": "unassigned",
+      "status": "*",
+      "type": "*"
+    },
+    "description": "Unassigned work items across all statuses and types. Orphaned tasks, backlog items needing owners, and resource allocation opportunities. Critical for workload distribution."
+  },
+  {
+    "query": {
+      "assignee": "*",
+      "status": "In Review",
+      "type": "*"
+    },
+    "description": "Items under review across all assignees and types. Code reviews, design reviews, and approval processes. Essential for quality gates and workflow management."
+  },
+  {
+    "query": {
+      "type": "Bug",
+      "priority": "High",
+      "status": "*"
+    },
+    "description": "High priority bugs across all statuses. Critical defects, important fixes, and urgent quality issues. Essential for bug triage and quality management."
+  },
+  {
+    "query": {
+      "type": "Bug",
+      "status": "Open",
+      "assignee": "*"
+    },
+    "description": "Open bugs across all assignees. Unresolved defects, active issues, and quality concerns. Important for bug tracking and resolution planning."
+  },
+  {
+    "query": {
+      "status": "Blocked",
+      "assignee": "*",
+      "type": "*"
+    },
+    "description": "Blocked work items across all assignees and types. Dependencies, impediments, and workflow bottlenecks. Critical for removing obstacles and maintaining velocity."
+  },
+  {
+    "query": {
+      "status": "Resolved",
+      "type": "Bug",
+      "assignee": "*"
+    },
+    "description": "Resolved bugs across all assignees. Fixed defects, completed bug work, and quality improvements. Important for tracking bug resolution and testing queue."
+  },
+  {
+    "query": {
+      "fixVersion": "*",
+      "status": "*",
+      "type": "*"
+    },
+    "description": "Items with release versions across all statuses and types. Release planning, version tracking, and delivery scope. Essential for release management and planning."
+  },
+  {
+    "query": {
+      "fixVersion": "*",
+      "status": "Done",
+      "type": "*"
+    },
+    "description": "Completed items by release version across all types. Delivered features, release scope completion, and version tracking. Critical for release notes and delivery confirmation."
+  },
+  {
+    "query": {
+      "reporter": "*",
+      "type": "Bug",
+      "status": "Open"
+    },
+    "description": "Open bugs by reporter across all reporters. Bug reporting patterns, user feedback, and issue sources. Important for understanding quality trends and user experience."
+  },
+  {
+    "query": {
+      "created": "today",
+      "status": "*",
+      "type": "*"
+    },
+    "description": "Items created today across all statuses and types. New work, fresh issues, and daily activity. Important for tracking new work intake and activity levels."
+  },
+  {
+    "query": {
+      "updated": "today",
+      "status": "*",
+      "assignee": "*"
+    },
+    "description": "Items updated today across all statuses and assignees. Recent activity, current work, and active items. Essential for tracking team activity and progress."
+  },
+  {
+    "query": {
+      "dueDate": "*",
+      "status": "*",
+      "assignee": "*"
+    },
+    "description": "Items with due dates across all statuses and assignees. Deadline tracking, time-sensitive work, and schedule management. Critical for project timeline management."
+  },
+  {
+    "query": {
+      "component": "*",
+      "type": "Bug",
+      "status": "*"
+    },
+    "description": "Bugs by component across all statuses. Component-specific defects, area-focused quality tracking, and module issues. Essential for code ownership and maintenance."
+  },
+  {
+    "query": {
+      "component": "*",
+      "status": "To Do",
+      "type": "*"
+    },
+    "description": "Planned work by component across all types. Component-specific backlog, area planning, and module development. Important for component ownership and planning."
+  },
+  {
+    "query": {
+      "sprint": "*",
+      "status": "*",
+      "assignee": "*"
+    },
+    "description": "Sprint items across all statuses and assignees. Sprint planning, iteration tracking, and agile delivery. Essential for scrum management and sprint monitoring."
+  },
+  {
+    "query": {
+      "sprint": "*",
+      "status": "Done",
+      "type": "*"
+    },
+    "description": "Completed sprint items across all types. Sprint delivery, iteration completion, and velocity tracking. Critical for agile metrics and team performance."
+  },
+  {
+    "query": {
+      "labels": "*",
+      "status": "*",
+      "type": "*"
+    },
+    "description": "Labeled items across all statuses and types. Tagged work, categorized items, and special classifications. Important for filtering and organization."
+  },
+  {
+    "query": {
+      "resolution": "*",
+      "type": "*",
+      "assignee": "*"
+    },
+    "description": "Resolved items by resolution type across all types and assignees. Resolution patterns, completion methods, and closure tracking. Essential for understanding work outcomes."
+  },
+  {
+    "query": {
+      "resolution": "Fixed",
+      "type": "Bug",
+      "assignee": "*"
+    },
+    "description": "Fixed bugs across all assignees. Successfully resolved defects, completed bug fixes, and quality improvements. Important for bug resolution tracking."
+  },
+  {
+    "query": {
+      "resolution": "Won't Fix",
+      "type": "*",
+      "assignee": "*"
+    },
+    "description": "Items marked as won't fix across all types and assignees. Declined work, scope changes, and priority decisions. Important for understanding work rejection patterns."
+  },
+  {
+    "query": {
+      "project": "*",
+      "status": "In Progress",
+      "assignee": "*"
+    },
+    "description": "Active work by project across all assignees. Project-specific progress, cross-project visibility, and resource allocation. Essential for portfolio management."
+  },
+  {
+    "query": {
+      "project": "*",
+      "type": "Bug",
+      "status": "*"
+    },
+    "description": "Bugs by project across all statuses. Project-specific quality tracking, defect distribution, and quality metrics. Critical for project health monitoring."
+  },
+  {
+    "query": {
+      "watchers": "*",
+      "status": "*",
+      "type": "*"
+    },
+    "description": "Items with watchers across all statuses and types. Stakeholder interest, visibility tracking, and notification management. Important for communication and stakeholder engagement."
+  },
+  {
+    "query": {
+      "votes": "*",
+      "status": "*",
+      "type": "*"
+    },
+    "description": "Voted items across all statuses and types. Community interest, popular requests, and user feedback. Important for prioritization and user engagement."
+  },
+  {
+    "query": {
+      "environment": "*",
+      "type": "Bug",
+      "status": "*"
+    },
+    "description": "Bugs by environment across all statuses. Environment-specific issues, deployment problems, and infrastructure defects. Essential for environment health monitoring."
+  },
+  {
+    "query": {
+      "originalEstimate": "*",
+      "status": "*",
+      "assignee": "*"
+    },
+    "description": "Estimated work items across all statuses and assignees. Time tracking, effort planning, and capacity management. Important for project planning and resource allocation."
+  },
+  {
+    "query": {
+      "timeSpent": "*",
+      "status": "Done",
+      "assignee": "*"
+    },
+    "description": "Completed work with time logged across all assignees. Time tracking, effort analysis, and productivity metrics. Essential for project accounting and estimation improvement."
+  },
+  {
+    "query": {
+      "status": "Reopened",
+      "type": "*",
+      "assignee": "*"
+    },
+    "description": "Reopened items across all types and assignees. Regression issues, incomplete work, and quality escapes. Critical for understanding work quality and process gaps."
+  },
+  {
+    "query": {
+      "status": "Closed",
+      "type": "*",
+      "resolution": "*"
+    },
+    "description": "Closed items by resolution across all types. Final work states, completion tracking, and closure analysis. Important for understanding work outcomes and patterns."
+  },
+  {
+    "query": {
+      "type": "Sub-task",
+      "status": "*",
+      "assignee": "*"
+    },
+    "description": "Sub-tasks across all statuses and assignees. Detailed work breakdown, task decomposition, and granular tracking. Essential for detailed project management."
+  },
+  {
+    "query": {
+      "parent": "*",
+      "status": "*",
+      "type": "*"
+    },
+    "description": "Child items with parents across all statuses and types. Hierarchical work tracking, epic-story relationships, and work decomposition. Important for understanding work structure."
+  },
+  {
+    "query": {
+      "affectedVersion": "*",
+      "type": "Bug",
+      "status": "*"
+    },
+    "description": "Bugs by affected version across all statuses. Version-specific defects, regression tracking, and quality by release. Critical for version quality assessment."
+  },
+  {
+    "query": {
+      "security": "*",
+      "status": "*",
+      "type": "*"
+    },
+    "description": "Security-related items across all statuses and types. Security issues, vulnerability tracking, and compliance work. Essential for security management and compliance."
+  },
+  {
+    "query": {
+      "status": "In Testing",
+      "type": "*",
+      "assignee": "*"
+    },
+    "description": "Items being tested across all types and assignees. QA validation, testing pipeline, and quality verification. Essential for release readiness and quality gates."
+  },
+  {
+    "query": {
+      "status": "Ready for Deploy",
+      "type": "*",
+      "assignee": "*"
+    },
+    "description": "Deployment-ready items across all types and assignees. Release candidates, tested features, and deployment queue. Critical for release coordination and deployment planning."
+  }
+]

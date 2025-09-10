@@ -1,0 +1,1118 @@
+[
+  {
+    "query": {
+      "Namespace": "AWS/ApiGateway",
+      "MetricName": "4XXError",
+      "ApiName": "*",
+      "Stage": "*"
+    },
+    "description": "The **4XXError** metric in the **AWS/ApiGateway** namespace tracks the count of client-side HTTP 4xx errors (e.g., 400 Bad Request, 401 Unauthorized, 403 Forbidden) returned by your API Gateway for a specified API and stage within a given time period. This metric helps SREs monitor the health and usability of the API by identifying when clients are sending invalid or unauthorized requests.\n\n**Purpose:**  \nUse this metric to detect and investigate issues such as malformed requests, missing authentication tokens, or unauthorized access attempts that may indicate problems with client integrations, API usage patterns, or security configurations.\n\n**Alert Threshold Guidance:**  \nSet alert thresholds based on your API’s normal traffic patterns and error tolerance. For example, trigger an alert if the 4XXError count exceeds 5% of total requests or if there is a sudden spike (e.g., a 50% increase) compared to the baseline over a 5-minute period. Thresholds should be adjusted to minimize false positives while ensuring timely detection of client-side issues.\n\n**Impact of Values:**  \n- **High 4XXError count:** Indicates frequent client errors, which may degrade user experience, increase support tickets, or signal misconfigured clients or API changes that are not backward compatible. Persistent high rates warrant investigation into request validation, authentication flows, or API documentation.  \n- **Low or zero 4XXError count:** Generally positive, indicating clients are successfully interacting with the API. However, an unexpected drop to zero in a normally active API might suggest monitoring gaps or client-side issues preventing requests.\n\n**Example Usage:**  \n- **Dashboard:** Display the 4XXError metric alongside total request count and 5XXError metrics to provide a comprehensive view of API health. Use a line graph showing 4XXError rate (%) over time to spot trends or anomalies.  \n- **Alert Rule:** Create a CloudWatch alarm that triggers when the 4XXError count exceeds 100 errors within 5 minutes or when the error rate surpasses 5% of total requests, notifying the SRE team via SNS for immediate investigation.  \n\nThis approach enables proactive detection and resolution of client-side issues, improving API reliability and user satisfaction."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/ApiGateway",
+      "MetricName": "5XXError",
+      "ApiName": "*",
+      "Stage": "*"
+    },
+    "description": "The **5XXError** metric in the **AWS/ApiGateway** namespace tracks the total count of server-side HTTP 5xx errors returned by your API Gateway within a specified time interval, filtered by API name and stage. This metric helps Site Reliability Engineers (SREs) monitor the health and stability of API Gateway endpoints by highlighting when backend or integration failures occur.\n\n**Purpose:**  \n- Detect and quantify server-side failures impacting API consumers.  \n- Identify sudden spikes or sustained increases in 5xx errors that may indicate backend service outages, misconfigurations, or capacity issues.  \n- Serve as a key indicator for triggering incident response and remediation workflows.\n\n**Alert Threshold Guidance:**  \n- Set alert thresholds based on your API’s normal error baseline and business impact tolerance.  \n- For example, trigger an alert if the 5XXError count exceeds 5 errors per minute sustained over 3 consecutive periods (e.g., 3 minutes), or if the 5XXError rate exceeds 1% of total requests in a given interval.  \n- Adjust thresholds dynamically based on traffic patterns and error budgets to reduce noise.\n\n**Impact of Values:**  \n- **High 5XXError values:** Indicate critical backend failures causing degraded user experience, potential data loss, or service unavailability. Immediate investigation is required to identify root causes such as integration timeouts, Lambda function errors, or misconfigured endpoints.  \n- **Low or zero 5XXError values:** Suggest stable backend performance and healthy API operation, though occasional errors should be expected depending on traffic volume.\n\n**Example Usage in Dashboard or Alert Rule:**  \n- **Dashboard:** Display a time series graph of 5XXError counts alongside latency and request volume for each API stage to correlate error spikes with traffic surges or latency increases.  \n- **Alert Rule (CloudWatch Alarm):**  \n  - Metric: `AWS/ApiGateway` → `5XXError`  \n  - Dimensions: `ApiName = \"*\"`, `Stage = \"*\"`  \n  - Statistic: Sum over 1-minute periods  \n  - Threshold: Greater than 5 errors per minute for 3 consecutive periods  \n  - Action: Send notification to on-call team via SNS or PagerDuty for immediate investigation.\n\nBy actively monitoring the 5XXError metric with appropriate thresholds and contextual dashboards, SREs can quickly detect backend failures, minimize downtime, and maintain API reliability."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/ApiGateway",
+      "MetricName": "Count",
+      "ApiName": "*",
+      "Stage": "*"
+    },
+    "description": "This metric measures the total count of API requests received by a specific stage within a given time period. It provides an aggregate view of the number of incoming requests, which can be used to gauge system load and capacity. Potential implications include identifying trends in request volume, detecting anomalies or spikes in traffic, and informing decisions on scaling or resource allocation. This metric is particularly useful for monitoring API gateway performance, latency, and error rates. However, without additional context or labels, it may not provide insights into the specific stage's functionality or the types of requests being processed."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/ApiGateway",
+      "MetricName": "IntegrationLatency",
+      "ApiName": "*",
+      "Stage": "*"
+    },
+    "description": "The IntegrationLatency metric measures the time elapsed between when API Gateway forwards a request to the backend and when it receives a response from the backend for a specific stage. This metric is crucial in understanding the performance of API integrations with AWS services or custom applications. High latency values may indicate issues such as slow backend responses, network congestion, or misconfigured integration settings. Potential implications include: (1) Identifying bottlenecks in API workflows and optimizing backend response times to improve overall system responsiveness. (2) Triggering alerts when latency exceeds a certain threshold, enabling prompt investigation into potential service disruptions. (3) Correlating IntegrationLatency with other metrics, such as request count or error rates, to gain a comprehensive view of API performance."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/ApiGateway",
+      "MetricName": "Latency",
+      "ApiName": "*",
+      "Stage": "*"
+    },
+    "description": "This metric measures the latency of API Gateway for a specific stage, representing the time elapsed between when the gateway receives a request from a client and when it sends the last byte of the response back to the client. It provides insight into the performance and responsiveness of the API, allowing operators to identify potential bottlenecks or issues that may impact user experience. The metric can be used in monitoring and alerting to detect anomalies, such as sudden increases in latency, which could indicate a problem with the underlying infrastructure, application code, or network connectivity. Additionally, this metric can help inform capacity planning decisions by providing visibility into the current load and performance of the API Gateway."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/ApplicationELB",
+      "MetricName": "ActiveConnectionCount",
+      "AvailabilityZone": "*",
+      "LoadBalancer": "app/*"
+    },
+    "description": "The ActiveConnectionCount metric measures the total number of concurrent TCP connections that are active from clients to the load balancer in a specific Availability Zone (AZ). This metric indicates the current workload and capacity utilization of the load balancer within the specified AZ. It can be used to monitor the load balancer's performance, identify potential bottlenecks, and optimize its configuration for better resource allocation. Potential implications include: \n\n- High connection counts may indicate a need for increased instance capacity or load balancing across multiple AZs.\n- Low connection counts might suggest underutilization of resources or inefficient routing.\n- Sudden spikes in connections could signal a DDoS attack or other security incidents.\n\nThis metric can be used in conjunction with other metrics, such as CPU utilization and memory usage, to gain a comprehensive understanding of the load balancer's overall health and performance."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/ApplicationELB",
+      "MetricName": "AnomalousHostCount",
+      "AvailabilityZone": "*",
+      "LoadBalancer": "app/*",
+      "TargetGroup": "targetgroup/*"
+    },
+    "description": "The AnomalousHostCount metric measures the number of hosts that are considered anomalous based on the configured anomaly detection threshold in AWS. This metric is likely derived from a combination of metrics such as CPU usage, memory utilization, and network traffic, which are compared against a predefined baseline to identify unusual patterns or outliers. The threshold value is typically set by the administrator to determine what constitutes an 'anomalous' host. A high AnomalousHostCount may indicate potential security threats, hardware issues, or other operational problems that require immediate attention from DevOps teams. This metric can be used in monitoring and alerting workflows to trigger notifications when a certain number of hosts exceed the anomaly threshold, enabling proactive issue resolution and minimizing downtime."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/ApplicationELB",
+      "MetricName": "ClientTLSNegotiationErrorCount",
+      "AvailabilityZone": "*",
+      "LoadBalancer": "app/*"
+    },
+    "description": "The ClientTLSNegotiationErrorCount metric in the AWS/ApplicationELB namespace measures the number of failed TLS handshake attempts between clients and the load balancer. This metric is incremented each time a client fails to negotiate a secure connection with the ELB due to issues such as invalid certificates, protocol mismatches, or other cryptographic errors. It provides visibility into potential security vulnerabilities, misconfigured SSL/TLS settings, or issues with certificate trust chains. Monitoring this metric can help identify and troubleshoot problems related to TLS negotiation failures, ensuring that clients can establish secure connections to the ELB. Potential implications for operations include: (1) Identifying and addressing certificate expiration or revocation issues; (2) Troubleshooting protocol version mismatches between clients and the ELB; (3) Optimizing SSL/TLS handshake performance by adjusting settings such as session reuse or cipher suite selection."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/ApplicationELB",
+      "MetricName": "DesyncMitigationMode_NonCompliant_Request_Count",
+      "AvailabilityZone": "*",
+      "LoadBalancer": "app/*"
+    },
+    "description": "The 'DesyncMitigationMode_NonCompliant_Request_Count' metric in the namespace 'AWS/ApplicationELB' measures the number of incoming requests that are not compliant with the desynchronization mitigation mode configured for the Application Load Balancer (ALB). This metric is particularly relevant to AWS services, as it indicates potential issues with request routing or load balancing. The count of non-compliant requests can be used to identify performance bottlenecks, misconfigured settings, or even security vulnerabilities. In monitoring and alerting, this metric can trigger notifications when the count exceeds a certain threshold, prompting operations teams to investigate and adjust the desynchronization mitigation mode accordingly."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/ApplicationELB",
+      "MetricName": "HTTPCode_Target_2XX_Count",
+      "AvailabilityZone": "*",
+      "LoadBalancer": "app/*",
+      "TargetGroup": "targetgroup/*"
+    },
+    "description": "The **HTTPCode_Target_2XX_Count** metric in the **AWS/ApplicationELB** namespace tracks the total number of successful HTTP responses (status codes 200-299) returned by targets in a specified target group behind an Application Load Balancer (ALB). It reflects how many requests your application is successfully handling over a given period, aggregated across all Availability Zones.\n\n**Purpose:**  \nThis metric helps SREs monitor the effective throughput of healthy requests served by the target group. It is a direct indicator of application availability and user experience, showing that requests are being processed without errors.\n\n**Thresholds and Alerting Guidance:**  \n- **Low values or sudden drops:** May indicate application downtime, target group health issues, or routing problems causing fewer successful responses. For example, if the 2XX count falls below 80% of the baseline average for 5 consecutive minutes, it should trigger an alert.  \n- **High values:** Typically indicate increased traffic volume. While not inherently problematic, a sudden unexpected spike could signal abnormal load or potential abuse, warranting investigation.\n\n**Impact:**  \n- **Low HTTPCode_Target_2XX_Count:** Users may experience errors, timeouts, or degraded service quality. This often correlates with increased 4XX/5XX errors or latency.  \n- **High HTTPCode_Target_2XX_Count:** Generally positive, indicating healthy request handling, but should be correlated with resource utilization metrics to ensure capacity is sufficient.\n\n**Example Usage:**  \n- **Dashboard:** Display this metric alongside **HTTPCode_Target_4XX_Count**, **HTTPCode_Target_5XX_Count**, and **TargetResponseTime** to get a holistic view of application health and performance.  \n- **Alert Rule:** Create a CloudWatch alarm that triggers if **HTTPCode_Target_2XX_Count** drops below a threshold (e.g., 100 requests per minute) for 5 minutes, indicating potential service disruption. Combine this with alarms on error rates and latency for comprehensive monitoring.\n\nBy monitoring **HTTPCode_Target_2XX_Count** with these guidelines, SREs can proactively detect and respond to application availability issues and maintain reliable service delivery."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/ApplicationELB",
+      "MetricName": "HTTPCode_Target_3XX_Count",
+      "AvailabilityZone": "*",
+      "LoadBalancer": "app/*",
+      "TargetGroup": "targetgroup/*"
+    },
+    "description": "The HTTPCode_Target_3XX_Count metric in the AWS/ApplicationELB namespace measures the number of HTTP responses with a status code between 300 and 399 (inclusive) received by the target group within an Application Load Balancer. This count includes redirects, such as 'Found' or 'Moved Permanently', which can indicate issues with application routing, caching, or content delivery. Potential implications for monitoring include identifying misconfigured applications, detecting potential security vulnerabilities, or optimizing load balancer settings to reduce unnecessary redirects. In alerting, this metric could trigger notifications when the count exceeds a certain threshold, indicating a possible issue that requires attention from operations teams."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/ApplicationELB",
+      "MetricName": "HTTPCode_Target_4XX_Count",
+      "AvailabilityZone": "*",
+      "LoadBalancer": "app/*",
+      "TargetGroup": "targetgroup/*"
+    },
+    "description": "The HTTPCode_Target_4XX_Count metric in the AWS/ApplicationELB namespace measures the number of HTTP requests to a target group that result in a 4xx client error status code. This includes errors such as 'Bad Request', 'Unauthorized', and 'Forbidden'. The metric provides visibility into the quality of service provided by the target group, helping operators identify potential issues with application logic, authentication mechanisms, or configuration settings. It can be used to monitor the health of applications behind an Application Load Balancer (ALB) and trigger alerts when a significant number of 4xx errors occur, indicating a possible issue that requires attention."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/ApplicationELB",
+      "MetricName": "HTTPCode_Target_5XX_Count",
+      "AvailabilityZone": "*",
+      "LoadBalancer": "app/*",
+      "TargetGroup": "targetgroup/*"
+    },
+    "description": "The HTTPCode_Target_5XX_Count metric measures the number of HTTP requests that resulted in a 5XX status code (server errors) from targets within a specific target group and Availability Zone. This metric is useful for identifying potential issues with application or infrastructure performance, such as misconfigured servers, resource exhaustion, or poorly written code. It can be used to trigger alerts when the count exceeds a certain threshold, indicating that users are experiencing server-side errors. Additionally, this metric can be correlated with other metrics, like request latency and error rates, to provide a more comprehensive understanding of the root cause of the issue."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/ApplicationELB",
+      "MetricName": "HealthyHostCount",
+      "AvailabilityZone": "*",
+      "LoadBalancer": "app/*",
+      "TargetGroup": "targetgroup/*"
+    },
+    "description": "The HealthyHostCount metric measures the number of targets within a specific Availability Zone (AZ) that are currently passing health checks. This count includes all targets that have successfully completed their respective health check processes and are deemed operational by Prometheus. The metric provides visibility into the overall health and availability of hosts within an AZ, enabling operators to quickly identify potential issues or outages affecting a subset of their infrastructure. Potential implications for monitoring and alerting include setting up alerts when the HealthyHostCount drops below a certain threshold, indicating a possible issue with host health checks or underlying system failures. Additionally, this metric can be used in conjunction with other metrics, such as error rates or latency, to gain a more comprehensive understanding of system performance and identify areas for optimization."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/ApplicationELB",
+      "MetricName": "HealthyStateDNS",
+      "AvailabilityZone": "*",
+      "LoadBalancer": "app/*",
+      "TargetGroup": "targetgroup/*"
+    },
+    "description": "The HealthyStateDNS metric measures the number of targets that are considered healthy by DNS in a specific Availability Zone. This metric counts the number of targets that pass DNS health checks, indicating that they can be reached and are responding as expected. The metric provides visibility into the DNS health of targets within an AZ, allowing operators to identify potential issues with DNS resolution or target availability. Potential implications for monitoring or alerting include setting up alerts when the number of healthy targets falls below a certain threshold, indicating a possible issue with DNS configuration or network connectivity. Additionally, this metric can be used in conjunction with other metrics, such as latency or error rates, to gain a more comprehensive understanding of system performance and identify root causes of issues."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/ApplicationELB",
+      "MetricName": "HealthyStateRouting",
+      "AvailabilityZone": "*",
+      "LoadBalancer": "app/*",
+      "TargetGroup": "targetgroup/*"
+    },
+    "description": "The HealthyStateRouting metric measures the number of targets that are considered healthy by routing in a specific Availability Zone (AZ). This metric counts the instances or services that pass routing health checks, indicating their readiness to receive traffic and perform expected functions. The metric provides visibility into the routing configuration's overall health and can be used to identify potential issues with service discovery, instance deployment, or network connectivity within an AZ. Potential implications for monitoring include setting up alerts when the number of healthy targets falls below a certain threshold, indicating a possible issue with the routing configuration or underlying infrastructure. Additionally, this metric can inform capacity planning by helping operators understand the current state of their routing setup and make data-driven decisions about resource allocation."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/ApplicationELB",
+      "MetricName": "MitigatedHostCount",
+      "AvailabilityZone": "*",
+      "LoadBalancer": "app/*",
+      "TargetGroup": "targetgroup/*"
+    },
+    "description": "The MitigatedHostCount metric measures the number of targets that are currently being protected by AWS DDoS mitigation services within a specific Availability Zone (AZ). This count includes all hosts that have been identified as potential attack vectors and are receiving protection from AWS's DDoS mitigation capabilities. The metric is incremented for each host that is deemed mitigated, providing a real-time snapshot of the number of targets being protected in the specified AZ. Potential implications for monitoring or alerting include: (1) Identifying high-traffic zones or regions with increased DDoS activity; (2) Triggering alerts when the count exceeds a certain threshold, indicating potential security risks; and (3) Correlating this metric with other AWS services, such as CloudWatch logs or VPC flow logs, to gain deeper insights into DDoS attacks and their impact on infrastructure. However, without further context or information about the specific use case or environment, it is unclear how this metric might be used in operations."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/ApplicationELB",
+      "MetricName": "NewConnectionCount",
+      "AvailabilityZone": "*",
+      "LoadBalancer": "app/*"
+    },
+    "description": "The NewConnectionCount metric in the AWS/ApplicationELB namespace measures the number of new connections established to an Application Load Balancer (ALB) within a specified time period. This metric provides insights into the load balancer's capacity and performance under varying workloads. It can be used to monitor and optimize ALB configurations, such as scaling instance sizes or adjusting connection timeouts, to ensure efficient handling of incoming traffic. Potential implications include identifying bottlenecks in connection establishment, detecting potential security threats through unusual connection patterns, or optimizing resource allocation based on observed connection rates."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/ApplicationELB",
+      "MetricName": "PeakLCUs",
+      "LoadBalancer": "app/*"
+    },
+    "description": "The 'PeakLCUs' metric in the namespace 'AWS/ApplicationELB' measures the peak number of active connections or load balancer units (LCUs) for an Application Load Balancer (ALB) within a specified time period. This metric provides insights into the maximum concurrent requests handled by the ALB, which can be indicative of its capacity and performance under heavy loads.\n\nIn monitoring and alerting, this metric can be used to detect potential issues such as:\n- Overload or saturation of the ALB, leading to slow response times or errors.\n- Inadequate instance sizing or configuration, resulting in reduced application availability.\n- Changes in traffic patterns or usage that may require adjustments to the load balancer's capacity planning.\n\nBy tracking 'PeakLCUs', operations teams can proactively identify and address potential bottlenecks, ensuring optimal performance and reliability of their Application Load Balancers."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/ApplicationELB",
+      "MetricName": "ProcessedBytes",
+      "AvailabilityZone": "*",
+      "LoadBalancer": "app/*"
+    },
+    "description": "The 'ProcessedBytes' metric in the namespace 'AWS/ApplicationELB' measures the total number of bytes processed by an Application Load Balancer (ALB) instance within a specified time period. This metric provides insights into the network traffic and data transfer rates handled by the ALB, enabling monitoring and optimization of its performance. Potential implications or usage in monitoring or alerting include: detecting sudden spikes or drops in processed bytes, which may indicate issues with application scaling, network congestion, or configuration problems; tracking average processed bytes over time to identify trends and optimize resource allocation; setting up alerts for threshold breaches, such as exceeding a certain percentage of maximum capacity. This metric is specific to ALB instances and provides a granular view of their operational performance."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/ApplicationELB",
+      "MetricName": "RequestCount",
+      "AvailabilityZone": "*",
+      "LoadBalancer": "app/*",
+      "TargetGroup": "targetgroup/*"
+    },
+    "description": "The **RequestCount** metric in the **AWS/ApplicationELB** namespace tracks the total number of HTTP(S) requests received by an Application Load Balancer (ALB) across all Availability Zones, filtered by specific Load Balancer and Target Group identifiers. This metric is essential for understanding traffic volume and load distribution on your ALB and its associated target groups.\n\n**Purpose:**  \nIt helps SREs monitor incoming request traffic patterns to detect sudden spikes or drops that may indicate application issues, traffic anomalies, or scaling needs.\n\n**Alert Threshold Guidance:**  \n- Set alert thresholds based on historical traffic baselines and expected load. For example, trigger a warning if RequestCount exceeds 120% of the average peak traffic over the last week, indicating potential overload or DDoS activity.  \n- Conversely, alert if RequestCount drops below 50% of the expected baseline for a sustained period, which may signal application downtime or routing issues.\n\n**Impact of Values:**  \n- **High RequestCount:** May indicate increased user demand, potential overload risk, or a need to scale out target instances. If sustained without corresponding capacity increases, it can lead to increased latency or request failures.  \n- **Low RequestCount:** Could suggest reduced user traffic, possible application downtime, misconfigured routing, or health check failures causing targets to be removed from rotation.\n\n**Example Usage:**  \n- **Dashboard:** Display RequestCount as a time series graph segmented by Target Group to visualize traffic distribution and identify hotspots or underutilized targets.  \n- **Alert Rule:** Create a CloudWatch alarm that triggers if RequestCount exceeds 10,000 requests per minute for 5 consecutive minutes, prompting investigation into traffic surges or potential abuse. Alternatively, alert if RequestCount falls below 1,000 requests per minute for 10 minutes, indicating possible service disruption.\n\nBy monitoring RequestCount with these considerations, SREs can proactively manage ALB traffic, maintain application availability, and optimize resource allocation."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/ApplicationELB",
+      "MetricName": "RequestCountPerTarget",
+      "AvailabilityZone": "*",
+      "LoadBalancer": "app/*",
+      "TargetGroup": "targetgroup/*"
+    },
+    "description": "The 'RequestCountPerTarget' metric in the namespace 'AWS/ApplicationELB' measures the number of incoming requests received by each target group within an Application Load Balancer (ALB) or Network Load Balancer (NLB). This metric provides visibility into the workload and traffic distribution across targets, enabling monitoring and optimization of application performance. Potential implications include identifying bottlenecks, detecting anomalies in request patterns, and optimizing resource allocation. It can be used to trigger alerts when a target group exceeds a certain threshold of requests, indicating potential issues with instance capacity or configuration."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/ApplicationELB",
+      "MetricName": "TargetConnectionErrorCount",
+      "AvailabilityZone": "*",
+      "LoadBalancer": "app/*",
+      "TargetGroup": "targetgroup/*"
+    },
+    "description": "The TargetConnectionErrorCount metric in the AWS/ApplicationELB namespace measures the number of connection errors encountered by an Application Load Balancer (ALB) target group over a specified time period. This metric is particularly useful for identifying issues related to target availability, network connectivity, or service health. Potential implications include: \n\n- Identifying targets that are consistently experiencing connection errors, which may indicate underlying infrastructure problems or misconfigured services.\n- Triggering alerts when the error count exceeds a certain threshold, enabling swift response to potential outages or performance degradation.\n- Correlating TargetConnectionErrorCount with other metrics (e.g., RequestCount, Latency) to diagnose root causes of service disruptions. \n\nWhile this metric provides valuable insights into target connection errors, its specific meaning and usage may vary depending on the context in which it is applied."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/ApplicationELB",
+      "MetricName": "TargetResponseTime",
+      "AvailabilityZone": "*",
+      "LoadBalancer": "app/*",
+      "TargetGroup": "targetgroup/*"
+    },
+    "description": "The TargetResponseTime metric in the AWS/ApplicationELB namespace measures the time it takes for an Application Load Balancer (ALB) to respond to a target group's health check requests. This metric is crucial for monitoring the performance and availability of ALBs, as it indicates how quickly the load balancer can detect and respond to changes in the target group's health status. High response times may indicate issues with the target group, such as slow or unresponsive instances, which can impact the overall performance and reliability of the application. This metric can be used to set up alerts for high response times, enabling operations teams to quickly identify and resolve issues before they affect end-users. Additionally, it can be used in conjunction with other metrics, such as RequestCount and ErrorRate, to gain a more comprehensive understanding of ALB performance and make data-driven decisions for optimization."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/ApplicationELB",
+      "MetricName": "UnHealthyHostCount",
+      "AvailabilityZone": "*",
+      "LoadBalancer": "app/*",
+      "TargetGroup": "targetgroup/*"
+    },
+    "description": "The UnHealthyHostCount metric measures the number of targets in a specific Availability Zone that are considered unhealthy based on health checks. This count includes instances or services that have failed to respond or have returned an error during health check attempts. The metric provides visibility into the availability and reliability of resources within a particular AZ, enabling operators to identify potential issues before they impact application performance or user experience. Potential implications for monitoring and alerting include setting up alerts when this count exceeds a certain threshold, indicating a possible infrastructure failure or degradation. Additionally, this metric can be used in conjunction with other metrics, such as CPU utilization or memory usage, to diagnose the root cause of unhealthiness."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/ApplicationELB",
+      "MetricName": "UnhealthyRoutingRequestCount",
+      "LoadBalancer": "app/*",
+      "AvailabilityZone": "*",
+      "TargetGroup": "targetgroup/*"
+    },
+    "description": "The UnhealthyRoutingRequestCount metric measures the number of incoming requests that were routed to targets within an AWS service (e.g., EC2 instances, RDS databases) that are currently failing health checks. This metric indicates the volume of traffic being sent to unhealthy resources, which can have significant implications for application performance and user experience. High values may indicate issues with target resource availability, scaling, or configuration problems. Potential uses for this metric include identifying bottlenecks in request routing, detecting resource exhaustion, and triggering alerts for proactive maintenance or remediation efforts."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/ApplicationELB",
+      "MetricName": "UnhealthyStateDNS",
+      "AvailabilityZone": "*",
+      "LoadBalancer": "app/*",
+      "TargetGroup": "targetgroup/*"
+    },
+    "description": "The UnhealthyStateDNS metric measures the number of targets that are considered unhealthy by DNS in a specific Availability Zone. This metric counts the number of targets that are failing DNS health checks, indicating potential issues with DNS resolution or target availability. Potential implications for monitoring and alerting include identifying DNS-related outages, detecting target unavailability due to network connectivity issues, or triggering notifications when a significant number of targets become unhealthy. This metric can be used in conjunction with other metrics, such as latency or error rates, to gain a more comprehensive understanding of system performance and availability."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/ApplicationELB",
+      "MetricName": "UnhealthyStateRouting",
+      "AvailabilityZone": "*",
+      "LoadBalancer": "app/*",
+      "TargetGroup": "targetgroup/*"
+    },
+    "description": "The **UnhealthyStateRouting** metric in the **AWS/ApplicationELB** namespace tracks the count of targets within a specific Availability Zone that are currently failing routing health checks for a given Application Load Balancer and Target Group. This metric helps SREs identify zones where targets are unreachable or misconfigured, potentially causing traffic routing failures and impacting application availability.\n\n**Purpose:**  \nMonitor the health of targets at the routing layer to detect connectivity or configuration issues that prevent requests from being properly routed to backend instances or services.\n\n**Threshold Guidance:**  \n- A value of **0** indicates all targets in the zone are healthy and routing traffic correctly.  \n- A sustained value **greater than 0** signals unhealthy targets that may cause request failures or degraded performance.  \n- A common alert threshold is when **UnhealthyStateRouting > 0 for more than 5 minutes**, indicating persistent routing issues requiring investigation.\n\n**Impact:**  \n- **High values:** Indicate one or more targets in the Availability Zone are unreachable or misconfigured, potentially leading to increased error rates, latency, or partial service outages. This can reduce overall load balancer capacity and affect user experience.  \n- **Low or zero values:** Indicate healthy routing states with no detected issues, ensuring traffic is properly distributed.\n\n**Example Usage:**  \n- **Dashboard:** Display a time series graph of UnhealthyStateRouting per Availability Zone alongside other health metrics (e.g., TargetResponseTime, HTTP 5xx errors) to correlate routing health with application performance.  \n- **Alert Rule:** Trigger an alert if `UnhealthyStateRouting > 0` continuously for 5 minutes in any Availability Zone, prompting SREs to investigate target health, network connectivity, or configuration errors in that zone.\n\nThis metric is critical for proactive detection of routing failures at the target level, enabling timely remediation to maintain high availability and optimal load balancing behavior."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/CertificateManager",
+      "MetricName": "DaysToExpiry",
+      "CertificateArn": "*"
+    },
+    "description": "The DaysToExpiry metric measures the number of days remaining until a certificate expires. This metric is crucial for tracking and managing certificate lifecycles within an AWS environment. It helps identify certificates that are nearing expiration, allowing teams to plan and execute timely renewals or replacements. Potential implications include: (1) alerting on low DaysToExpiry values to prompt certificate renewal or replacement; (2) using this metric as a threshold for automated certificate rotation processes; (3) integrating with AWS Certificate Manager (ACM) to automate certificate issuance and deployment. This metric is essential for maintaining secure and compliant infrastructure, especially in environments where certificates are used for authentication, encryption, or other critical purposes."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/CloudFront",
+      "MetricName": "4xxErrorRate",
+      "DistributionId": "*",
+      "Region": "Global"
+    },
+    "description": "The 4xxErrorRate metric measures the percentage of HTTP requests that resulted in a client-side error (HTTP status codes between 400 and 499). This includes errors such as bad requests, unauthorized access, and not found resources. A high value for this metric may indicate issues with client-side configuration, authentication, or data integrity. Potential implications include: identifying misconfigured clients, detecting authentication failures, or pinpointing data inconsistencies. In monitoring or alerting, this metric can be used to trigger notifications when the error rate exceeds a certain threshold, allowing operations teams to investigate and resolve the issue before it impacts user experience."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/CloudFront",
+      "MetricName": "5xxErrorRate",
+      "DistributionId": "*",
+      "Region": "Global"
+    },
+    "description": "The 5xxErrorRate metric measures the percentage of HTTP requests that resulted in a server-side error (status code 500-599). This includes errors such as internal server errors, service unavailable errors, and gateway timeouts. The metric indicates the proportion of requests that failed due to issues on the server-side, which can be indicative of problems with application logic, configuration, or resource constraints. Potential implications for monitoring and alerting include identifying trends in error rates over time, correlating errors with specific user actions or request patterns, and triggering alerts when error rates exceed a certain threshold. This metric is particularly useful for detecting issues that may not be immediately apparent through other metrics, such as request latency or throughput."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/CloudFront",
+      "MetricName": "BytesDownloaded",
+      "DistributionId": "*",
+      "Region": "Global"
+    },
+    "description": "The **BytesDownloaded** metric in the **AWS/CloudFront** namespace tracks the total number of bytes transferred from CloudFront edge locations to viewers for GET, HEAD, and OPTIONS requests across all distributions (indicated by `\"DistributionId\": \"*\"`). This metric reflects the volume of outbound data delivered to end users globally and is essential for understanding traffic load, bandwidth usage, and content delivery efficiency.\n\n**Purpose:**  \nSREs use this metric to monitor data transfer trends, detect unusual spikes or drops in traffic, and assess the effectiveness of caching and compression strategies. It helps identify potential issues such as unexpectedly high data transfer costs, inefficient content delivery, or client-side performance bottlenecks.\n\n**Threshold Guidance:**  \nSet alert thresholds based on historical baseline usage and business expectations. For example, trigger a warning if BytesDownloaded exceeds 120% of the average daily volume over the past week, indicating a potential traffic surge or misconfiguration. Conversely, alert if the metric drops below 50% of the baseline, which may signal distribution outages or client access issues.\n\n**Impact of Values:**  \n- **High BytesDownloaded:** May indicate increased user demand, successful content campaigns, or inefficient caching leading to higher bandwidth costs. Persistent spikes warrant investigation into traffic sources and content optimization.  \n- **Low BytesDownloaded:** Could suggest reduced user engagement, distribution misconfiguration, or caching serving stale content. Sudden drops require checking distribution health and origin availability.\n\n**Example Usage:**  \nIn a CloudWatch dashboard, plot BytesDownloaded alongside CacheHitRate and 4xx/5xx error metrics to correlate data transfer with cache efficiency and error rates. An alert rule might be:  \n- **Condition:** BytesDownloaded > 1 TB in 1 hour (adjust based on typical traffic)  \n- **Action:** Notify SRE team to investigate potential traffic anomalies or cost impacts.\n\nThis metric enables proactive monitoring of CloudFront data delivery, helping maintain performance, control costs, and ensure a smooth end-user experience."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/CloudFront",
+      "MetricName": "BytesUploaded",
+      "DistributionId": "*",
+      "Region": "Global"
+    },
+    "description": "The BytesUploaded metric measures the total number of bytes uploaded to Amazon CloudFront by viewers for POST, PUT, and other requests that upload data. This includes all types of file uploads, such as images, videos, and documents, initiated by users accessing content distributed through CloudFront. The metric provides insight into the volume of user-generated content being uploaded to CloudFront, which can be useful in monitoring and optimizing the performance of applications relying on this service. Potential implications for operations include identifying potential bottlenecks or capacity issues related to large file uploads, as well as detecting anomalies in upload patterns that may indicate security threats or other issues."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/CloudFront",
+      "MetricName": "Requests",
+      "DistributionId": "*",
+      "Region": "Global"
+    },
+    "description": "The 'Requests' metric in the namespace 'AWS/CloudFront' measures the number of incoming HTTP requests to an AWS CloudFront distribution. This includes both GET and non-GET requests, such as POST, PUT, DELETE, etc. The metric provides a count of requests over a specified time period, allowing for monitoring of traffic patterns, load, and potential bottlenecks in the distribution's performance. Potential implications or usage in monitoring or alerting include: triggering alerts when request rates exceed expected thresholds, identifying peak hours or days to optimize resource allocation, and correlating request metrics with other CloudFront metrics (e.g., latency, errors) for a more comprehensive understanding of service performance."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/DynamoDB",
+      "MetricName": "AccountMaxTableLevelReads"
+    },
+    "description": "The **AccountMaxTableLevelReads** metric in the **AWS/DynamoDB** namespace indicates the maximum number of read capacity units (RCUs) that any single table or global secondary index (GSI) within your AWS account can consume when using on-demand capacity mode. This metric helps SREs understand the upper limit of read throughput available per table or index before throttling or additional costs may occur.\n\n**Purpose:**  \nMonitor this metric to track if any table or GSI is approaching or hitting the maximum read capacity allowed by your account’s on-demand limits. It reflects the highest read demand on a single table or index, helping identify hotspots or capacity bottlenecks.\n\n**Alert Threshold:**  \nSet an alert if **AccountMaxTableLevelReads** approaches 80-90% of your account’s on-demand read capacity limit for a single table or index. For example, if your account limit is 40,000 RCUs per table, trigger an alert when this metric exceeds 32,000-36,000 RCUs. This early warning allows you to investigate and mitigate potential throttling or performance degradation.\n\n**Impact of Values:**  \n- **High values near the limit:** Indicate heavy read traffic concentrated on a single table or index, risking throttling or increased latency. This may require scaling strategies, query optimization, or data partitioning.  \n- **Low values:** Suggest read traffic is well-distributed or below capacity limits, indicating healthy read performance without risk of throttling.\n\n**Example Usage:**  \nIn a CloudWatch dashboard, plot **AccountMaxTableLevelReads** alongside **ConsumedReadCapacityUnits** for your tables to visualize read demand versus limits. Create an alert rule that triggers when **AccountMaxTableLevelReads** exceeds 85% of your known account limit for on-demand reads, prompting investigation into read-heavy workloads or potential need for capacity adjustments. This proactive monitoring helps maintain application performance and control costs."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/DynamoDB",
+      "MetricName": "AccountMaxReads"
+    },
+    "description": "The AccountMaxReads metric measures the maximum number of read capacity units that can be used by an AWS account. This value represents the highest possible read throughput for an account, which is a key performance indicator (KPI) for monitoring and optimizing database performance in Amazon DynamoDB. A high value indicates that the account has sufficient read capacity to handle its workload, while a low value may indicate potential bottlenecks or performance issues. Potential implications of this metric include identifying accounts with high read traffic, detecting sudden spikes in read requests, and triggering alerts when read capacity is approaching maximum utilization. This information can be used to optimize database configuration, scale resources accordingly, and ensure that the account's read throughput meets its requirements."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/DynamoDB",
+      "MetricName": "AccountMaxTableLevelWrites"
+    },
+    "description": "The AccountMaxTableLevelWrites metric measures the maximum number of write capacity units that can be utilized by a table or global secondary index within an AWS account. This limit applies to on-demand tables and caps the maximum write request units a table or global secondary index can use, preventing potential performance issues due to excessive write activity. Monitoring this metric is crucial for identifying accounts with high write demands, allowing operations teams to optimize resource allocation, prevent throttling, and maintain data consistency. Potential implications include: (1) Identifying accounts with high write capacity usage, indicating a need for increased resources or optimization strategies; (2) Detecting potential performance bottlenecks due to excessive write activity; (3) Ensuring compliance with AWS service limits to avoid account suspension or throttling."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/DynamoDB",
+      "MetricName": "AccountMaxWrites"
+    },
+    "description": "The AccountMaxWrites metric measures the maximum number of write capacity units that can be utilized by an AWS account. This limit applies to provisioned tables and does not include on-demand tables or global secondary indexes. It represents a threshold beyond which additional writes would incur over-provisioning costs, potentially leading to unnecessary expenses. Monitoring this metric can help identify accounts approaching their write capacity limits, enabling proactive adjustments to prevent potential performance degradation or cost overruns."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/DynamoDB",
+      "MetricName": "AccountProvisionedReadCapacityUtilization"
+    },
+    "description": "This metric measures the percentage of provisioned read capacity units utilized by all tables and global secondary indexes in your AWS account. It indicates how efficiently your DynamoDB resources are being used, helping you identify potential bottlenecks or over-provisioning. High utilization rates may indicate a need to increase read capacity units to maintain performance, while low utilization could suggest underutilization of resources. This metric can be used to monitor and alert on resource utilization, ensuring optimal performance and cost-effectiveness in your DynamoDB environment."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/DynamoDB",
+      "MetricName": "AccountProvisionedWriteCapacityUtilization"
+    },
+    "description": "This metric measures the percentage of provisioned write capacity units utilized by all tables and global secondary indexes in your AWS account. It indicates how efficiently your DynamoDB resources are being used, helping you identify potential bottlenecks or over-provisioning issues. A high utilization rate may indicate that your application is experiencing performance degradation due to insufficient write capacity, while a low utilization rate could suggest underutilized resources and opportunities for cost optimization. This metric can be used in monitoring and alerting to detect anomalies, such as sudden spikes in write traffic or prolonged periods of high utilization, allowing you to take proactive measures to maintain optimal performance and costs."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/DynamoDB",
+      "MetricName": "ConsumedReadCapacityUnits",
+      "TableName": "*"
+    },
+    "description": "The ConsumedReadCapacityUnits metric measures the actual number of read capacity units consumed by an Amazon DynamoDB table over a specified time period. This value represents the total number of read operations (e.g., GetItem, Query) performed on the table during the observed interval. It provides insight into the table's read workload and can be used to identify potential performance bottlenecks or optimize read capacity provisioning. In monitoring or alerting, this metric can be used to detect sudden spikes in read activity, indicating a possible issue with the application or data access patterns. Additionally, it can help operators adjust read capacity units accordingly to maintain optimal performance and prevent throttling errors."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/DynamoDB",
+      "MetricName": "ConsumedWriteCapacityUnits",
+      "TableName": "*"
+    },
+    "description": "The ConsumedWriteCapacityUnits metric measures the total number of write capacity units consumed by an Amazon DynamoDB table over a specified time period. This value represents the actual amount of write capacity used by the table, which can be compared to the provisioned write capacity to determine if the table is experiencing any performance issues due to insufficient write capacity. High values may indicate that the table requires additional write capacity units to handle increased write traffic, while low values could suggest underutilization of allocated resources. This metric can be used in monitoring and alerting to detect potential issues with DynamoDB table performance, such as throttling or timeouts, caused by inadequate write capacity provisioning."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/DynamoDB",
+      "MetricName": "MaxProvisionedTableReadCapacityUtilization"
+    },
+    "description": "The MaxProvisionedTableReadCapacityUtilization metric measures the maximum ratio of consumed to provisioned read capacity units for a table or a global secondary index in Amazon DynamoDB. This metric indicates the peak utilization of read capacity units (RCUs) during a specified time period, which can help identify potential performance bottlenecks and inform scaling decisions. High values may indicate that the current provisioned RCU is insufficient to handle the workload, leading to increased latency or errors. Conversely, low values suggest underutilization of RCUs, potentially indicating over-provisioning. This metric is useful for monitoring and alerting purposes, enabling operations teams to proactively manage DynamoDB resources and ensure optimal performance."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/DynamoDB",
+      "MetricName": "MaxProvisionedTableWriteCapacityUtilization"
+    },
+    "description": "MaxProvisionedTableWriteCapacityUtilization measures the maximum ratio of consumed to provisioned write capacity units for a table or a global secondary index in Amazon DynamoDB. This metric indicates the peak utilization of write capacity during a given time period, which can be used to identify potential performance bottlenecks and optimize resource allocation. High values may indicate that the provisioned write capacity is insufficient to handle the workload, leading to increased latency or errors. This metric can be used in monitoring and alerting to detect when the write capacity needs to be scaled up or if there are issues with data consistency."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/DynamoDB",
+      "MetricName": "ProvisionedReadCapacityUnits",
+      "TableName": "*"
+    },
+    "description": "The 'ProvisionedReadCapacityUnits' metric in the namespace 'AWS/DynamoDB' measures the number of read capacity units provisioned for a DynamoDB table. This value represents the maximum number of strongly consistent reads that can be performed on the table per second, taking into account both the read throughput and the consistency level. A higher provisioned read capacity unit indicates a greater ability to handle increased read traffic without impacting performance. In monitoring or alerting, this metric can be used to detect potential issues such as under-provisioning of read capacity units, which may lead to slow query times or timeouts. It's essential to regularly review and adjust the provisioned read capacity units based on actual usage patterns to ensure optimal table performance."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/DynamoDB",
+      "MetricName": "ProvisionedWriteCapacityUnits",
+      "TableName": "*"
+    },
+    "description": "The 'ProvisionedWriteCapacityUnits' metric in the namespace 'AWS/DynamoDB' measures the number of provisioned write capacity units for a DynamoDB table. This value represents the maximum number of writes (e.g., put, update, delete operations) that can be performed on the table within a given time period, typically one second. The metric is used to track the allocated resources and ensure that the table's performance meets the expected requirements. High values may indicate over-provisioning, while low values might suggest under-provisioning or inefficient usage. This metric can be used in monitoring and alerting to detect potential issues with write capacity utilization, such as sudden spikes or prolonged periods of high usage, which could impact application performance or lead to additional costs due to unused provisioned capacity."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/DynamoDB",
+      "MetricName": "ProvisionedWriteCapacityUnits",
+      "GlobalSecondaryIndexName": "*",
+      "TableName": "*"
+    },
+    "description": "The 'ProvisionedWriteCapacityUnits' metric in the namespace 'AWS/DynamoDB' measures the number of provisioned write capacity units for a table or a global secondary index in Amazon DynamoDB. This value represents the maximum number of writes that can be processed by the database within a given time period, typically measured in terms of read and write throughput (e.g., 1 RCU = 1 read per second, 1 WCU = 1 write per second). The metric is used to monitor and manage the performance and capacity planning of DynamoDB tables. High values may indicate that the table is under-provisioned for writes, leading to potential throttling or latency issues, while low values may result in wasted resources if the table's actual write load is lower than expected. This metric can be used in monitoring and alerting to detect anomalies in write capacity utilization, enabling proactive capacity planning and optimization of DynamoDB resources."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/DynamoDB",
+      "MetricName": "ReadThrottleEvents",
+      "GlobalSecondaryIndexName": "*",
+      "TableName": "*"
+    },
+    "description": "The 'ReadThrottleEvents' metric in the namespace 'AWS/DynamoDB' measures the number of requests to DynamoDB that exceed the provisioned read capacity units for a table or a global secondary index. This metric indicates potential performance bottlenecks and resource constraints, which can lead to increased latency, errors, or even service unavailability. It is essential to monitor this metric to ensure that the provisioned read capacity units are sufficient to handle the workload, and to adjust them accordingly to maintain optimal performance. Potential implications for operations include: (1) Identifying under-provisioned resources and scaling up capacity to prevent throttling events; (2) Detecting sudden spikes in traffic or changes in application behavior that require additional capacity; (3) Correlating with other metrics, such as latency or error rates, to understand the impact of read throttle events on overall system performance. This metric can be used in monitoring and alerting to trigger notifications when a certain threshold is exceeded, allowing operations teams to proactively address potential issues before they affect end-users."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/DynamoDB",
+      "MetricName": "ReplicationLatency",
+      "ReceivingRegion": "*",
+      "TableName": "*"
+    },
+    "description": "The ReplicationLatency metric in the AWS/DynamoDB namespace measures the time it takes for an updated item to be replicated across multiple replica tables within a global table in Amazon DynamoDB. This metric is crucial for understanding the consistency and availability of data across different regions or availability zones. High replication latency can indicate issues with network connectivity, database performance, or configuration problems, potentially leading to data inconsistencies or loss of high availability. Monitoring this metric can help operations teams identify and address such issues promptly, ensuring that DynamoDB remains a reliable and consistent source of truth for their applications."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/DynamoDB",
+      "MetricName": "ReturnedBytes",
+      "Operation": "*",
+      "TableName": "*"
+    },
+    "description": "The ReturnedBytes metric measures the total number of bytes returned by GetRecords operations in Amazon DynamoDB Streams during a specified time period. This metric is useful for monitoring and optimizing data retrieval from DynamoDB Streams. High values may indicate inefficient data processing or excessive data transfer, while low values could suggest underutilization of stream resources. Potential implications include: (1) Identifying bottlenecks in data processing pipelines, (2) Optimizing data transfer rates to reduce latency, (3) Ensuring adequate stream capacity for expected workloads. This metric can be used in conjunction with other metrics, such as ThroughputConsumedByGetRecords, to gain a more comprehensive understanding of DynamoDB Streams performance."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/DynamoDB",
+      "MetricName": "ReturnedItemCount",
+      "Operation": "*",
+      "TableName": "*"
+    },
+    "description": "The ReturnedItemCount metric measures the total number of items returned by Query, Scan, or ExecuteStatement (select) operations executed on Amazon Web Services databases during a specified time period. This metric can be used to monitor database query performance and identify potential issues with data retrieval. High values may indicate inefficient queries, while low values could suggest data inconsistencies or incomplete results. It can also be used in conjunction with other metrics, such as QueryLatency or ScanLatency, to gain a more comprehensive understanding of database performance. In monitoring or alerting, this metric can trigger notifications when the returned item count exceeds a certain threshold, indicating potential issues that require attention from database administrators."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/DynamoDB",
+      "MetricName": "SuccessfulRequestLatency",
+      "Operation": "*",
+      "TableName": "*"
+    },
+    "description": "The SuccessfulRequestLatency metric measures the average time taken by successful requests to DynamoDB during a specified time period. This metric is useful for monitoring the performance of DynamoDB and identifying potential bottlenecks in the system. A high latency value may indicate issues with database configuration, network connectivity, or resource utilization. It can be used to trigger alerts when latency exceeds a certain threshold, allowing operations teams to investigate and resolve the issue before it affects application performance. Additionally, this metric can be used to optimize DynamoDB instance types, provision additional resources, or adjust database configurations to improve overall system responsiveness."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/DynamoDB",
+      "MetricName": "SystemErrors",
+      "Operation": "*",
+      "TableName": "*"
+    },
+    "description": "The SystemErrors metric measures the number of requests to DynamoDB or Amazon DynamoDB Streams that result in an HTTP 500 status code within a specified time period. This indicates internal service errors, which can be caused by various factors such as software bugs, configuration issues, or infrastructure problems. Potential implications include: (1) Identifying and troubleshooting underlying causes of the errors, (2) Ensuring adequate capacity and performance of DynamoDB resources to handle workload demands, (3) Monitoring for potential security vulnerabilities that could lead to internal service errors, and (4) Implementing alerting mechanisms to notify teams in case of sustained or increasing error rates. This metric can be used in conjunction with other metrics, such as RequestLatency or ErrorRate, to gain a more comprehensive understanding of system performance and reliability."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/DynamoDB",
+      "MetricName": "ThrottledRequests",
+      "Operation": "*",
+      "TableName": "*"
+    },
+    "description": "The ThrottledRequests metric measures the number of requests to DynamoDB that exceed the provisioned throughput limits on a resource (such as a table or an index). This can occur when the actual read and write capacity utilization exceeds the allocated capacity units, causing DynamoDB to throttle incoming requests. High values for this metric may indicate over-provisioning, under-provisioning, or unexpected usage patterns in the application. Potential implications include increased latency, reduced throughput, or even service unavailability if left unchecked. This metric can be used in monitoring and alerting to detect potential issues with DynamoDB resource utilization, allowing for proactive capacity planning and optimization."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/EBS",
+      "MetricName": "VolumeAvgReadLatency",
+      "VolumeId": "*"
+    },
+    "description": "The VolumeAvgReadLatency metric measures the average time taken to complete read operations in a minute for EBS (Elastic Block Store) volumes attached to Amazon EC2 instances. This metric is a key indicator of storage performance and can be used to monitor the I/O latency of EBS volumes, which can impact application performance and user experience. High average read latency may indicate issues with disk utilization, network congestion, or underlying infrastructure problems. Potential implications for monitoring or alerting include: setting thresholds for high latency (e.g., > 10ms) to trigger alerts when storage performance is degraded; correlating this metric with other metrics like CPU, memory, and network usage to identify root causes of performance issues; and using it as a KPI (Key Performance Indicator) to track the overall health and efficiency of EBS volumes over time. However, without further context or additional information about the specific use case or environment, it is unclear how this metric should be used in practice."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/EBS",
+      "MetricName": "VolumeAvgWriteLatency",
+      "VolumeId": "*"
+    },
+    "description": "The VolumeAvgWriteLatency metric measures the average time taken to complete write operations in a minute for EBS (Elastic Block Store) volumes attached to Amazon EC2 instances. This metric is crucial for monitoring and optimizing storage performance. High latency values may indicate issues with disk I/O, network congestion, or insufficient resources allocated to the instance. Potential implications include: \n\n- Alerting on high average write latencies to prevent data corruption or loss due to prolonged write operations.\n- Investigating and resolving underlying causes of increased latency, such as resource constraints, misconfigured storage settings, or hardware issues.\n- Using this metric in conjunction with other storage-related metrics (e.g., VolumeReadLatency, VolumeWriteThroughput) for a comprehensive understanding of EBS volume performance."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/EBS",
+      "MetricName": "VolumeIOPSExceededCheck",
+      "VolumeId": "*"
+    },
+    "description": "This metric, VolumeIOPSExceededCheck, measures the number of times an application has attempted to drive I/O operations per second (IOPS) that exceed the provisioned performance of a volume within a one-minute window. The metric can have two possible values: 0 indicates that the provisioned IOPS were not exceeded during this period, while a value of 1 signifies that the provisioned IOPS were consistently exceeded. This information is crucial for identifying potential storage bottlenecks or overprovisioning issues in AWS environments. It can be used to trigger alerts when applications are pushing beyond their allocated IOPS limits, indicating a need for either increased provisioning or optimization of application performance. Additionally, this metric can serve as a precursor to more detailed analysis of storage usage and performance, helping operations teams to proactively manage and optimize their cloud resources."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/EBS",
+      "MetricName": "VolumeIdleTime",
+      "VolumeId": "*"
+    },
+    "description": "The VolumeIdleTime metric measures the total time in seconds that an Amazon Elastic Block Store (EBS) volume has been idle during a specified period. A volume is considered idle when there are no read or write operations on it. This metric can be used to identify volumes that have not been accessed for an extended period, which may indicate underutilization or potential issues with the underlying storage infrastructure. It can also help in capacity planning and right-sizing EBS volumes by providing insights into usage patterns. Additionally, this metric can be used as a trigger for alerting when a volume remains idle for an unusually long time, indicating a possible issue that requires investigation."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/EBS",
+      "MetricName": "VolumeQueueLength",
+      "VolumeId": "*"
+    },
+    "description": "The VolumeQueueLength metric measures the number of read and write operation requests waiting to be completed in a specified period of time for an Amazon Elastic File System (EFS) or Amazon Elastic Block Store (EBS) volume. This metric indicates the queue length, which is the number of I/O operations that are pending completion. A high queue length can indicate that the volume is experiencing performance issues due to insufficient I/O capacity or network congestion. Potential implications for monitoring and alerting include: triggering alerts when the queue length exceeds a certain threshold, indicating potential performance degradation; using this metric in conjunction with other metrics such as VolumeReadIOPS or VolumeWriteIOPS to identify bottlenecks in the system; and incorporating it into dashboards to provide real-time visibility into volume performance. However, without further context or information about the specific use case or environment, it is unclear how this metric might be used in operations."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/EBS",
+      "MetricName": "VolumeReadBytes",
+      "VolumeId": "*"
+    },
+    "description": "The **VolumeReadBytes** metric in the **AWS/EBS** namespace tracks the total number of bytes read from a specific EBS volume (identified by **VolumeId**) during a given time interval. This metric helps SREs monitor the read throughput of EBS volumes to ensure storage performance aligns with application requirements.\n\n**Purpose:**  \n- Understand read I/O load on EBS volumes to detect performance bottlenecks or unusual activity.  \n- Correlate read throughput with application latency or error rates.  \n- Optimize resource allocation by identifying underutilized or overburdened volumes.\n\n**Threshold Guidance:**  \n- Set alert thresholds based on baseline read throughput for your workload. For example, if a volume typically reads 50 MB/s, an alert might trigger if sustained reads exceed 80 MB/s (indicating potential saturation) or drop below 5 MB/s (possibly signaling an application or system issue).  \n- Use a moving average over 5 minutes to avoid noise from short spikes.\n\n**Impact of Values:**  \n- **High VolumeReadBytes:** May indicate heavy read load causing increased latency or I/O queueing; could lead to throttling if volume limits are exceeded. Investigate if this aligns with expected workload or signals abnormal behavior.  \n- **Low VolumeReadBytes:** Could mean underutilization or a stalled application; if unexpected, it may indicate failures in data access or connectivity.\n\n**Example Usage:**  \n- **Dashboard:** Display VolumeReadBytes as a line graph per volume to visualize read throughput trends over time. Combine with VolumeQueueLength and VolumeReadOps for comprehensive performance insight.  \n- **Alert Rule:** Trigger a CloudWatch alarm if the 5-minute average of VolumeReadBytes exceeds 80% of the provisioned throughput for more than 10 minutes, indicating potential performance degradation requiring investigation.  \n\nThis metric is essential for maintaining optimal EBS performance and ensuring application reliability through proactive monitoring and alerting."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/EBS",
+      "MetricName": "VolumeReadOps",
+      "VolumeId": "*"
+    },
+    "description": "The VolumeReadOps metric measures the total number of read operations completed on Amazon Elastic Block Store (EBS) volumes during a specified period. This includes all types of read operations, such as sequential reads and random reads, initiated by applications or services using the EBS volume. The metric is useful for monitoring storage performance and identifying potential bottlenecks in I/O operations. It can be used to detect issues with disk utilization, slow query performance, or high latency caused by excessive read requests. In alerting, this metric can trigger notifications when the number of read operations exceeds a certain threshold, indicating potential storage capacity issues or performance degradation."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/EBS",
+      "MetricName": "VolumeStalledIOCheck",
+      "VolumeId": "*"
+    },
+    "description": "The 'VolumeStalledIOCheck' metric in the 'AWS/EBS' namespace measures whether an Amazon Elastic Block Store (EBS) volume has experienced stalled Input/Output (I/O) operations within a one-minute window. This metric is a binary indicator, reporting either 0 (indicating that the volume passed the I/O check) or 1 (indicating that the volume failed the I/O check). A failed I/O check can be an indication of underlying storage issues, such as disk errors, high latency, or insufficient resources. This metric can be used in monitoring and alerting to detect potential storage performance problems, allowing for proactive maintenance and minimizing downtime. It is essential to consider this metric in conjunction with other relevant metrics, such as 'VolumeQueueLength' and 'VolumeReadOps', to gain a comprehensive understanding of EBS volume performance."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/EBS",
+      "MetricName": "VolumeThroughputPercentage",
+      "VolumeId": "*"
+    },
+    "description": "The VolumeThroughputPercentage metric in the AWS/EBS namespace measures the percentage of I/O operations per second (IOPS) delivered by an Amazon EBS volume compared to its total provisioned IOPS. This metric indicates how efficiently the volume is utilizing its allocated IOPS capacity, which can be a critical factor in maintaining optimal performance and preventing bottlenecks. A high VolumeThroughputPercentage value suggests that the volume is effectively handling incoming I/O requests within its allocated limits, whereas a low value may indicate underutilization or potential issues with I/O throughput. This metric can be used to monitor EBS volume performance, identify potential bottlenecks, and optimize resource allocation for improved application responsiveness and overall system efficiency."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/EBS",
+      "MetricName": "VolumeTotalReadTime",
+      "VolumeId": "*"
+    },
+    "description": "The **VolumeTotalReadTime** metric in the **AWS/EBS** namespace measures the total cumulative time, in seconds, spent performing read operations on a specific EBS volume. It sums the duration of all read requests during the measurement period. This metric helps assess the read workload and latency experienced by the volume. Monitoring it can reveal performance issues or bottlenecks related to read I/O."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/EBS",
+      "MetricName": "VolumeTotalWriteTime",
+      "VolumeId": "*"
+    },
+    "description": "The 'VolumeTotalWriteTime' metric in the namespace 'AWS/EBS' measures the total time spent on write operations to an Amazon Elastic Block Store (EBS) volume. This includes the cumulative duration of all write requests, such as writes to disk, metadata updates, and other storage-related activities. The metric provides a comprehensive view of the volume's write performance, allowing for the identification of potential bottlenecks or issues that may impact application availability or throughput.\n\nIn monitoring and alerting, this metric can be used to:\n- Detect sudden spikes in write time, indicating potential storage capacity issues or I/O contention.\n- Identify volumes with consistently high write times, suggesting inefficient storage configurations or resource constraints.\n- Trigger alerts when write times exceed a certain threshold, ensuring prompt attention to performance degradation or impending failures.\n\nWhile the metric offers valuable insights into EBS volume performance, its specific implications and usage may vary depending on the application's requirements, workload characteristics, and infrastructure configuration."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/EBS",
+      "MetricName": "VolumeWriteBytes",
+      "VolumeId": "*"
+    },
+    "description": "The **VolumeWriteBytes** metric in the **AWS/EBS** namespace measures the total number of bytes written to a specific EBS volume during the specified time period. It is reported as a sum of bytes written within each monitoring interval. This metric helps track write activity and assess storage performance or utilization of the volume. Monitoring VolumeWriteBytes can identify unusual write patterns, potential bottlenecks, or opportunities for cost optimization."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/EBS",
+      "MetricName": "VolumeWriteOps",
+      "VolumeId": "*"
+    },
+    "description": "The **VolumeWriteOps** metric in the **AWS/EBS** namespace tracks the total number of write operations performed on a specific EBS volume within each monitoring interval (typically per minute). This metric helps Site Reliability Engineers (SREs) understand the write I/O load on EBS volumes, which is critical for assessing storage performance and identifying potential bottlenecks.\n\n**Purpose:**  \nMonitor the volume of write operations to detect unusual spikes or drops that could indicate application issues, storage saturation, or underutilization. High write operation counts may signal heavy workload or potential I/O contention, while consistently low values might suggest idle or overprovisioned volumes.\n\n**Alert Threshold Guidance:**  \n- Set alert thresholds based on baseline workload patterns. For example, trigger an alert if **VolumeWriteOps** exceeds 80-90% of the volume’s provisioned IOPS or if there is a sudden increase (e.g., 2x the average write ops over the past hour).  \n- Conversely, alert if write operations drop below a minimal threshold for an extended period, which could indicate application failure or misconfiguration.\n\n**Impact of Values:**  \n- **High VolumeWriteOps:** May lead to increased latency, throttling, or degraded application performance due to storage I/O saturation. Requires investigation into workload spikes, possible volume resizing, or optimization.  \n- **Low VolumeWriteOps:** Could indicate underutilized storage resources, potentially allowing cost optimization by downsizing volumes or consolidating workloads.\n\n**Example Usage:**  \n- **Dashboard:** Display a time series graph of **VolumeWriteOps** alongside **VolumeReadOps** and **VolumeQueueLength** for each critical EBS volume to correlate write activity with latency and queue buildup.  \n- **Alert Rule:** Create a CloudWatch alarm that triggers when **VolumeWriteOps** exceeds 90% of the volume’s provisioned IOPS for 5 consecutive minutes, indicating potential I/O saturation requiring immediate attention.  \n\nBy actively monitoring **VolumeWriteOps**, SREs can maintain optimal storage performance, prevent application slowdowns, and optimize cost-efficiency of EBS volumes."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/EC2",
+      "MetricName": "CPUUtilization",
+      "InstanceId": "*"
+    },
+    "description": "The CPUUtilization metric measures the percentage of allocated EC2 compute units that are currently in use on the instance. This value is calculated as a rolling average over a one-minute period and represents the average utilization of the instance's CPU resources during that time. High CPU utilization can indicate resource contention, leading to potential performance issues or even service unavailability. Monitoring this metric can help identify instances with high CPU usage, allowing for proactive capacity planning, load balancing, or even scaling up to prevent overutilization. Additionally, it can be used as a threshold-based alerting mechanism to notify operations teams when CPU utilization exceeds a certain percentage, indicating potential performance degradation."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/EC2",
+      "MetricName": "DiskReadBytes",
+      "InstanceId": "*"
+    },
+    "description": "The DiskReadBytes metric measures the total number of bytes read from all instance store volumes available to an AWS instance. This includes data read from ephemeral storage devices, such as instance store volumes or NVMe drives. The metric provides insight into the amount of disk I/O activity occurring on the instance, which can be useful for identifying potential performance bottlenecks or resource utilization issues. In monitoring and alerting, this metric can be used to detect sudden spikes in disk read activity, indicating a possible issue with storage capacity, network congestion, or application performance. It may also be used to set thresholds for average or maximum disk read rates, triggering alerts when these thresholds are exceeded."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/EC2",
+      "MetricName": "DiskReadOps",
+      "InstanceId": "*"
+    },
+    "description": "The DiskReadOps metric measures the total number of completed read operations from all instance store volumes available to an AWS instance. This includes reads initiated by the operating system and applications running on the instance. The metric is a cumulative counter that increments each time a read operation completes, providing insight into the volume of disk I/O activity. High values may indicate performance bottlenecks or resource contention issues, while sudden spikes could signal underlying problems such as disk failures or storage capacity constraints. This metric can be used to monitor and alert on instance performance, identify potential issues before they impact application availability, and optimize storage configurations for improved throughput and responsiveness."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/EC2",
+      "MetricName": "DiskWriteBytes",
+      "InstanceId": "*"
+    },
+    "description": "The DiskWriteBytes metric measures the total number of bytes written to all instance store volumes available to an AWS instance. This includes data written to ephemeral storage, which is a type of temporary storage provided by AWS for instances that require additional storage capacity. The metric provides insight into the amount of disk I/O activity occurring on the instance, which can be useful for identifying potential performance bottlenecks or issues with storage capacity. In monitoring and alerting, this metric can be used to detect sudden spikes in write activity, which may indicate a problem with the instance's storage system or a resource-intensive application. It can also be used to track long-term trends in disk usage and plan for future capacity needs."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/EC2",
+      "MetricName": "DiskWriteOps",
+      "InstanceId": "*"
+    },
+    "description": "The DiskWriteOps metric measures the number of completed write operations to all instance store volumes available to the instance. This includes writes to both ephemeral and persistent storage devices. A high rate of write operations may indicate issues with disk performance, storage capacity, or instance resource utilization. Potential implications for monitoring include tracking average write latency, identifying peak write rates, or setting thresholds for alerting on excessive write activity. Additionally, this metric can be used in conjunction with other metrics, such as DiskReadOps and DiskSpaceUsed, to gain a more comprehensive understanding of disk I/O performance and capacity."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/EC2",
+      "MetricName": "EBSIOBalance%",
+      "InstanceId": "*"
+    },
+    "description": "The 'EBSIOBalance%' metric in the namespace 'AWS/EC2' measures the balance between the instance's I/O operations per second (IOPS) and the available IOPS capacity of the Elastic Block Store (EBS) volume attached to it. This metric is a percentage value, indicating how close the instance is to reaching its EBS IOPS limit. A higher value indicates that the instance is approaching or has exceeded its allocated IOPS capacity, which can lead to performance degradation and potential throttling by AWS. Monitoring this metric allows operations teams to identify instances at risk of I/O bottlenecks and take proactive measures to scale up storage resources, adjust application workloads, or optimize database configurations to maintain optimal system performance."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/EC2",
+      "MetricName": "NetworkIn",
+      "InstanceId": "*"
+    },
+    "description": "The NetworkIn metric measures the total number of bytes received on all network interfaces by an AWS instance. This includes incoming traffic from various sources such as other instances, services, or external networks. It is a cumulative measure that increments with each byte received, providing insight into the volume of incoming network activity. In monitoring and alerting, NetworkIn can be used to detect potential issues such as DDoS attacks, network congestion, or misconfigured security groups. It can also help identify instances experiencing high network utilization, which may impact performance or lead to resource exhaustion. Additionally, this metric can aid in capacity planning by providing visibility into the average and peak network traffic patterns."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/EC2",
+      "MetricName": "NetworkOut",
+      "InstanceId": "*"
+    },
+    "description": "The NetworkOut metric measures the total number of bytes sent out on all network interfaces by an AWS instance. This includes both outgoing traffic from the instance to other hosts and services, as well as any traffic generated by the instance itself, such as DNS requests or system updates. The metric provides a comprehensive view of the instance's outbound network activity, which can be useful for monitoring and troubleshooting purposes.\n\nPotential implications or usage in monitoring or alerting include:\n- Identifying instances with high network utilization, which may indicate resource bottlenecks or security issues.\n- Detecting unusual patterns of outgoing traffic that could indicate malware or other security threats.\n- Monitoring the impact of changes to instance configurations or network policies on outbound traffic.\n\nThis metric can be used in conjunction with other metrics, such as NetworkIn, to gain a more complete understanding of an instance's network activity and identify potential issues."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/EC2",
+      "MetricName": "NetworkPacketsIn",
+      "InstanceId": "*"
+    },
+    "description": "The **NetworkPacketsIn** metric in the **AWS/EC2** namespace tracks the total number of network packets received by an EC2 instance across all its network interfaces, including both IPv4 and IPv6 traffic. This cumulative counter increments with every incoming packet, providing a real-time measure of inbound network activity. \n\n**Purpose:**  \nSREs use this metric to monitor the volume and pattern of incoming network traffic to detect anomalies such as sudden spikes that may indicate Distributed Denial of Service (DDoS) attacks, network scanning, or other security threats. It also helps assess network interface utilization to prevent saturation, which can degrade application performance.\n\n**Alert Threshold Guidance:**  \nSet alert thresholds based on baseline traffic patterns for your application. For example, if your instance typically receives 10,000 packets per minute, an alert could trigger if the rate exceeds 50,000 packets per minute sustained over 5 minutes, signaling unusual traffic spikes. Conversely, a sudden drop to near zero packets might indicate network connectivity issues or instance failure.\n\n**Impact of Values:**  \n- **High values:** May indicate heavy legitimate traffic, a DDoS attack, or misconfigured clients generating excessive requests. Prolonged high packet rates can saturate network interfaces, leading to packet loss and degraded service.  \n- **Low values:** Could signal network outages, instance misconfiguration, or application downtime, potentially causing service disruption.\n\n**Example Usage:**  \nIn a CloudWatch dashboard, plot **NetworkPacketsIn** alongside CPU utilization and NetworkPacketsOut to correlate network traffic with system load. For alerting, create a CloudWatch alarm with a metric math expression calculating the packets per second over a 5-minute window, triggering if the value exceeds a defined threshold (e.g., 800 packets/second) for 3 consecutive periods, enabling proactive response to abnormal network conditions."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/EC2",
+      "MetricName": "NetworkPacketsOut",
+      "InstanceId": "*"
+    },
+    "description": "The **NetworkPacketsOut** metric in the **AWS/EC2** namespace measures the total number of network packets sent out from all network interfaces of a specified EC2 instance. It is a cumulative count of packets transmitted, regardless of delivery success, including both IPv4 and IPv6 packets. The unit of measurement is packets. This metric helps monitor outbound network traffic volume and detect unusual spikes or connectivity issues."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/EC2",
+      "MetricName": "StatusCheckFailed",
+      "InstanceId": "*"
+    },
+    "description": "The StatusCheckFailed metric measures the number of failed status checks for an AWS instance. It reports whether the instance has passed both the instance status check and the system status check. The instance status check verifies that the instance is running and responding to requests, while the system status check ensures that the underlying infrastructure, such as the host machine or virtualization layer, is functioning correctly. A failed status check indicates a potential issue with the instance's configuration, hardware, or software, which may impact its performance or availability. This metric can be used in monitoring and alerting to detect instances with failed status checks, allowing operators to investigate and resolve issues promptly. It can also be used to identify trends or patterns in failed status checks over time, helping to inform capacity planning, maintenance schedules, and other operational decisions."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/EC2",
+      "MetricName": "StatusCheckFailed_Instance",
+      "InstanceId": "*"
+    },
+    "description": "The **StatusCheckFailed_Instance** metric in the **AWS/EC2** namespace tracks the number of failed instance status checks for individual EC2 instances over a specified time period. These status checks detect issues at the instance level, such as underlying hardware problems, network connectivity failures, or misconfigurations that prevent the instance from operating correctly.\n\n**Purpose:**  \nThis metric helps Site Reliability Engineers (SREs) monitor the health and availability of EC2 instances by identifying instances experiencing operational failures that require immediate attention.\n\n**Alert Threshold Guidance:**  \nA common alert threshold is when **StatusCheckFailed_Instance** is greater than or equal to 1 for a sustained period (e.g., 5 consecutive minutes). This indicates that the instance has failed at least one status check and may be impaired or unreachable.\n\n**Impact of Values:**  \n- **Low or zero values:** Indicate that the instance is healthy and passing all status checks.  \n- **High or repeated non-zero values:** Signal persistent or recurring instance-level failures, which can lead to application downtime, degraded performance, or loss of availability.\n\n**Example Usage:**  \n- **Dashboard:** Display a time series graph of **StatusCheckFailed_Instance** per instance to quickly identify which instances are failing status checks.  \n- **Alert Rule:** Create a CloudWatch alarm that triggers when **StatusCheckFailed_Instance ≥ 1** for 5 minutes on any instance, notifying the SRE team to investigate and remediate the issue promptly.  \n\nBy monitoring this metric alongside system and application metrics, SREs can proactively detect and resolve instance-level problems, ensuring higher reliability and uptime of services running on EC2."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/EC2",
+      "MetricName": "StatusCheckFailed_System",
+      "InstanceId": "*"
+    },
+    "description": "The **StatusCheckFailed_System** metric in the **AWS/EC2** namespace tracks the number of failed system status checks for a specific EC2 instance (identified by **InstanceId**). These system status checks monitor the underlying AWS infrastructure supporting the instance, including hardware, network, and hypervisor issues. A value of **0** indicates the system checks are passing, while a value of **1** or higher signals a failure that could affect instance availability or performance.\n\n**Purpose:**  \nThis metric helps Site Reliability Engineers (SREs) detect infrastructure-level problems impacting EC2 instances before they cause application downtime. It is critical for identifying issues such as hardware failures, network connectivity problems, or hypervisor malfunctions.\n\n**Alert Threshold:**  \nA common alert threshold is when **StatusCheckFailed_System ≥ 1** for a sustained period (e.g., 1-5 minutes). This indicates the instance has failed one or more system checks and requires immediate investigation.\n\n**Impact of Values:**  \n- **0 (Low):** System checks are passing; the instance is healthy at the infrastructure level.  \n- **≥1 (High):** One or more system checks have failed, potentially causing instance instability, degraded performance, or unavailability. Persistent failures may require instance reboot, migration, or AWS support intervention.\n\n**Example Usage:**  \n- **Dashboard:** Display a time series graph of **StatusCheckFailed_System** per instance to quickly identify which instances are experiencing system-level failures. Combine with **StatusCheckFailed_Instance** to differentiate between system and instance-level issues.  \n- **Alert Rule (CloudWatch Alarm):**  \n  - Metric: `StatusCheckFailed_System`  \n  - Statistic: `Maximum`  \n  - Period: `60 seconds`  \n  - Threshold: `>= 1`  \n  - Evaluation Periods: `3` (i.e., alert if the failure persists for 3 consecutive minutes)  \n  - Action: Notify SRE team via SNS or trigger automated remediation.\n\nBy monitoring **StatusCheckFailed_System** with these guidelines, SREs can proactively detect and respond to infrastructure problems affecting EC2 instances, minimizing downtime and maintaining service reliability."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/Events",
+      "MetricName": "InvocationsCreated"
+    },
+    "description": "The 'InvocationsCreated' metric in the namespace 'AWS/Events' measures the total number of event invocations created within an AWS account. This metric is a key indicator of event-driven activity and can be used to monitor the volume of events being triggered, which may impact downstream services or applications. Potential implications include detecting sudden spikes in event creation, identifying potential security threats, or optimizing event handling processes. In monitoring or alerting, this metric could be used to trigger notifications when a threshold is exceeded, indicating a need for investigation or intervention."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/Lambda",
+      "MetricName": "ConcurrentExecutions",
+      "FunctionName": "*",
+      "Resource": "*"
+    },
+    "description": "The ConcurrentExecutions metric measures the number of AWS Lambda function instances that are concurrently executing events at a given time. This metric provides insight into the workload and capacity utilization of the Lambda service. A high value indicates that multiple instances are processing events simultaneously, which can be an indicator of increased load or demand on the system. Conversely, a low value may suggest underutilization of available resources. This metric is useful for monitoring and optimizing resource allocation, identifying potential bottlenecks, and ensuring efficient use of Lambda's concurrent execution capabilities."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/Lambda",
+      "MetricName": "Duration",
+      "FunctionName": "*",
+      "Resource": "*"
+    },
+    "description": "The Duration metric measures the amount of time that your AWS function code spends processing an event, providing insight into the execution latency and performance of your serverless application. This metric can be used to identify potential bottlenecks, optimize resource utilization, and ensure timely event processing. It may also indicate issues with function code efficiency, dependencies, or external service interactions. In monitoring or alerting, this metric can trigger notifications when average or maximum duration thresholds are exceeded, helping operations teams to proactively address performance degradation and maintain optimal application responsiveness."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/Lambda",
+      "MetricName": "Errors",
+      "FunctionName": "*",
+      "Resource": "*"
+    },
+    "description": "The **Errors** metric in the **AWS/Lambda** namespace tracks the total number of invocations for Lambda functions that fail due to issues within the function code or runtime environment, such as syntax errors, unhandled exceptions, or timeouts. This metric is critical for SREs to monitor the health and reliability of Lambda functions across all deployed versions and aliases (indicated by `\"FunctionName\": \"*\"`).\n\n**Purpose:**  \nIt helps identify when functions are failing consistently, signaling potential bugs, misconfigurations, or resource constraints that require immediate attention.\n\n**Alert Threshold Guidance:**  \nA common alert threshold is when the error count exceeds a small percentage of total invocations (e.g., >1% error rate) or when the absolute error count surpasses a defined number (e.g., >5 errors) within a short evaluation period (e.g., 5 minutes). Thresholds should be tailored based on function criticality and invocation volume.\n\n**Impact of Values:**  \n- **High error counts:** Indicate degraded function reliability, potentially causing downstream service failures, user impact, or data loss. Immediate investigation and remediation are required.  \n- **Low or zero errors:** Indicate stable function execution and healthy code/runtime environment.\n\n**Example Usage:**  \n- **Dashboard:** Display a time series graph of Errors alongside Invocations and Duration metrics for all functions (`FunctionName=\"*\"`), enabling correlation of error spikes with latency or throughput changes.  \n- **Alert Rule:** Trigger a CloudWatch alarm if the sum of Errors across all functions exceeds 5 within 5 minutes or if the error rate (Errors / Invocations) exceeds 1% for the same period, notifying the on-call team to investigate.\n\nBy monitoring this metric proactively, SREs can maintain Lambda function reliability, reduce downtime, and improve user experience."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/Lambda",
+      "MetricName": "Invocations",
+      "FunctionName": "*",
+      "Resource": "*"
+    },
+    "description": "The Invocations metric measures the total number of times a function is invoked in response to an event or invocation API call. This includes both successful and failed invocations, providing a comprehensive view of the function's usage and performance. Potential implications for monitoring include identifying trends in function invocation rates, detecting anomalies that may indicate issues with the function or underlying infrastructure. In alerting, this metric can be used to trigger notifications when invocation rates exceed expected thresholds, indicating potential performance degradation or resource exhaustion. Additionally, this metric can inform capacity planning decisions by providing insights into the actual usage of functions and resources."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/Lambda",
+      "MetricName": "Throttles",
+      "FunctionName": "*",
+      "Resource": "*"
+    },
+    "description": "The Throttles metric measures the number of AWS Lambda function invocation attempts that were throttled due to invocation rates exceeding the concurrent execution quota. This quota is enforced by AWS to prevent overwhelming the service with too many simultaneous invocations, which can lead to performance degradation and resource exhaustion. The metric provides insight into the frequency at which Lambda functions are being invoked beyond their allowed concurrency limits, indicating potential issues with application design, scaling, or configuration. It may be used in monitoring and alerting to detect situations where Lambda function invocation rates are approaching or exceeding the concurrent execution quota, triggering further investigation and optimization efforts to prevent throttling and ensure reliable service operation."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/Lambda",
+      "MetricName": "UnreservedConcurrentExecutions",
+      "FunctionName": "*",
+      "Resource": "*"
+    },
+    "description": "The UnreservedConcurrentExecutions metric measures the total number of concurrent executions available for all functions in a specific AWS region. This metric is crucial for monitoring and managing the capacity for new function invocations. A higher value indicates that there are more available execution slots, allowing for increased concurrency without potential throttling issues. Conversely, a lower value may indicate that the region's resources are being fully utilized, potentially leading to performance degradation or invocation failures due to lack of available executions. This metric can be used in monitoring and alerting scenarios to detect capacity bottlenecks, enabling proactive scaling or resource allocation decisions to maintain optimal function performance."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/SES",
+      "MetricName": "Delivery"
+    },
+    "description": "The Delivery metric measures the number of emails successfully delivered through Amazon SES, indicating the effectiveness of email delivery operations. This metric counts the number of emails that were successfully delivered to recipients, excluding any emails that may have been bounced, rejected, or failed due to other reasons. Potential implications for monitoring and alerting include: (1) Identifying potential issues with email content, sender reputation, or recipient server configurations; (2) Detecting anomalies in email delivery rates, which could indicate a problem with the email sending infrastructure; (3) Triggering alerts when the delivery rate drops below a certain threshold, indicating a possible issue with email deliverability. This metric can be used in conjunction with other metrics, such as BounceRate or ComplaintRate, to gain a more comprehensive understanding of email delivery performance."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/SES",
+      "MetricName": "Reputation.BounceRate"
+    },
+    "description": "The Reputation.BounceRate metric measures the percentage of emails that bounce back to the sender due to undeliverable addresses or other delivery issues. This metric indicates the rate at which emails are being returned as undeliverable, which can be a sign of poor email list quality, incorrect email addresses, or issues with the email infrastructure. High bounce rates can lead to decreased email deliverability, reduced engagement, and potentially even account suspension by email service providers. Monitoring this metric can help identify potential issues with email campaigns, inform data cleansing efforts, and optimize email sending strategies to improve overall email performance."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/SES",
+      "MetricName": "Reputation.ComplaintRate"
+    },
+    "description": "The Reputation.ComplaintRate metric measures the percentage of emails sent from a specific domain or IP address that are reported as spam by recipients. This metric is based on data collected by email service providers and reputation services, such as Amazon SES (Simple Email Service) and Spamhaus. It indicates the rate at which your emails are being marked as spam, which can be an indicator of poor email sending practices, compromised sender reputations, or even malicious activity. High complaint rates can lead to deliverability issues, where emails are blocked or filtered by recipient mail servers, ultimately affecting the reach and effectiveness of your email campaigns. This metric is useful for monitoring and alerting on potential email deliverability issues, allowing operations teams to investigate and address the root causes of high complaint rates, such as updating sender authentication records, improving content filtering, or implementing anti-spam measures."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/SES",
+      "MetricName": "Send"
+    },
+    "description": "The **AWS/SES Send** metric in CloudWatch tracks the total number of email send attempts initiated by your AWS account through Amazon Simple Email Service (SES), including both successful and failed sends. This metric helps SREs monitor email sending volume and detect anomalies in outbound email traffic.\n\n**Purpose:**  \n- Provides visibility into the overall email sending activity.  \n- Helps identify sudden spikes (potential abuse or misconfiguration) or drops (possible service issues or application failures) in email sends.  \n- Enables correlation with other system metrics to diagnose broader application or infrastructure problems.\n\n**Alert Threshold Guidance:**  \n- Set a lower threshold alert if the send count drops below an expected baseline (e.g., 50% of average daily sends) to detect outages or failures in email generation.  \n- Set an upper threshold alert if the send count spikes above a defined multiple of the average (e.g., 2x normal volume) to catch potential spam, abuse, or runaway processes.\n\n**Impact of Values:**  \n- **High values:** May indicate increased user activity, marketing campaigns, or potential abuse/spam that could affect reputation or incur costs.  \n- **Low values:** Could signal application errors, service disruptions, or configuration issues preventing emails from being sent.\n\n**Example Usage:**  \n- **Dashboard:** Display a time series graph of the Send metric alongside Bounce and Reject metrics to monitor email health.  \n- **Alert Rule:** Trigger a CloudWatch alarm if the Send metric falls below 100 emails per hour for more than 15 minutes, indicating a possible outage in email sending functionality. Alternatively, alert if sends exceed 10,000 emails per hour, suggesting abnormal activity.\n\nThis actionable insight enables proactive monitoring and rapid response to maintain reliable email delivery through SES."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/SNS",
+      "MetricName": "NumberOfMessagesPublished",
+      "TopicName": "*"
+    },
+    "description": "The NumberOfMessagesPublished metric measures the total number of messages successfully published to an Amazon Simple Notification Service (SNS) topic within a specified time period. This metric counts both individual and batched messages sent to your topic, providing insight into the volume of notifications being processed. In monitoring or alerting scenarios, this metric can be used to detect anomalies in message publishing rates, identify potential issues with SNS topic configuration, or troubleshoot problems with message delivery. For example, if NumberOfMessagesPublished is consistently lower than expected, it may indicate a problem with message encoding, authentication, or network connectivity. Conversely, an unusually high number of messages published could signal a misconfigured SNS topic or a malicious activity attempting to overwhelm the system."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/SNS",
+      "MetricName": "NumberOfNotificationsDelivered",
+      "TopicName": "*"
+    },
+    "description": "The **NumberOfNotificationsDelivered** metric in the **AWS/SNS** namespace measures the total count of notifications successfully delivered to all subscribed endpoints for the specified topic(s). This includes messages delivered via email, SMS, HTTP/S, and other supported protocols. The metric is reported as a simple count (unit: Count) and does not include failed or undeliverable notifications. It is used to monitor the effectiveness of message delivery across all channels."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/SNS",
+      "MetricName": "NumberOfNotificationsFailed",
+      "TopicName": "*"
+    },
+    "description": "The NumberOfNotificationsFailed metric measures the total count of notifications that have failed to deliver to their intended recipients. This includes any messages that were unable to reach their destination due to various reasons such as network connectivity issues, endpoint unavailability, or authentication failures. The metric provides a quantitative representation of notification delivery failures, allowing operators to gauge the effectiveness of their notification systems and identify potential bottlenecks or areas for improvement. Potential implications include triggering alerts when the failure rate exceeds a certain threshold, investigating root causes of frequent failures, or optimizing notification routing strategies to minimize delivery issues."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/SNS",
+      "MetricName": "PublishSize",
+      "TopicName": "*"
+    },
+    "description": "The **PublishSize** metric in the **AWS/SNS** namespace measures the total size (in bytes) of all messages published to a specific SNS topic within a given period. It helps SREs monitor the volume and size of data flowing through SNS topics, enabling detection of unusual message sizes or traffic patterns that could impact system performance or cost.\n\n**Purpose:**  \n- Track the aggregate size of messages sent to an SNS topic to ensure message payloads remain within expected limits.  \n- Identify sudden spikes or drops in message size that may indicate application issues or misuse.  \n- Support capacity planning by understanding data throughput and resource utilization.\n\n**Alert Threshold Guidance:**  \n- Set an alert if **PublishSize** exceeds the SNS message size limit (256 KB per message) multiplied by the expected message count, indicating potential message rejections or throttling.  \n- Alternatively, alert on sustained increases beyond historical baselines (e.g., a 50% increase over average daily PublishSize) to catch anomalies.  \n- Low or zero values over extended periods may indicate publishing failures or application downtime.\n\n**Impact of Values:**  \n- **High PublishSize:** May lead to increased latency, higher costs, or message delivery failures if size limits are breached. It can also signal abnormal application behavior or data surges.  \n- **Low PublishSize:** Could indicate reduced traffic, potential issues with message publishing, or system outages.\n\n**Example Usage:**  \n- **Dashboard:** Display a time-series graph of PublishSize per topic to visualize trends and correlate with application events.  \n- **Alert Rule:** Trigger a CloudWatch alarm when PublishSize exceeds 80% of the maximum allowed throughput for 5 consecutive minutes, notifying the SRE team to investigate potential message size or volume issues.\n\nBy monitoring **PublishSize**, SREs can proactively manage SNS topic health, optimize performance, and prevent disruptions caused by message size anomalies."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/Usage",
+      "MetricName": "CallCount",
+      "Class": "None",
+      "Resource": "*",
+      "Service": "*",
+      "Type": "API"
+    },
+    "description": "The 'CallCount' metric in the namespace 'AWS/Usage' measures the total number of API calls made to AWS services within a specified time period. This includes both successful and failed requests. The metric provides visibility into the volume of interactions with AWS resources, allowing operators to identify potential issues related to service usage, throttling, or errors. Potential implications include detecting unexpected spikes in API call rates, identifying resource-intensive operations, or monitoring the impact of changes to application code on AWS service utilization. This information can be used to optimize resource allocation, troubleshoot performance issues, and ensure compliance with AWS service quotas."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/Usage",
+      "MetricName": "ResourceCount",
+      "Class": "None",
+      "Resource": "*",
+      "Service": "*",
+      "Type": "Resource"
+    },
+    "description": "The 'ResourceCount' metric in the namespace 'AWS/Usage' measures the total count of resources being utilized across various AWS services, including but not limited to EC2 instances, RDS databases, S3 buckets, and more. This metric provides a high-level overview of resource utilization within an AWS account, enabling teams to monitor and manage their cloud infrastructure more effectively.\n\nPotential implications or usage in monitoring or alerting include:\n- Identifying underutilized resources that can be right-sized or terminated to reduce costs.\n- Detecting sudden spikes in resource counts, indicating potential issues with application scaling or resource exhaustion.\n- Triggering alerts when resource counts exceed predetermined thresholds, ensuring proactive management of AWS services and preventing service disruptions.\n\nWhile this metric offers valuable insights into overall resource utilization, its ambiguity lies in the fact that it does not specify which particular resources are being counted. Therefore, teams may need to supplement this metric with more granular metrics or manual investigation to gain a deeper understanding of their resource usage patterns."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/DynamoDB",
+      "MetricName": "OnlineIndexThrottleEvents",
+      "GlobalSecondaryIndexName": "*",
+      "TableName": "*"
+    },
+    "description": "The OnlineIndexThrottleEvents metric measures the number of write throttle events that occur when adding a new global secondary index to an Amazon DynamoDB table. This metric indicates the frequency at which the addition of a new global secondary index is being throttled due to excessive write capacity utilization, resulting in potential delays or failures in indexing operations. It can be used to monitor and alert on issues related to high write traffic, inefficient indexing strategies, or insufficient provisioned write capacity for DynamoDB tables. By tracking this metric, operators can identify bottlenecks in their database performance, optimize resource allocation, and ensure the smooth operation of their applications."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/EC2",
+      "MetricName": "CPUCreditBalance",
+      "InstanceId": "*"
+    },
+    "description": "The CPUCreditBalance metric measures the number of CPU credits earned by an AWS instance since its launch or start time. This metric is relevant for instances that use Amazon EC2's Credit-Based Pricing model, where CPU usage is measured in terms of 'credits' rather than raw CPU utilization. A higher credit balance indicates efficient CPU usage and potentially lower costs, while a low balance may indicate underutilization or inefficient resource allocation. Monitoring this metric can help identify opportunities to optimize instance sizes, right-size resources, or adjust workload distribution to minimize unnecessary costs. Potential use cases include setting alerts for low credit balances, tracking changes in credit accumulation over time, or using the metric as input for more complex cost optimization strategies."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/EC2",
+      "MetricName": "CPUCreditUsage",
+      "InstanceId": "*"
+    },
+    "description": "The CPUCreditUsage metric measures the number of CPU credits spent by an instance for CPU utilization. This metric is relevant to instances that use Amazon EC2's Credit-Based Pricing model, where a certain amount of CPU credits are allocated based on the instance type and usage. The metric indicates how many credits have been consumed due to CPU activity, which can be used to estimate the remaining capacity or potential overage costs. In monitoring and alerting, this metric can be used to detect instances that are approaching their credit limits, allowing for proactive resource optimization and cost management."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/EC2",
+      "MetricName": "CPUSurplusCreditBalance",
+      "InstanceId": "*"
+    },
+    "description": "The CPUSurplusCreditBalance metric measures the number of surplus CPU credits that have been spent by an unlimited Amazon EC2 instance when its CPUCreditBalance is zero. This metric indicates the amount of excess CPU credits used by the instance beyond what was available in its CPUCreditBalance. The surplus credits are typically accumulated during periods of low CPU utilization and can be used to handle short-term spikes in demand without incurring additional costs. Monitoring this metric can help identify instances that are consistently using more CPU credits than expected, potentially indicating inefficient resource allocation or unexpected workload patterns. It may also be useful for capacity planning and rightsizing EC2 instance types to optimize cost-effectiveness."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/EC2",
+      "MetricName": "CPUSurplusCreditsCharged",
+      "InstanceId": "*"
+    },
+    "description": "The CPUSurplusCreditsCharged metric measures the number of surplus CPU credits that are charged to an AWS instance when they exceed the maximum number of earned credits allowed. This occurs when an instance consumes more CPU resources than its allocated capacity, resulting in a deficit of earned credits. The charged surplus credits are then deducted from the instance's account. This metric can be used to monitor and alert on instances that consistently or intermittently consume excessive CPU resources, leading to unnecessary charges. It may also indicate potential issues with instance sizing, workload optimization, or resource utilization. Monitoring this metric can help prevent unexpected costs and ensure optimal resource allocation."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/EC2",
+      "MetricName": "StatusCheckFailed_Instance",
+      "InstanceId": "*"
+    },
+    "description": "The **StatusCheckFailed_Instance** metric in the **AWS/EC2** namespace indicates whether an individual EC2 instance has failed its instance status check, which monitors the health of the instance's operating system and network configuration. The metric reports a value of **0** when the instance passes the status check (healthy) and **1** when it fails (unhealthy).  \n\n**Purpose:** This metric helps Site Reliability Engineers (SREs) quickly identify instances experiencing software or network-level issues that could affect application availability or performance.\n\n**Alert Threshold:** A common alert threshold is when **StatusCheckFailed_Instance = 1** for one or more consecutive evaluation periods (e.g., 1-5 minutes). This indicates the instance has failed its health check and requires immediate investigation.\n\n**Impact:**  \n- **Low values (0):** The instance is healthy and operating normally.  \n- **High values (1):** The instance has failed its status check, which may indicate problems such as OS crashes, misconfigured network settings, or underlying hardware issues. Prolonged failures can lead to application downtime or degraded performance.\n\n**Example Usage:**  \n- **Dashboard:** Display the metric as a time series graph for all instances, highlighting any spikes to 1, enabling quick visual identification of unhealthy instances.  \n- **Alert Rule:** Create a CloudWatch alarm that triggers when **StatusCheckFailed_Instance = 1** for 2 consecutive 1-minute periods, sending notifications to the on-call team for rapid remediation.  \n\nBy monitoring this metric, SREs can proactively detect and respond to instance-level failures before they impact end users."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/EC2",
+      "MetricName": "StatusCheckFailed_System",
+      "InstanceId": "*"
+    },
+    "description": "The **StatusCheckFailed_System** metric in the **AWS/EC2** namespace indicates whether an EC2 instance has failed the system status check, which monitors the health of the underlying hardware and AWS infrastructure supporting the instance. A value of **0** means the system check passed (no issues detected), while a value of **1** indicates a failure, such as hardware faults, network connectivity problems, or misconfigurations at the hypervisor or host level.\n\n**Purpose:**  \nThis metric helps SREs detect and respond to hardware or infrastructure-related problems that affect instance availability and performance but are outside the guest OS. It is critical for identifying issues like failed disk drives, network interface errors, or host-level failures that require AWS intervention or instance replacement.\n\n**Alert Threshold:**  \nSet an alert to trigger when **StatusCheckFailed_System = 1** for a sustained period (e.g., 1-5 minutes). This indicates a persistent system-level failure requiring immediate investigation or automated remediation, such as instance reboot or replacement.\n\n**Impact of Values:**  \n- **0 (Low):** The instance’s underlying system is healthy; no action needed.  \n- **1 (High):** The instance is experiencing system-level failures, potentially causing downtime or degraded performance. Immediate attention is required to minimize impact.\n\n**Example Usage:**  \n- **Dashboard:** Display the metric as a time series widget for all instances, highlighting any with a value of 1 to quickly identify affected resources.  \n- **Alert Rule:** Create a CloudWatch alarm with the condition:  \n  `StatusCheckFailed_System >= 1 for 2 consecutive periods of 60 seconds`  \n  Trigger notifications via SNS or automated runbooks to remediate or escalate.\n\nBy monitoring **StatusCheckFailed_System**, SREs can proactively detect and resolve hardware or infrastructure issues, maintaining high availability and reliability of EC2 instances."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/Events",
+      "MetricName": "DeadLetterInvocations",
+      "RuleName": "*"
+    },
+    "description": "The DeadLetterInvocations metric measures the number of times a rule's target was not successfully invoked and the event was sent to the rule's dead-letter queue. This indicates that an event failed to trigger the intended action or process due to various reasons such as invalid data, system errors, or configuration issues. Potential implications include: (1) Identifying rules with high failure rates, which may require re-evaluation of their logic or dependencies; (2) Detecting potential issues in downstream systems or services that are being targeted by the failed invocations; and (3) Triggering alerts for operations teams to investigate and resolve the root cause of these failures. This metric can be used in monitoring and alerting to ensure timely detection and resolution of such issues, thereby maintaining system reliability and performance."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/Events",
+      "MetricName": "FailedInvocations",
+      "RuleName": "*"
+    },
+    "description": "The FailedInvocations metric measures the number of times a CloudWatch Events rule's target was not successfully invoked due to an error or failure. This can occur when the target service is unavailable, the invocation payload is malformed, or other similar issues. The metric provides insight into the reliability and stability of event-driven workflows in AWS. Potential implications for monitoring include identifying recurring errors that may indicate a larger issue with the target service or infrastructure. In alerting, this metric could trigger notifications when the number of failed invocations exceeds a certain threshold, indicating a potential problem that requires attention from operations teams."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/Events",
+      "MetricName": "Invocations",
+      "RuleName": "*"
+    },
+    "description": "The **Invocations** metric in the **AWS/Events** namespace tracks the total number of times an EventBridge rule's target was successfully invoked within a given time period. This metric helps SREs monitor the activity and health of event-driven workflows by indicating how often rules trigger their targets, such as Lambda functions, Step Functions, or API Gateway endpoints.\n\n**Purpose:**  \nUse this metric to verify that EventBridge rules are firing as expected and their targets are being invoked without failure. It serves as a key indicator of event flow through your system.\n\n**Alert Threshold Guidance:**  \n- **Low invocation count:** Set an alert if invocations drop below a defined baseline (e.g., 50% of the average invocation count over the past week) for a sustained period (e.g., 5 minutes). This may indicate issues like misconfigured rules, target failures, or upstream event source problems.  \n- **High invocation count:** Alert on sudden spikes exceeding a threshold (e.g., 2x the average invocation rate) which could signal unexpected traffic surges, potential abuse, or runaway processes.\n\n**Impact of Values:**  \n- **High values:** May reflect increased legitimate traffic or a surge in events, which could lead to resource exhaustion or increased costs if not managed.  \n- **Low values:** Could indicate that events are not being generated or processed, potentially causing downstream data loss or service degradation.\n\n**Example Usage:**  \n- **Dashboard:** Display a time series graph of Invocations per rule to visualize event flow trends and detect anomalies.  \n- **Alert Rule:** Create a CloudWatch alarm that triggers if Invocations fall below 10 for 5 consecutive minutes, indicating a possible outage or misconfiguration in the event pipeline.\n\nBy monitoring the Invocations metric with appropriate thresholds and alerts, SRE teams can proactively detect and respond to issues affecting event-driven architectures built on AWS EventBridge."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/Events",
+      "MetricName": "ThrottledRules",
+      "RuleName": "*"
+    },
+    "description": "The ThrottledRules metric measures the number of AWS Lambda function rule invocations that were throttled due to invocation rate limits. This occurs when the frequency or volume of incoming events exceeds the configured rate at which the function can process them. The metric provides insight into potential performance bottlenecks and resource constraints within the AWS environment, enabling operations teams to identify areas for optimization and improvement. It may be used in monitoring and alerting scenarios to detect situations where rule invocations are being throttled, indicating a need for increased capacity or adjustments to rate limits."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/Lambda",
+      "MetricName": "ProvisionedConcurrencySpilloverInvocations",
+      "FunctionName": "*",
+      "Resource": "*"
+    },
+    "description": "The ProvisionedConcurrencySpilloverInvocations metric measures the number of times a function's code is executed on standard concurrency when all provisioned concurrency is in use. This indicates that the function has exceeded its allocated concurrent execution capacity and is relying on standard concurrency to handle additional invocations. High values for this metric may indicate inefficient resource utilization, potential performance bottlenecks, or even errors in provisioning concurrency limits. It can be used to monitor and alert on situations where functions are consistently spilling over into standard concurrency, allowing teams to adjust their concurrency settings, optimize function code, or scale up resources as needed."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/Route53",
+      "MetricName": "4xxErrors",
+      "HostedZone": "*"
+    },
+    "description": "The 4xxErrors metric measures the number of HTTP client error responses (4xx status codes) returned by Route 53 health checks. This includes errors such as 'Bad Request', 'Unauthorized', and 'Forbidden'. The metric is incremented each time a 4xx response is received from a Route 53 health check, providing insight into the reliability and performance of the underlying infrastructure. Potential implications for monitoring or alerting include identifying issues with API endpoints, authentication mechanisms, or other system components that may be causing client-side errors. This metric can also be used to trigger alerts when error rates exceed a certain threshold, enabling proactive issue resolution and minimizing downtime."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/Route53",
+      "MetricName": "5xxErrors",
+      "HostedZone": "*"
+    },
+    "description": "The 5xxErrors metric measures the number of HTTP server error responses (status codes between 500 and 599) returned by Route 53 health checks. This metric indicates that there is a problem with the underlying infrastructure or application, preventing it from serving requests correctly. Potential implications include: \n\n- Application downtime or performance degradation.\n- Infrastructure issues such as network connectivity problems, server crashes, or resource exhaustion.\n\nThis metric can be used in monitoring and alerting to detect and respond to these issues promptly. For example, setting up an alert when the 5xxErrors count exceeds a certain threshold (e.g., 10 errors within a 1-minute window) can trigger notifications to on-call engineers or DevOps teams to investigate and resolve the issue before it affects end-users."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/S3",
+      "MetricName": "AllRequests",
+      "BucketName": "*"
+    },
+    "description": "The AllRequests metric measures the total number of requests made to an S3 bucket, including all types of requests such as GET, PUT, POST, DELETE, and HEAD. This metric provides visibility into the overall request volume to the S3 bucket, which can be useful for monitoring and troubleshooting purposes.\n\nPotential implications or usage in monitoring or alerting include:\n- Identifying sudden spikes in request volumes that may indicate a denial-of-service (DoS) attack or a performance bottleneck.\n- Monitoring the rate of requests over time to detect trends or anomalies that could impact application performance or security.\n- Triggering alerts when the request volume exceeds a certain threshold, indicating potential issues with data ingestion, processing, or storage.\n\nHowever, it is worth noting that this metric does not provide any information about the success or failure rate of individual requests, nor does it account for requests made through other services or APIs. Therefore, it may be useful to complement this metric with additional metrics that provide more granular insights into S3 request behavior."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/S3",
+      "MetricName": "PutRequests",
+      "BucketName": "*"
+    },
+    "description": "The **PutRequests** metric in the **AWS/S3** namespace tracks the total number of HTTP PUT requests made to an S3 bucket, representing the volume of objects being uploaded or overwritten. This metric helps SREs monitor upload activity and detect unusual spikes or drops that could indicate application issues, abuse, or changes in user behavior.\n\n**Purpose:**  \nUse this metric to understand upload load patterns on your bucket, identify potential performance bottlenecks, and ensure your application is functioning as expected.\n\n**Alert Threshold Guidance:**  \nSet alert thresholds based on your typical upload volume and business context. For example:  \n- **High threshold:** Trigger an alert if PutRequests exceed 2x the average daily peak rate sustained over 5 minutes, which may indicate a sudden surge in uploads causing increased latency or cost.  \n- **Low threshold:** Alert if PutRequests drop below 10% of the expected baseline for a sustained period, potentially signaling upstream failures or client issues.\n\n**Impact of Values:**  \n- **High PutRequests:** May lead to increased request latency, throttling, higher costs, or indicate a potential DDoS attack or runaway process generating excessive uploads.  \n- **Low PutRequests:** Could suggest application downtime, client-side errors, or loss of data ingestion.\n\n**Example Usage:**  \n- **Dashboard:** Display PutRequests alongside RequestLatency and 4xx/5xx error rates to correlate upload volume with performance and error trends.  \n- **Alert Rule:** Create a CloudWatch alarm that triggers when PutRequests exceed 10,000 requests per 5-minute interval, notifying the SRE team to investigate potential upload storms or abuse.\n\nBy monitoring PutRequests with appropriate thresholds and context, SREs can proactively maintain S3 bucket health, optimize performance, and control costs."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/S3",
+      "MetricName": "TotalRequestLatency",
+      "BucketName": "*"
+    },
+    "description": "The TotalRequestLatency metric measures the total time taken to process requests to an S3 bucket, encompassing both successful and failed requests. This metric is a cumulative value that aggregates latency across all incoming requests, providing insight into the overall performance of your S3 bucket's request processing capabilities. It can be used to identify potential bottlenecks or issues with your application's interaction with the S3 service, such as slow API calls, high queue times, or excessive retries due to failed requests. In monitoring and alerting, this metric can trigger alerts when its value exceeds a certain threshold, indicating that request processing is taking longer than expected, potentially impacting user experience or application performance."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/S3",
+      "MetricName": "BucketSizeBytes",
+      "BucketName": "*",
+      "StorageType": "*"
+    },
+    "description": "The **BucketSizeBytes** metric in the **AWS/S3** namespace measures the total storage size, in bytes, of all objects within a specified S3 bucket, including all object versions and metadata. This metric reflects the cumulative storage consumption of the bucket and is updated once per day. It helps Site Reliability Engineers (SREs) monitor storage utilization trends, manage capacity planning, and control costs.\n\n**Purpose:**  \nUse this metric to track how much data your bucket holds over time, identify unexpected growth patterns, and ensure storage usage aligns with organizational policies or budget constraints.\n\n**Thresholds and Alerts:**  \nSet alert thresholds based on your storage capacity limits or budget. For example, trigger an alert if **BucketSizeBytes** exceeds 80% of your allocated storage quota or a predefined byte value (e.g., 500 GB). This early warning enables proactive actions such as data archiving, lifecycle policy adjustments, or cost optimization.\n\n**Impact of Values:**  \n- **High values:** Indicate large or rapidly growing data volumes, which may lead to increased storage costs, potential performance impacts, or hitting service limits. Immediate review and remediation may be necessary.  \n- **Low or decreasing values:** Suggest effective data lifecycle management or deletion of unused data, which can reduce costs and improve efficiency.\n\n**Example Usage:**  \nIn a CloudWatch dashboard, display **BucketSizeBytes** as a time series graph for critical buckets to visualize growth trends. Configure an alert rule that triggers a notification when the metric exceeds 400 GB (4.29e11 bytes) for more than 3 consecutive days, prompting the SRE team to review storage usage and take action if needed."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/EBS",
+      "MetricName": "BurstBalance",
+      "VolumeId": "*"
+    },
+    "description": "The **BurstBalance** metric in the **AWS/EBS** namespace tracks the percentage of remaining I/O credits available for a specific EBS volume (identified by **VolumeId**). These I/O credits enable the volume to burst above its baseline performance level temporarily. Monitoring this metric helps SREs ensure that volumes maintain optimal I/O throughput without being throttled.\n\n**Purpose:**  \nBurstBalance indicates how much burst capacity is left. A value of 100% means the volume has a full burst bucket, while 0% means the burst credits are fully depleted, causing the volume to operate at baseline performance, which may degrade application responsiveness.\n\n**Threshold for Alerting:**  \nSet an alert when BurstBalance falls below 20% for a sustained period (e.g., 5 minutes). This threshold signals that the volume is at risk of throttling, potentially impacting application performance.\n\n**Impact of Values:**  \n- **High values (close to 100%)**: The volume can handle sudden spikes in I/O without performance degradation.  \n- **Low values (below 20%)**: The volume is running out of burst credits, leading to throttled I/O and slower response times. Prolonged low values may require scaling the volume type or size.\n\n**Example Usage:**  \nIn a CloudWatch dashboard, display BurstBalance as a time series graph per volume to visualize credit consumption trends. For alerting, create a CloudWatch alarm with the condition:  \n`BurstBalance < 20% for 5 consecutive minutes`  \nTriggering this alarm should notify the SRE team to investigate and consider upgrading the volume or redistributing workload to prevent performance issues."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/Route53",
+      "MetricName": "DNSQueries",
+      "HostedZone": "*"
+    },
+    "description": "The DNSQueries metric measures the total number of DNS queries received by Amazon Route 53 for a specific hosted zone over a given time period. This metric can be used to monitor and troubleshoot issues related to DNS resolution, such as increased latency or errors in resolving domain names. Potential implications include identifying potential DDoS attacks, monitoring changes in traffic patterns, or detecting issues with the hosted zone's configuration. It may also be useful for capacity planning purposes, helping to determine if additional resources are needed to handle increased query volumes."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/Lambda",
+      "MetricName": "DeadLetterErrors",
+      "FunctionName": "*"
+    },
+    "description": "The DeadLetterErrors metric measures the number of times Amazon Lambda attempts to send an event to a dead-letter queue but encounters an error. This can occur due to various reasons such as issues with the target queue, permissions problems, or transient network errors. A high value for this metric may indicate underlying infrastructure or configuration issues that need attention. It could be used in monitoring and alerting to detect potential problems before they impact application performance or user experience."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/SNS",
+      "MetricName": "DestinationDeliveryFailures",
+      "TopicName": "*"
+    },
+    "description": "The **DestinationDeliveryFailures** metric in the **AWS/SNS** namespace tracks the number of messages that Amazon SNS failed to deliver to subscribed endpoints (such as SQS queues, HTTP/S endpoints, Lambda functions, or email addresses) for a specific SNS topic. This metric helps Site Reliability Engineers (SREs) monitor the health and reliability of message delivery from SNS to its destinations.\n\n**Purpose:**  \n- To identify delivery issues between SNS and its subscribers, indicating potential problems like endpoint unavailability, permission errors, or network failures.  \n- To ensure message reliability and timely processing by downstream systems.\n\n**Thresholds and Alerting:**  \n- A threshold of **DestinationDeliveryFailures > 0** over a sustained period (e.g., 5 minutes) should trigger an alert, as any delivery failure may indicate an issue requiring investigation.  \n- For high-volume topics, consider setting thresholds relative to message volume (e.g., failure rate > 1%) to reduce noise.\n\n**Impact of Values:**  \n- **Low or zero values:** Indicate healthy message delivery with no detected failures.  \n- **High or increasing values:** Suggest persistent delivery problems that could lead to data loss, processing delays, or system backlogs, impacting downstream applications and user experience.\n\n**Example Usage:**  \n- **Dashboard:** Display the DestinationDeliveryFailures metric alongside the NumberOfMessagesPublished metric for each topic to correlate delivery failures with message volume.  \n- **Alert Rule:** Create a CloudWatch alarm that triggers if DestinationDeliveryFailures > 0 for 3 consecutive 1-minute periods, notifying the SRE team to investigate endpoint health, permissions, or network connectivity.\n\nBy monitoring this metric proactively, SREs can quickly detect and resolve SNS delivery issues, maintaining system reliability and message integrity."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/Lambda",
+      "MetricName": "Errors",
+      "FunctionName": "*"
+    },
+    "description": "The **AWS/Lambda Errors** metric counts the number of AWS Lambda function invocations that fail due to errors within the function code or runtime environment, including syntax errors, unhandled exceptions, and timeouts. This metric is critical for SREs to monitor the reliability and stability of Lambda functions across all versions or aliases (indicated by `\"FunctionName\": \"*\"`).\n\n**Purpose:**  \nIn CloudWatch, this metric helps identify when Lambda functions are failing, enabling rapid detection of issues caused by code bugs, dependency failures, or misconfigurations.\n\n**Alert Threshold Guidance:**  \nA common alert threshold is when the error count exceeds a small number (e.g., > 1 error) within a short evaluation period (e.g., 5 minutes), or when the error rate (Errors / Invocations) surpasses a defined percentage (e.g., > 5%). Thresholds should be adjusted based on function criticality and invocation volume.\n\n**Impact of Values:**  \n- **High Errors:** Indicates function instability, leading to failed requests, degraded user experience, or downstream system failures. Persistent high error counts require immediate investigation and remediation.  \n- **Low or Zero Errors:** Suggests stable function execution and healthy code/runtime environment.\n\n**Example Usage:**  \n- **Dashboard:** Display a time series graph of Errors alongside Invocations and Duration to correlate error spikes with latency or traffic changes.  \n- **Alert Rule:** Trigger an alert if Errors > 1 for 3 consecutive 1-minute periods or if the error rate exceeds 5% over 5 minutes, notifying the on-call team to investigate.\n\nBy monitoring the **AWS/Lambda Errors** metric with appropriate thresholds and context, SREs can proactively maintain Lambda function health and minimize service disruptions."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/CloudFront",
+      "MetricName": "FirstByteLatency",
+      "DistributionId": "*"
+    },
+    "description": "The FirstByteLatency metric measures the time elapsed between when CloudFront receives a request and sends the first byte of the response to the viewer. This metric is crucial for understanding the performance of CloudFront distributions and identifying potential bottlenecks in the delivery process. High values may indicate issues with origin latency, caching, or network connectivity, which can impact user experience and application availability. Potential usage includes monitoring average FirstByteLatency across all requests, setting alerts for high latency thresholds (e.g., > 100ms), and correlating this metric with other metrics like RequestCount or ErrorRate to diagnose root causes of performance issues."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/S3",
+      "MetricName": "GetRequests",
+      "BucketName": "*"
+    },
+    "description": "The GetRequests metric measures the number of GET requests made to an S3 bucket over a specified time period. This includes HTTP GET requests for objects stored in the bucket, such as files or metadata queries. The metric can be used to monitor and troubleshoot issues related to object retrieval, caching, and content delivery from the S3 bucket. Potential implications include identifying bottlenecks in data access, detecting anomalies in request patterns, and optimizing storage and bandwidth usage. This metric is particularly useful for monitoring web applications that rely heavily on S3 for static assets or dynamic content."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/S3",
+      "MetricName": "HeadRequests",
+      "BucketName": "*"
+    },
+    "description": "The HeadRequests metric measures the number of HEAD requests made to an S3 bucket over a specified time period. A HEAD request is an HTTP method used to retrieve metadata about a resource without returning the actual content. This metric can be useful in monitoring and optimizing S3 bucket performance, as it may indicate issues with data consistency, replication, or access control. Potential implications of high HeadRequests values include: (1) Data corruption or inconsistencies due to concurrent updates; (2) Inefficient use of resources due to frequent metadata requests; (3) Security vulnerabilities resulting from unauthorized access attempts. This metric can be used in conjunction with other S3 metrics, such as ObjectCount and StorageUsed, to gain a more comprehensive understanding of S3 bucket activity and performance."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/S3",
+      "MetricName": "ListRequests",
+      "BucketName": "*"
+    },
+    "description": "The **ListRequests** metric in the **AWS/S3** namespace counts the total number of LIST API requests made to an S3 bucket within a specified time period. Each request corresponds to an operation that retrieves a list of objects stored in the bucket. The metric is measured as a simple count of requests, typically aggregated per minute or per specified interval. Monitoring this metric helps identify usage patterns, detect excessive or unusual listing activity, and optimize bucket performance and security."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/S3",
+      "MetricName": "NumberOfObjects",
+      "BucketName": "*",
+      "StorageType": "*"
+    },
+    "description": "The NumberOfObjects metric measures the total count of objects stored within an Amazon S3 bucket. This includes all types of objects, such as files, folders, and metadata. It does not account for object versions or lifecycle management policies. In monitoring and alerting contexts, this metric can be used to track storage capacity utilization, detect potential issues with data growth, or identify opportunities for optimizing storage costs. For instance, if the NumberOfObjects value consistently exceeds a certain threshold, it may indicate that the bucket is approaching its storage limits, prompting further investigation into data retention policies or infrastructure upgrades."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/S3",
+      "MetricName": "PendingReplicationCount",
+      "BucketName": "*"
+    },
+    "description": "The PendingReplicationCount metric measures the number of objects that are pending replication to a destination bucket in Amazon Web Services (AWS). This count includes objects that have been uploaded or modified and are waiting to be replicated to the target storage location. The metric provides insight into the replication pipeline's efficiency and can help identify potential bottlenecks or issues with data consistency.\n\nIn monitoring and alerting, this metric can be used to:\n- Detect replication delays or failures, which may impact data availability or integrity.\n- Identify trends in replication latency or throughput, allowing for proactive capacity planning or optimization of the replication process.\n- Trigger alerts when the pending replication count exceeds a certain threshold, indicating potential issues with storage capacity or network connectivity."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/Lambda",
+      "MetricName": "ProvisionedConcurrentExecutions",
+      "FunctionName": "*"
+    },
+    "description": "The **ProvisionedConcurrentExecutions** metric in the **AWS/Lambda** namespace measures the number of Lambda function instances currently running with provisioned concurrency enabled. This metric reflects the active usage of pre-allocated, reserved concurrency capacity that you have configured and paid for, ensuring consistent performance by reducing cold starts.\n\n**Purpose:**  \nFor an SRE, this metric is critical to monitor how much of the provisioned concurrency is actively utilized. It helps in capacity planning, cost management, and maintaining application performance by ensuring that the provisioned concurrency matches actual demand.\n\n**Thresholds and Alerts:**  \n- **Alert if ProvisionedConcurrentExecutions approaches or equals the provisioned concurrency limit** (e.g., ≥ 90% of provisioned concurrency). This indicates that the reserved capacity is nearly fully utilized, risking throttling of additional requests or cold starts if demand spikes beyond provisioned capacity.  \n- **Alert if ProvisionedConcurrentExecutions remains consistently low** (e.g., ≤ 10% of provisioned concurrency over a sustained period), which may indicate over-provisioning and unnecessary cost.\n\n**Impact of Values:**  \n- **High values near the provisioned concurrency limit:** Signal high utilization and potential risk of throttling if demand increases. This may require increasing provisioned concurrency or enabling autoscaling policies.  \n- **Low values:** Suggest underutilization of provisioned concurrency, leading to wasted costs without performance benefits.\n\n**Example Use Case:**  \nIn a CloudWatch dashboard, plot **ProvisionedConcurrentExecutions** alongside the configured provisioned concurrency limit for each Lambda function. Set an alert rule to trigger when **ProvisionedConcurrentExecutions** exceeds 90% of the provisioned concurrency for more than 5 minutes, prompting investigation or scaling actions. Conversely, monitor for sustained low usage to optimize cost by reducing provisioned concurrency.\n\nThis metric enables proactive management of Lambda concurrency to balance performance reliability and cost efficiency."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/Events",
+      "MetricName": "ThrottledRules",
+      "RuleName": "*"
+    },
+    "description": "The ThrottledRules metric measures the number of AWS Lambda function rule invocations that were throttled due to invocation rate limits. This occurs when the frequency or volume of incoming events exceeds the configured rate at which the function can process them. The metric provides insight into potential performance bottlenecks and resource constraints within the AWS environment, enabling operations teams to identify areas for optimization and improvement. It may be used in monitoring and alerting scenarios to detect situations where rule invocations are being throttled, indicating a need for increased capacity or adjustments to rate limits."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/CloudFront",
+      "MetricName": "TotalErrorRate",
+      "DistributionId": "*"
+    },
+    "description": "The **TotalErrorRate** metric in the **AWS/CloudFront** namespace measures the percentage of viewer requests to a specified CloudFront distribution that resulted in error responses. It includes all requests returning HTTP status codes 4xx or 5xx, indicating client or server errors. The metric is expressed as a percentage of total viewer requests. This metric helps monitor the overall error rate of a CloudFront distribution and should be used alongside detailed logs for troubleshooting specific error types."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/Lambda",
+      "MetricName": "UnreservedConcurrentExecutions",
+      "FunctionName": "*"
+    },
+    "description": "The UnreservedConcurrentExecutions metric measures the number of concurrent executions available for all functions in a specific AWS region. This metric indicates the maximum number of function invocations that can be executed simultaneously without exceeding the reserved concurrency limit. In other words, it represents the remaining capacity for concurrent executions within the region's function invocation limits. High values may indicate underutilization of resources, while low values could signal approaching or exceeded concurrency limits, potentially impacting application performance and responsiveness. This metric is useful in monitoring and alerting scenarios to ensure adequate concurrency for applications and prevent potential throttling issues."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/Lambda",
+      "MetricName": "UserErrors",
+      "FunctionName": "*"
+    },
+    "description": "The **UserErrors** metric in the **AWS/Lambda** namespace tracks the count of Lambda function invocations that fail due to errors within the function code itself—such as unhandled exceptions, syntax errors, or runtime failures. It excludes failures caused by external factors like throttling, network issues, or service limits. Monitoring this metric helps SREs quickly identify and address bugs, misconfigurations, or dependency problems that directly impact function execution.\n\n**Threshold guidance:**  \nSet alert thresholds based on your application's tolerance for errors. For example, trigger an alert if **UserErrors > 0** for more than 5 minutes, or if the error rate exceeds a small percentage (e.g., 1-5%) of total invocations, indicating a systemic issue requiring immediate investigation.\n\n**Impact:**  \n- **High UserErrors:** Signals that the function code is failing frequently, potentially causing downstream service disruptions, degraded user experience, or data loss. Immediate remediation is needed to maintain reliability.  \n- **Low or zero UserErrors:** Indicates stable function execution with no detected code-level failures, contributing to healthy application performance.\n\n**Example usage:**  \nIn a CloudWatch dashboard, display the **UserErrors** metric alongside **Invocations** and **Duration** to correlate error spikes with invocation volume and latency. For alerting, create a CloudWatch alarm that triggers when **UserErrors** exceeds 0 for 5 consecutive minutes, notifying the SRE team to investigate and resolve code issues before they impact production."
+  },
+  {
+    "query": {
+      "Namespace": "AWS/DynamoDB",
+      "MetricName": "WriteThrottleEvents",
+      "TableName": "*"
+    },
+    "description": "The WriteThrottleEvents metric measures the number of write requests that were throttled due to exceeding the provisioned write capacity in Amazon DynamoDB. This occurs when the rate of write operations exceeds the configured throughput for a table or secondary index, causing AWS to temporarily suspend writes until the rate decreases. The metric can be used to monitor and alert on potential issues with write performance, such as sudden spikes in traffic or configuration errors. It may also indicate that additional provisioned capacity is required to handle expected workloads. In monitoring and alerting, this metric can trigger notifications when a certain threshold of throttled events is reached within a specified time window, allowing operations teams to investigate and address the issue before it impacts application availability."
+  }
+]

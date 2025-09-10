@@ -1,0 +1,586 @@
+[
+  {
+    "query": {
+      "index": "application*",
+      "message": "error*",
+      "service.name": "*"
+    },
+    "description": "Application error logs across all services. Runtime exceptions, service failures, and critical application errors. Essential for incident response and service reliability monitoring."
+  },
+  {
+    "query": {
+      "index": "kubernetes*",
+      "message": "oom*",
+      "container.name": "*"
+    },
+    "description": "Kubernetes Out of Memory (OOM) events across all containers. Memory limit exceeded, container kills, and resource exhaustion. Critical for capacity planning and resource optimization."
+  },
+  {
+    "query": {
+      "index": "nginx*",
+      "message": "5xx*",
+      "url.path": "*"
+    },
+    "description": "Nginx 5xx server error responses across all URL paths. Backend failures, proxy errors, and service unavailability. Critical for API reliability and user experience monitoring."
+  },
+  {
+    "query": {
+      "index": "application*",
+      "message": "exception*",
+      "service.name": "*"
+    },
+    "description": "Application exception logs across all services. Unhandled exceptions, stack traces, and runtime errors. Essential for debugging and application stability monitoring."
+  },
+  {
+    "query": {
+      "index": "kubernetes*",
+      "message": "restart*",
+      "container.name": "*"
+    },
+    "description": "Kubernetes container restart events across all containers. Pod restarts, crash loops, and recovery events. Critical for service stability and cluster health monitoring."
+  },
+  {
+    "query": {
+      "index": "database*",
+      "message": "timeout*",
+      "service.name": "*"
+    },
+    "description": "Database timeout events across all services. Query timeouts, connection timeouts, and slow queries. Essential for database performance monitoring and optimization."
+  },
+  {
+    "query": {
+      "index": "security*",
+      "message": "failed*",
+      "user.name": "*"
+    },
+    "description": "Security authentication failures for all users. Failed login attempts, authorization errors, and security violations. Critical for security monitoring and threat detection."
+  },
+  {
+    "query": {
+      "index": "jenkins*",
+      "message": "failed*",
+      "service.name": "*"
+    },
+    "description": "Jenkins build failures across all services. CI/CD pipeline failures, deployment errors, and build system issues. Essential for DevOps pipeline monitoring and deployment reliability."
+  },
+  {
+    "query": {
+      "index": "aws*",
+      "message": "throttle*",
+      "cloud.service.name": "*"
+    },
+    "description": "AWS service throttling events across all cloud services. API rate limiting, quota exceeded, and service capacity issues. Critical for cloud resource monitoring and cost optimization."
+  },
+  {
+    "query": {
+      "index": "kubernetes*",
+      "message": "pending*",
+      "kubernetes.pod.name": "*"
+    },
+    "description": "Kubernetes pod pending events across all pods. Resource constraints, scheduling failures, and cluster capacity issues. Essential for cluster resource management and scaling decisions."
+  },
+  {
+    "query": {
+      "index": "prometheus*",
+      "message": "down*",
+      "service.name": "*"
+    },
+    "description": "Prometheus service down alerts across all services. Service unavailability, health check failures, and monitoring target outages. Critical for SRE alerting and incident response."
+  },
+  {
+    "query": {
+      "index": "application*",
+      "message": "slow*",
+      "service.name": "*"
+    },
+    "description": "Application performance degradation logs across all services. Slow response times, performance warnings, and latency issues. Essential for SLA monitoring and performance optimization."
+  },
+  {
+    "query": {
+      "index": "istio*",
+      "message": "503*",
+      "destination.service.name": "*"
+    },
+    "description": "Istio service mesh 503 errors for all destination services. Circuit breaker activation, service unavailability, and mesh connectivity issues. Critical for microservices reliability monitoring."
+  },
+  {
+    "query": {
+      "index": "docker*",
+      "message": "pull*",
+      "container.image.name": "*"
+    },
+    "description": "Docker image pull events for all container images. Image registry access, deployment preparation, and container startup. Important for deployment monitoring and registry health."
+  },
+  {
+    "query": {
+      "index": "kafka*",
+      "message": "lag*",
+      "event.dataset": "*"
+    },
+    "description": "Kafka consumer lag events across all datasets. Message processing delays, consumer performance issues, and streaming pipeline health. Essential for real-time data processing monitoring."
+  },
+  {
+    "query": {
+      "index": "application*",
+      "message": "memory*",
+      "service.name": "*"
+    },
+    "description": "Application memory-related logs across all services. Memory leaks, garbage collection issues, and heap space problems. Critical for application performance tuning and resource planning."
+  },
+  {
+    "query": {
+      "index": "network*",
+      "message": "connection*",
+      "source.ip": "*"
+    },
+    "description": "Network connection events from all source IPs. Connection failures, network timeouts, and connectivity issues. Critical for network troubleshooting and security monitoring."
+  },
+  {
+    "query": {
+      "index": "deployment*",
+      "message": "rollback*",
+      "service.name": "*"
+    },
+    "description": "Deployment rollback events across all services. Failed deployments, version reversions, and release management. Essential for DevOps deployment pipeline monitoring and change management."
+  },
+  {
+    "query": {
+      "index": "kubernetes*",
+      "message": "evicted*",
+      "kubernetes.pod.name": "*"
+    },
+    "description": "Kubernetes pod eviction events across all pods. Resource pressure, node capacity issues, and cluster resource management. Critical for cluster stability and resource optimization."
+  },
+  {
+    "query": {
+      "index": "elasticsearch*",
+      "message": "cluster*",
+      "elasticsearch.cluster.name": "*"
+    },
+    "description": "Elasticsearch cluster events across all clusters. Cluster health changes, node failures, and index management. Essential for search platform monitoring and data availability."
+  },
+  {
+    "query": {
+      "index": "vault*",
+      "message": "seal*",
+      "service.name": "*"
+    },
+    "description": "HashiCorp Vault seal/unseal events across all services. Vault availability, secret access interruptions, and security state changes. Critical for secrets management and security compliance."
+  },
+  {
+    "query": {
+      "index": "application*",
+      "message": "deadlock*",
+      "service.name": "*"
+    },
+    "description": "Application deadlock events across all services. Thread deadlocks, resource contention, and concurrency issues. Essential for application stability and performance debugging."
+  },
+  {
+    "query": {
+      "index": "monitoring*",
+      "message": "alert*",
+      "service.name": "*"
+    },
+    "description": "Monitoring system alerts across all services. Threshold breaches, anomaly detection, and automated alerts. Critical for SRE proactive monitoring and incident prevention."
+  },
+  {
+    "query": {
+      "index": "terraform*",
+      "message": "failed*",
+      "service.name": "*"
+    },
+    "description": "Terraform infrastructure deployment failures across all services. Resource provisioning errors, state management issues, and infrastructure automation problems. Essential for infrastructure-as-code monitoring."
+  },
+  {
+    "query": {
+      "index": "application*",
+      "message": "cache*",
+      "service.name": "*"
+    },
+    "description": "Application cache-related events across all services. Cache misses, evictions, and performance issues. Important for application performance optimization and caching strategy evaluation."
+  },
+  {
+    "query": {
+      "index": "kubernetes*",
+      "message": "node*",
+      "kubernetes.node.name": "*"
+    },
+    "description": "Kubernetes node events across all nodes. Node failures, resource pressure, and cluster infrastructure issues. Critical for cluster health monitoring and capacity planning."
+  },
+  {
+    "query": {
+      "index": "cicd*",
+      "message": "deploy*",
+      "service.name": "*"
+    },
+    "description": "CI/CD deployment events across all services. Deployment starts, completions, and status updates. Essential for DevOps pipeline monitoring and release tracking."
+  },
+  {
+    "query": {
+      "index": "application*",
+      "message": "startup*",
+      "service.name": "*"
+    },
+    "description": "Application startup events across all services. Service initialization, bootstrap processes, and startup failures. Important for deployment monitoring and service health tracking."
+  },
+  {
+    "query": {
+      "index": "loadbalancer*",
+      "message": "health*",
+      "service.name": "*"
+    },
+    "description": "Load balancer health check events across all services. Health check failures, target registration, and load balancing decisions. Critical for traffic routing and service availability."
+  },
+  {
+    "query": {
+      "index": "backup*",
+      "message": "failed*",
+      "service.name": "*"
+    },
+    "description": "Backup operation failures across all services. Data backup errors, snapshot failures, and disaster recovery issues. Essential for data protection and business continuity monitoring."
+  },
+  {
+    "query": {
+      "index": "security*",
+      "message": "vulnerability*",
+      "service.name": "*"
+    },
+    "description": "Security vulnerability detection events across all services. CVE alerts, security scans, and vulnerability assessments. Critical for security compliance and threat management."
+  },
+  {
+    "query": {
+      "index": "application*",
+      "message": "leak*",
+      "service.name": "*"
+    },
+    "description": "Application resource leak events across all services. Memory leaks, connection leaks, and resource exhaustion patterns. Essential for application stability and resource management."
+  },
+  {
+    "query": {
+      "index": "kubernetes*",
+      "message": "crashloop*",
+      "container.name": "*"
+    },
+    "description": "Kubernetes container crash loop events across all containers. Repeated container failures, startup issues, and application instability. Critical for service reliability and troubleshooting."
+  },
+  {
+    "query": {
+      "index": "database*",
+      "message": "lock*",
+      "service.name": "*"
+    },
+    "description": "Database lock-related events across all services. Deadlocks, lock timeouts, and blocking queries. Essential for database performance optimization and concurrency troubleshooting."
+  },
+  {
+    "query": {
+      "index": "api*",
+      "message": "rate*",
+      "service.name": "*"
+    },
+    "description": "API rate limiting events across all services. Rate limit exceeded, throttling activation, and API quota management. Important for API performance monitoring and capacity planning."
+  },
+  {
+    "query": {
+      "index": "kubernetes*",
+      "message": "scale*",
+      "service.name": "*"
+    },
+    "description": "Kubernetes autoscaling events across all services. HPA triggers, pod scaling, and resource adjustments. Essential for capacity management and cost optimization."
+  },
+  {
+    "query": {
+      "index": "ssl*",
+      "message": "certificate*",
+      "service.name": "*"
+    },
+    "description": "SSL certificate events across all services. Certificate expiration, renewal failures, and TLS handshake issues. Critical for security compliance and service availability."
+  },
+  {
+    "query": {
+      "index": "monitoring*",
+      "message": "disk*",
+      "host.name": "*"
+    },
+    "description": "Disk space monitoring events across all hosts. Disk usage alerts, storage capacity warnings, and filesystem issues. Essential for infrastructure monitoring and capacity planning."
+  },
+  {
+    "query": {
+      "index": "application*",
+      "message": "gc*",
+      "service.name": "*"
+    },
+    "description": "Garbage collection events across all services. GC pressure, memory management issues, and JVM performance. Important for application performance tuning and memory optimization."
+  },
+  {
+    "query": {
+      "index": "dns*",
+      "message": "resolution*",
+      "service.name": "*"
+    },
+    "description": "DNS resolution events across all services. DNS lookup failures, resolution timeouts, and name resolution issues. Critical for network connectivity and service discovery troubleshooting."
+  },
+  {
+    "query": {
+      "index": "application*",
+      "message": "audit*",
+      "user.name": "*"
+    },
+    "description": "Application audit events for all users. User actions, data access, and compliance tracking. Essential for security auditing and regulatory compliance monitoring."
+  },
+  {
+    "query": {
+      "index": "kubernetes*",
+      "message": "deployment*",
+      "kubernetes.deployment.name": "*"
+    },
+    "description": "Kubernetes deployment events across all deployments. Deployment rollouts, replica scaling, and deployment strategy execution. Critical for application lifecycle management and deployment monitoring."
+  },
+  {
+    "query": {
+      "index": "kubernetes*",
+      "message": "statefulset*",
+      "kubernetes.statefulset.name": "*"
+    },
+    "description": "Kubernetes StatefulSet events across all StatefulSets. Ordered pod creation, persistent volume management, and stateful application scaling. Essential for database and stateful service monitoring."
+  },
+  {
+    "query": {
+      "index": "kubernetes*",
+      "message": "daemonset*",
+      "kubernetes.daemonset.name": "*"
+    },
+    "description": "Kubernetes DaemonSet events across all DaemonSets. Node-level service deployment, system daemon management, and cluster-wide service monitoring. Critical for infrastructure services and node agents."
+  },
+  {
+    "query": {
+      "index": "kubernetes*",
+      "message": "job*",
+      "kubernetes.job.name": "*"
+    },
+    "description": "Kubernetes Job execution events across all jobs. Batch job completion, task execution, and job failure handling. Essential for batch processing and scheduled task monitoring."
+  },
+  {
+    "query": {
+      "index": "kubernetes*",
+      "message": "cronjob*",
+      "kubernetes.cronjob.name": "*"
+    },
+    "description": "Kubernetes CronJob scheduling events across all CronJobs. Scheduled job execution, cron schedule management, and recurring task monitoring. Critical for automated task scheduling and maintenance jobs."
+  },
+  {
+    "query": {
+      "index": "kubernetes*",
+      "message": "ingress*",
+      "kubernetes.ingress.name": "*"
+    },
+    "description": "Kubernetes Ingress controller events across all ingresses. Traffic routing, SSL termination, and external access management. Critical for application exposure and traffic management."
+  },
+  {
+    "query": {
+      "index": "kubernetes*",
+      "message": "service*",
+      "kubernetes.service.name": "*"
+    },
+    "description": "Kubernetes Service events across all services. Service discovery, endpoint management, and load balancing configuration. Essential for microservices communication and service mesh monitoring."
+  },
+  {
+    "query": {
+      "index": "kubernetes*",
+      "message": "endpoint*",
+      "kubernetes.service.name": "*"
+    },
+    "description": "Kubernetes Endpoint events across all services. Backend pod registration, service endpoint updates, and traffic routing changes. Critical for service discovery and load balancing troubleshooting."
+  },
+  {
+    "query": {
+      "index": "kubernetes*",
+      "message": "networkpolicy*",
+      "kubernetes.namespace": "*"
+    },
+    "description": "Kubernetes NetworkPolicy events across all namespaces. Network isolation, traffic filtering, and security policy enforcement. Essential for network security and microsegmentation monitoring."
+  },
+  {
+    "query": {
+      "index": "kubernetes*",
+      "message": "pvc*",
+      "kubernetes.persistentvolumeclaim.name": "*"
+    },
+    "description": "Kubernetes PersistentVolumeClaim events across all PVCs. Storage provisioning, volume binding, and capacity management. Critical for persistent storage monitoring and data management."
+  },
+  {
+    "query": {
+      "index": "kubernetes*",
+      "message": "pv*",
+      "kubernetes.persistentvolume.name": "*"
+    },
+    "description": "Kubernetes PersistentVolume events across all PVs. Storage allocation, volume lifecycle, and storage backend integration. Essential for storage infrastructure monitoring and capacity planning."
+  },
+  {
+    "query": {
+      "index": "kubernetes*",
+      "message": "storageclass*",
+      "kubernetes.storageclass.name": "*"
+    },
+    "description": "Kubernetes StorageClass events across all storage classes. Dynamic volume provisioning, storage backend configuration, and performance tier management. Important for storage automation and optimization."
+  },
+  {
+    "query": {
+      "index": "kubernetes*",
+      "message": "rbac*",
+      "kubernetes.namespace": "*"
+    },
+    "description": "Kubernetes RBAC events across all namespaces. Role binding, permission changes, and access control modifications. Critical for security compliance and access management monitoring."
+  },
+  {
+    "query": {
+      "index": "kubernetes*",
+      "message": "serviceaccount*",
+      "kubernetes.serviceaccount.name": "*"
+    },
+    "description": "Kubernetes ServiceAccount events across all service accounts. Identity management, token generation, and pod authentication. Essential for security auditing and identity lifecycle monitoring."
+  },
+  {
+    "query": {
+      "index": "kubernetes*",
+      "message": "secret*",
+      "kubernetes.secret.name": "*"
+    },
+    "description": "Kubernetes Secret events across all secrets. Secret creation, rotation, and access patterns. Critical for secrets management and security compliance monitoring."
+  },
+  {
+    "query": {
+      "index": "kubernetes*",
+      "message": "configmap*",
+      "kubernetes.configmap.name": "*"
+    },
+    "description": "Kubernetes ConfigMap events across all ConfigMaps. Configuration changes, application config updates, and configuration drift detection. Essential for configuration management and application consistency."
+  },
+  {
+    "query": {
+      "index": "kubernetes*",
+      "message": "namespace*",
+      "kubernetes.namespace": "*"
+    },
+    "description": "Kubernetes Namespace events across all namespaces. Namespace lifecycle, resource quotas, and tenant isolation. Important for multi-tenancy monitoring and resource governance."
+  },
+  {
+    "query": {
+      "index": "kubernetes*",
+      "message": "hpa*",
+      "kubernetes.horizontalpodautoscaler.name": "*"
+    },
+    "description": "Kubernetes Horizontal Pod Autoscaler events across all HPAs. Auto-scaling decisions, metric evaluation, and scaling thresholds. Critical for dynamic resource management and cost optimization."
+  },
+  {
+    "query": {
+      "index": "kubernetes*",
+      "message": "vpa*",
+      "kubernetes.verticalpodautoscaler.name": "*"
+    },
+    "description": "Kubernetes Vertical Pod Autoscaler events across all VPAs. Resource recommendation updates, vertical scaling decisions, and resource optimization. Essential for right-sizing and performance tuning."
+  },
+  {
+    "query": {
+      "index": "kubernetes*",
+      "message": "operator*",
+      "kubernetes.namespace": "*"
+    },
+    "description": "Kubernetes Operator events across all namespaces. Custom resource management, operator reconciliation, and automated operations. Critical for operator-based application management and GitOps monitoring."
+  },
+  {
+    "query": {
+      "index": "kubernetes*",
+      "message": "crd*",
+      "kubernetes.customresourcedefinition.name": "*"
+    },
+    "description": "Kubernetes Custom Resource Definition events across all CRDs. API extension lifecycle, schema changes, and custom resource management. Essential for platform extensibility and custom controller monitoring."
+  },
+  {
+    "query": {
+      "index": "kubernetes*",
+      "message": "admission*",
+      "kubernetes.namespace": "*"
+    },
+    "description": "Kubernetes Admission Controller events across all namespaces. Policy enforcement, validation webhook execution, and security gate enforcement. Critical for security compliance and governance monitoring."
+  },
+  {
+    "query": {
+      "index": "kubernetes*",
+      "message": "scheduler*",
+      "kubernetes.pod.name": "*"
+    },
+    "description": "Kubernetes Scheduler events across all pods. Pod scheduling decisions, node affinity evaluation, and resource allocation. Essential for cluster capacity planning and workload distribution monitoring."
+  },
+  {
+    "query": {
+      "index": "kubernetes*",
+      "message": "controller*",
+      "kubernetes.namespace": "*"
+    },
+    "description": "Kubernetes Controller events across all namespaces. Control loop execution, resource reconciliation, and state management. Critical for cluster stability and automated operations monitoring."
+  },
+  {
+    "query": {
+      "index": "kubernetes*",
+      "message": "kubelet*",
+      "kubernetes.node.name": "*"
+    },
+    "description": "Kubernetes Kubelet events across all nodes. Node agent operations, container runtime management, and pod lifecycle events. Essential for node health monitoring and container troubleshooting."
+  },
+  {
+    "query": {
+      "index": "kubernetes*",
+      "message": "apiserver*",
+      "kubernetes.namespace": "*"
+    },
+    "description": "Kubernetes API Server events across all namespaces. API request processing, authentication events, and cluster API health. Critical for cluster access monitoring and API performance tracking."
+  },
+  {
+    "query": {
+      "index": "kubernetes*",
+      "message": "etcd*",
+      "service.name": "*"
+    },
+    "description": "Kubernetes etcd events across all services. Cluster state storage, key-value operations, and consensus protocol events. Critical for cluster data integrity and distributed storage monitoring."
+  },
+  {
+    "query": {
+      "index": "kubernetes*",
+      "message": "cni*",
+      "kubernetes.node.name": "*"
+    },
+    "description": "Kubernetes CNI (Container Network Interface) events across all nodes. Network plugin operations, IP allocation, and container networking setup. Essential for network troubleshooting and connectivity monitoring."
+  },
+  {
+    "query": {
+      "index": "kubernetes*",
+      "message": "csi*",
+      "kubernetes.node.name": "*"
+    },
+    "description": "Kubernetes CSI (Container Storage Interface) events across all nodes. Storage plugin operations, volume mounting, and storage driver communication. Critical for storage troubleshooting and volume management."
+  },
+  {
+    "query": {
+      "index": "kubernetes*",
+      "message": "probe*",
+      "kubernetes.pod.name": "*"
+    },
+    "description": "Kubernetes health probe events across all pods. Liveness, readiness, and startup probe execution results. Essential for application health monitoring and traffic routing decisions."
+  },
+  {
+    "query": {
+      "index": "kubernetes*",
+      "message": "terminating*",
+      "kubernetes.pod.name": "*"
+    },
+    "description": "Kubernetes pod termination events across all pods. Graceful shutdown, signal handling, and cleanup operations. Important for application lifecycle monitoring and upgrade procedures."
+  },
+  {
+    "query": {
+      "index": "kubernetes*",
+      "message": "imagepull*",
+      "container.image.name": "*"
+    },
+    "description": "Kubernetes image pull events across all container images. Image registry access, pull failures, and container startup delays. Critical for deployment monitoring and registry health tracking."
+  }
+]

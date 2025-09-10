@@ -1,0 +1,878 @@
+[
+  {
+    "query": {
+      "EventSource": "lambda.amazonaws.com",
+      "EventName": "Create*"
+    },
+    "description": "Tracks AWS Lambda function creation events initiated via the Lambda service. This includes the deployment of new functions, uploading of function code, and initial configuration settings such as runtime, memory size (in MB), timeout duration (in seconds), and environment variables. These events are measured as discrete creation actions without a specific unit but represent individual function deployment occurrences. Monitoring these helps ensure proper application setup and manage resource allocation from the start."
+  },
+  {
+    "query": {
+      "EventSource": "lambda.amazonaws.com",
+      "EventName": "Update*"
+    },
+    "description": "Tracks all update operations on AWS Lambda functions initiated by the Lambda service, including code deployments, configuration changes, environment variable updates, memory size adjustments, timeout settings, and version management. Each event represents a discrete update action performed on a Lambda function. The metric counts the number of such update events, measured as a simple event count."
+  },
+  {
+    "query": {
+      "EventSource": "lambda.amazonaws.com",
+      "EventName": "Delete*"
+    },
+    "description": "Tracks all AWS Lambda function deletion events captured in CloudTrail. Monitoring **{\"EventSource\": \"lambda.amazonaws.com\", \"EventName\": \"Delete*\"}** helps SREs detect when Lambda functions are removed, which is critical for maintaining application stability, ensuring proper resource cleanup, and preventing accidental or unauthorized deletions.  \n\n**Alert Threshold:** Trigger an alert if more than 3 Lambda function deletions occur within a 1-hour window, as this may indicate a misconfiguration, automated script error, or potential security breach.  \n\n**Impact:**  \n- **High values:** A spike in deletions can lead to service disruptions, loss of critical functionality, or security incidents if unauthorized deletions occur. Immediate investigation is required.  \n- **Low or zero values:** Normal operation; infrequent deletions are expected during routine maintenance or deployments.  \n\n**Example Alert Rule:**  \n`WHEN count(events where EventSource=\"lambda.amazonaws.com\" AND EventName LIKE \"Delete%\") > 3 WITHIN 1 hour THEN alert \"Unusual number of Lambda deletions detected\"`  \n\n**Example Dashboard Widget:**  \nA time-series graph showing the count of Lambda deletion events per hour, annotated with alert thresholds, enabling quick identification of abnormal deletion activity."
+  },
+  {
+    "query": {
+      "EventSource": "lambda.amazonaws.com",
+      "EventName": "Invoke*"
+    },
+    "description": "Tracks each invocation of AWS Lambda functions, recording the number of times a function is executed. Measures invocation count as discrete events triggered by function calls. Provides data essential for monitoring application performance, error rates, cold starts, and usage patterns. Enables optimization of application health and cost management."
+  },
+  {
+    "query": {
+      "EventSource": "lambda.amazonaws.com",
+      "EventName": "Put*"
+    },
+    "description": "Lambda function \"Put*\" events in CloudTrail capture changes to function configurations, concurrency settings, event source mappings, and resource provisioning. These events indicate updates or deployments that can affect function behavior and performance. An SRE should monitor the frequency and success of these operations; unusually high rates of \"Put*\" events may signal automation errors or configuration churn, while absence of expected updates could indicate deployment issues. Alert thresholds might include more than 5 \"Put*\" events within 5 minutes or failed update attempts exceeding 10% of total \"Put*\" events. High volumes can lead to inconsistent function states or throttling, impacting availability and latency; low update activity during active development phases may delay critical fixes or optimizations. For example, a dashboard widget can track the count of \"Put*\" events per hour alongside error rates, and an alert rule could trigger when the number of failed \"Put*\" events surpasses a set threshold, prompting investigation into deployment or configuration problems."
+  },
+  {
+    "query": {
+      "EventSource": "s3.amazonaws.com",
+      "EventName": "Create*"
+    },
+    "description": "S3 bucket creation events captured by CloudTrail under **{\"EventSource\": \"s3.amazonaws.com\", \"EventName\": \"Create*\"}** indicate when new buckets or related resources (e.g., bucket policies, access points) are provisioned. These events help SREs monitor infrastructure changes that affect data storage, security posture, and compliance.\n\n**Purpose:**  \nTrack and audit the creation of S3 buckets and associated configurations to ensure proper governance, prevent unauthorized resource sprawl, and maintain compliance with organizational policies.\n\n**Alert Threshold:**  \nTrigger an alert if the number of S3 bucket creation events exceeds a defined threshold within a short time window (e.g., more than 5 bucket creations within 10 minutes), which may indicate automated provisioning errors, misconfigurations, or potential security incidents such as unauthorized resource creation.\n\n**Impact of Values:**  \n- **High frequency:** May signal abnormal activity, such as a compromised credential or runaway automation scripts creating excessive buckets, leading to increased costs, security risks, or compliance violations.  \n- **Low or zero frequency:** Normal in stable environments; however, sudden spikes should be investigated promptly.\n\n**Example Alert Rule:**  \n“Alert when count of events with EventSource = 's3.amazonaws.com' and EventName starting with 'Create' exceeds 5 within 10 minutes.”\n\n**Example Dashboard Widget:**  \nA time-series graph showing the count of S3 Create* events over time, with thresholds marked to highlight unusual spikes, enabling quick identification of abnormal bucket creation activity."
+  },
+  {
+    "query": {
+      "EventSource": "s3.amazonaws.com",
+      "EventName": "Delete*"
+    },
+    "description": "This event captures all object deletion actions performed in Amazon S3 buckets, identified by event names starting with \"Delete\". It measures the occurrence of delete operations, such as DeleteObject and DeleteObjects, as discrete event counts. Monitoring these events helps track data removal activities for data loss prevention, backup validation, ransomware detection, and cleanup processes. This is essential for maintaining data governance, ensuring compliance, and supporting disaster recovery efforts."
+  },
+  {
+    "query": {
+      "EventSource": "s3.amazonaws.com",
+      "EventName": "Put*"
+    },
+    "description": "This event captures all S3 operations that begin with \"Put,\" including object uploads, bucket policy updates, and configuration changes. It measures the occurrence of these actions as discrete event counts. Each event represents a single API call to perform a \"Put\" operation within an S3 bucket. This data helps track modifications and data ingestion activities in S3."
+  },
+  {
+    "query": {
+      "EventSource": "s3.amazonaws.com",
+      "EventName": "Get*"
+    },
+    "description": "S3 Get* events in CloudTrail capture all read operations on S3 objects, such as GetObject, GetObjectAcl, and GetObjectVersion. These events indicate when data is accessed or downloaded from your buckets, providing critical visibility into data retrieval patterns and potential unauthorized access.  \n\n**Purpose:** Monitor and audit object read activity to detect unusual access spikes, potential data exfiltration, or performance bottlenecks caused by excessive reads.\n\n**Alert Threshold:** Trigger an alert if the number of Get* events exceeds a baseline threshold (e.g., a 3x increase over the average hourly rate) or if access occurs from unexpected IP addresses or principals.\n\n**Impact:**  \n- **High values:** May indicate heavy data consumption, possible data leakage, or abuse of resources leading to increased costs and degraded application performance.  \n- **Low values:** Could suggest reduced usage, potential application issues, or misconfigured permissions blocking legitimate access.\n\n**Example Alert Rule:**  \nAlert when the count of s3.amazonaws.com Get* events in CloudTrail exceeds 5000 within 1 hour, or when access originates from an IP address outside your trusted network range.\n\n**Example Dashboard Widget:**  \nA time-series graph showing hourly counts of Get* events per bucket, combined with a heatmap of source IP addresses, enabling quick identification of unusual access patterns or spikes in data retrieval."
+  },
+  {
+    "query": {
+      "EventSource": "s3.amazonaws.com",
+      "EventName": "List*"
+    },
+    "description": "S3 List operations (EventName starting with \"List\") in CloudTrail capture requests to enumerate buckets, list objects, or browse directories within S3. These events help track data discovery activities, such as inventory management or security reconnaissance attempts by identifying who is accessing or exploring bucket contents.  \n\n**Purpose:**  \n- Monitor access patterns to detect unusual or excessive listing activity that may indicate unauthorized data exploration or reconnaissance.  \n- Support auditing and compliance by providing visibility into how and when bucket contents are being queried.\n\n**Alert Threshold Guidance:**  \n- Trigger alerts when the number of List operations exceeds a baseline threshold (e.g., a sudden spike above normal daily averages or a sustained high rate over a short period).  \n- Thresholds should be customized per environment but a common starting point is alerting on a 3x increase over the average hourly count or more than 100 List requests per minute from a single principal or IP.\n\n**Impact of Values:**  \n- **High values:** May indicate automated scanning, data scraping, or reconnaissance by malicious actors, potentially preceding data exfiltration attempts. Could also reflect legitimate bulk inventory or analytics jobs—context matters.  \n- **Low values:** Normal or expected in environments with limited or infrequent bucket browsing; very low values typically pose no risk.\n\n**Example Usage:**  \n- **Dashboard:** Visualize the count of List* events over time, segmented by user or source IP, to identify unusual spikes or patterns.  \n- **Alert Rule (pseudo-code):**  \n  ```  \n  IF count(EventName LIKE \"List*\") BY user OVER 15 minutes > 3x baseline THEN alert(\"Unusual S3 List activity detected for user\")  \n  ```  \nThis enables proactive detection of suspicious enumeration behavior while minimizing false positives from routine operations."
+  },
+  {
+    "query": {
+      "EventSource": "iam.amazonaws.com",
+      "EventName": "Create*"
+    },
+    "description": "Tracks all creation events initiated via AWS IAM, including users, roles, policies, and groups. Each event records the creation of a new identity or access control entity within the AWS account. This measurement is event-based, counting each individual creation action. Monitoring these events is essential for detecting unauthorized access setup and ensuring compliance with security policies."
+  },
+  {
+    "query": {
+      "EventSource": "iam.amazonaws.com",
+      "EventName": "Delete*"
+    },
+    "description": "IAM deletion events (e.g., DeleteUser, DeleteRole) recorded by CloudTrail indicate removal of IAM identities or permissions. These events are critical for detecting unauthorized or accidental deletions that can disrupt access or signal a security breach. An alert threshold should be set to trigger on any unexpected deletion event or a sudden spike above normal baseline activity (e.g., more than 1 deletion event within 5 minutes), as even a single deletion can have significant impact. High volumes may indicate automated attacks or misconfigurations causing mass access removal, while low or zero values typically indicate normal operation.  \nExample alert rule: trigger when count of iam.amazonaws.com Delete* events > 1 in 5 minutes.  \nExample dashboard widget: a time series graph showing Delete* event counts over time, annotated with alert thresholds to quickly identify unusual deletion activity."
+  },
+  {
+    "query": {
+      "EventSource": "iam.amazonaws.com",
+      "EventName": "Update*"
+    },
+    "description": "IAM update events capture all modifications made to IAM resources such as users, roles, groups, policies, and credentials. These events indicate changes to permissions, access controls, and security configurations, which are critical for maintaining the principle of least privilege and preventing unauthorized privilege escalation. In CloudTrail, **{\"EventSource\": \"iam.amazonaws.com\", \"EventName\": \"Update*\"}** helps track who made changes, what was changed, and when, enabling audit and compliance verification.\n\n**Alert Threshold:** Trigger an alert when the number of IAM update events exceeds a baseline threshold within a short time window (e.g., more than 5 update events in 10 minutes), or when specific sensitive updates occur, such as policy changes granting administrative privileges or credential rotations outside of scheduled maintenance.\n\n**Impact of Values:**  \n- **High values:** A spike in update events may indicate automated scripts, bulk permission changes, or potential malicious activity like privilege escalation attempts. Immediate investigation is warranted to confirm legitimacy.  \n- **Low values:** Normal or zero update events typically indicate stable IAM configurations with no recent permission changes, which is expected in steady-state operations.\n\n**Example Usage:**  \nIn a dashboard, display a time series graph of IAM update events filtered by event name pattern \"Update*\". Set an alert rule to notify the SRE team if the count of these events exceeds 5 within any rolling 10-minute window, or if any update event modifies policies granting \"AdministratorAccess\". This enables rapid detection of potentially risky permission changes and supports proactive security posture management."
+  },
+  {
+    "query": {
+      "EventSource": "iam.amazonaws.com",
+      "EventName": "Attach*"
+    },
+    "description": "Tracks IAM policy attachment events where policies are linked to users, groups, or roles. Measures the count of attachment actions performed, indicating changes in permission assignments. Monitors access grants and potential privilege escalations to support security oversight of access control modifications."
+  },
+  {
+    "query": {
+      "EventSource": "iam.amazonaws.com",
+      "EventName": "Detach*"
+    },
+    "description": "IAM Detach API events recorded by CloudTrail when IAM entities (users, groups, or roles) have policies detached from them. These events indicate the removal of permissions previously granted via managed or inline policies. Each event includes details such as the identity performing the detachment, the target entity, the detached policy ARN or name, timestamps, and request parameters. Metrics derived from these events typically count the number of detach operations over time (unit: count per minute/hour) sourced directly from CloudTrail logs. An unusual spike or unexpected detach activity—especially outside normal change windows or by unauthorized principals—may indicate potential privilege revocation due to security incidents, misconfigurations, or insider threats and should trigger an alert for immediate investigation."
+  },
+  {
+    "query": {
+      "EventSource": "ec2.amazonaws.com",
+      "EventName": "Run*"
+    },
+    "description": "This pattern matches AWS CloudTrail events where EC2 instances are launched or started, indicated by event names beginning with \"Run\" (e.g., RunInstances). It captures detailed information about the instance launch request, including configuration settings and parameters used. The measurement is event-based, counting each individual EC2 instance launch API call recorded by CloudTrail."
+  },
+  {
+    "query": {
+      "EventSource": "ec2.amazonaws.com",
+      "EventName": "Terminate*"
+    },
+    "description": "This pattern captures AWS CloudTrail events where EC2 instances are terminated (EventName starting with \"Terminate\"), indicating that instances are being stopped or deleted. It helps SREs monitor infrastructure changes that may affect application availability, cost, or security posture. \n\n**Purpose:** Detect unexpected or excessive EC2 instance terminations that could signal operational issues, unauthorized activity, or cost optimization efforts.\n\n**Alert Threshold:** Trigger an alert if the number of termination events exceeds a baseline threshold (e.g., more than 5 terminations within 10 minutes), or if terminations occur outside of scheduled maintenance windows.\n\n**Impact:**  \n- **High values:** May indicate potential outages due to accidental or malicious instance termination, or aggressive cost-cutting measures that reduce capacity. Immediate investigation is required to prevent service disruption.  \n- **Low or zero values:** Normal operation, assuming no planned scaling down or maintenance.\n\n**Example Alert Rule:**  \n\"Alert when count of events matching {EventSource: 'ec2.amazonaws.com', EventName: 'TerminateInstances'} exceeds 5 within 10 minutes.\"\n\n**Example Dashboard Widget:**  \nA time-series graph showing the count of EC2 TerminateInstances events over time, with annotations for scheduled maintenance windows, enabling quick identification of anomalies or spikes in instance terminations."
+  },
+  {
+    "query": {
+      "EventSource": "ec2.amazonaws.com",
+      "EventName": "Create*"
+    },
+    "description": "This pattern matches AWS CloudTrail events where EC2 service actions begin with \"Create\". It captures API calls that create EC2 resources such as instances, security groups, network interfaces, volumes, and other related components. Each matched event represents a single creation action recorded as an event in CloudTrail logs. This pattern helps monitor and audit the creation of EC2 resources in an AWS account."
+  },
+  {
+    "query": {
+      "EventSource": "ec2.amazonaws.com",
+      "EventName": "Delete*"
+    },
+    "description": "This pattern captures all EC2 resource deletion events recorded in CloudTrail, triggered by any API calls starting with \"Delete\" from the EC2 service (e.g., DeleteSecurityGroup, DeleteNetworkInterface). Its purpose is to monitor and alert on the removal of critical EC2 components, which can impact infrastructure stability and security.\n\n**Threshold guidance:**  \n- Set an alert if the number of deletion events exceeds a baseline threshold within a short time window (e.g., more than 5 deletions in 10 minutes), as this may indicate accidental mass deletions or malicious activity.  \n- A low or zero count is typical during normal operations, while sudden spikes warrant immediate investigation.\n\n**Impact:**  \n- High deletion event counts can lead to service disruptions, loss of network connectivity, or security vulnerabilities if key resources like security groups or network interfaces are removed unexpectedly.  \n- Low or no deletion activity generally indicates stable infrastructure management.\n\n**Example alert rule:**  \nTrigger an alert when the count of events matching {\"EventSource\": \"ec2.amazonaws.com\", \"EventName\": \"Delete*\"} exceeds 5 within 10 minutes.\n\n**Example dashboard usage:**  \nVisualize the count of EC2 deletion events over time to identify unusual spikes, correlating with other operational metrics to assess potential impact on system availability or security posture."
+  },
+  {
+    "query": {
+      "EventSource": "ec2.amazonaws.com",
+      "EventName": "Modify*"
+    },
+    "description": "This pattern captures all modification events related to EC2 resources in AWS CloudTrail, triggered by any API calls starting with \"Modify\" (e.g., ModifyInstanceAttribute, ModifyNetworkInterfaceAttribute). Its purpose is to monitor changes to critical EC2 configurations such as instance attributes, security group rules, and network settings, which can directly impact system security, availability, and performance.\n\n**Threshold guidance:**  \n- Alert when the number of Modify* events exceeds a baseline threshold (e.g., more than 5 modifications within 10 minutes), indicating unusual or potentially unauthorized changes.  \n- A sudden spike in modification events may signal misconfigurations, automation errors, or security incidents like privilege escalation or lateral movement.\n\n**Impact of values:**  \n- **High frequency:** Could indicate active troubleshooting, automated scaling/configuration changes, or suspicious activity requiring immediate investigation.  \n- **Low or zero frequency:** Normal steady state; no unexpected modifications detected.\n\n**Example alert rule:**  \nTrigger an alert if the count of events matching {\"EventSource\": \"ec2.amazonaws.com\", \"EventName\": \"Modify*\"} exceeds 5 within a rolling 10-minute window.\n\n**Example dashboard widget:**  \nA time-series graph showing the count of EC2 Modify* events per 5-minute interval, overlaid with a threshold line at 5 events, enabling quick identification of abnormal modification activity."
+  },
+  {
+    "query": {
+      "EventSource": "rds.amazonaws.com",
+      "EventName": "Create*"
+    },
+    "description": "This pattern detects all Amazon RDS database creation events captured in CloudTrail, identified by any event name starting with \"Create\" from the \"rds.amazonaws.com\" source. It enables SREs to monitor when new RDS instances or related resources are provisioned, providing visibility into changes that may impact database capacity, cost, or security posture. A typical alert threshold could be set to trigger if more than 3 RDS creation events occur within a 1-hour window, indicating potential unexpected scaling or automation issues. High volumes of creation events may signal rapid infrastructure changes or misconfigurations, increasing operational risk and cost, while low or zero events generally indicate stable database provisioning activity. For example, an alert rule could be configured as:  \n`WHEN count of events matching {\"EventSource\": \"rds.amazonaws.com\", \"EventName\": \"Create*\"} > 3 IN 1 hour THEN trigger alert`  \nThis can be visualized in a dashboard showing the count of RDS creation events over time, helping teams quickly identify unusual spikes in database provisioning activity."
+  },
+  {
+    "query": {
+      "EventSource": "rds.amazonaws.com",
+      "EventName": "Delete*"
+    },
+    "description": "This pattern captures all AWS CloudTrail events where RDS resources are deleted (e.g., DeleteDBInstance, DeleteDBSnapshot). Its purpose is to monitor and alert on potentially destructive actions affecting RDS databases, which could indicate intentional cleanup, accidental deletions, or malicious activity. \n\n**Threshold guidance:**  \n- Trigger an alert if more than 1 deletion event occurs within a short time window (e.g., 5 minutes), as multiple deletions in quick succession are unusual and may signal a problem.  \n- A single deletion event should also prompt review, especially if unexpected or outside maintenance windows.\n\n**Impact:**  \n- **High values:** Multiple deletions in a short period can lead to significant data loss or service disruption, requiring immediate investigation and possible recovery actions.  \n- **Low values:** Occasional single deletions may be normal during maintenance but still warrant confirmation to avoid unnoticed data loss.\n\n**Example usage:**  \nIn a monitoring dashboard, display a time series count of RDS deletion events filtered by this pattern. Configure an alert rule to notify the SRE team if the count exceeds 1 event within any 5-minute interval, enabling rapid response to potential incidents."
+  },
+  {
+    "query": {
+      "EventSource": "rds.amazonaws.com",
+      "EventName": "Modify*"
+    },
+    "description": "This pattern matches AWS RDS events where the event name begins with \"Modify,\" indicating changes to RDS resources. It captures actions such as instance configuration updates, parameter group modifications, and scaling adjustments. Each event represents a discrete modification operation recorded as an individual API call. The measurement unit is the count of these modification events occurring within the monitored timeframe."
+  },
+  {
+    "query": {
+      "EventSource": "rds.amazonaws.com",
+      "EventName": "Start*"
+    },
+    "description": "This pattern captures AWS RDS instance start events recorded in CloudTrail, indicating when one or more RDS instances transition from a stopped to a running state. Monitoring these events helps SREs track service availability changes and manage cost implications, as starting instances can increase resource usage and expenses.\n\n**Purpose:**  \n- Detect when RDS instances are started to ensure expected service restoration or identify unexpected restarts.  \n- Support cost optimization by alerting on frequent or unusual start activity that may indicate inefficient resource usage or automation issues.\n\n**Alert Threshold Guidance:**  \n- Trigger an alert if the number of RDS start events exceeds a defined threshold within a short time window (e.g., more than 3 start events within 10 minutes), which may indicate instability or unintended restarts.  \n- Alternatively, alert if no start events occur during a scheduled maintenance window when instances are expected to be restarted.\n\n**Impact of Values:**  \n- **High frequency of start events:** Could signal recurring failures, automation loops, or misconfigurations causing service interruptions and increased costs. Immediate investigation is recommended.  \n- **Low or zero start events:** May indicate stable operation or, if expected, a failure to restore service after downtime, requiring attention.\n\n**Example Usage:**  \n- **Dashboard:** Display a time series graph of RDS start events per hour to visualize trends and detect spikes.  \n- **Alert Rule:**  \n  ```\n  WHEN count(events where EventSource=\"rds.amazonaws.com\" AND EventName LIKE \"Start%\") \n  IN last 10 minutes > 3 \n  THEN trigger alert \"High frequency of RDS instance starts detected\"\n  ```  \nThis enables proactive monitoring of RDS instance lifecycle events to maintain service reliability and control costs."
+  },
+  {
+    "query": {
+      "EventSource": "rds.amazonaws.com",
+      "EventName": "Stop*"
+    },
+    "description": "This pattern captures AWS CloudTrail events where Amazon RDS instances are stopped (EventSource: \"rds.amazonaws.com\", EventName starting with \"Stop\"). It helps SREs monitor when RDS databases are intentionally or unintentionally stopped, which can impact application availability and indicate maintenance or cost-saving actions.\n\n**Purpose:**  \n- Detect RDS stop operations to quickly identify potential service disruptions or planned maintenance.  \n- Provide visibility into operational changes affecting database availability.\n\n**Alert Threshold Guidance:**  \n- Trigger an alert if the number of RDS stop events exceeds a defined threshold within a short time window (e.g., more than 1 stop event per hour per critical environment), as multiple stops may indicate automation issues or unexpected failures.  \n- For low-frequency environments, even a single unexpected stop event should trigger an alert.\n\n**Impact of Values:**  \n- **High frequency of stop events:** May indicate instability, automation misconfiguration, or repeated manual interventions, potentially causing downtime or degraded service.  \n- **Low or zero stop events:** Normal operation, assuming no planned maintenance is ongoing.\n\n**Example Alert Rule:**  \n- Alert when count of events matching {\"EventSource\": \"rds.amazonaws.com\", \"EventName\": \"Stop*\"} exceeds 1 within 60 minutes for production accounts.  \n- Dashboard widget can display a time series graph of RDS stop events over the past 24 hours, segmented by environment or instance ID, to correlate stops with incidents or maintenance windows."
+  },
+  {
+    "query": {
+      "EventSource": "dynamodb.amazonaws.com",
+      "EventName": "Create*"
+    },
+    "description": "This pattern matches AWS CloudTrail events where DynamoDB tables are created. It captures all API calls with event names starting with \"Create\" from the DynamoDB service, such as CreateTable. The events include details about the table creation request, including configuration parameters. The measurement is event occurrence count, representing each table creation action recorded."
+  },
+  {
+    "query": {
+      "EventSource": "dynamodb.amazonaws.com",
+      "EventName": "Delete*"
+    },
+    "description": "This pattern captures DynamoDB deletion events. It identifies when DynamoDB tables are removed, which can indicate cleanup operations or potential data loss incidents."
+  },
+  {
+    "query": {
+      "EventSource": "dynamodb.amazonaws.com",
+      "EventName": "Update*"
+    },
+    "description": "This pattern captures all DynamoDB update events recorded in CloudTrail, specifically those where the event name starts with \"Update\" (e.g., UpdateTable, UpdateGlobalTable). It helps SREs monitor changes to DynamoDB table configurations such as capacity adjustments (read/write throughput), index modifications, and other table settings.\n\n**Purpose:**  \nBy tracking these update events, SREs can detect configuration changes that may impact application performance, availability, or cost. Unexpected or frequent updates could indicate misconfigurations, automation errors, or unauthorized changes.\n\n**Alert Thresholds:**  \n- Trigger an alert if more than 5 update events occur within a 10-minute window, which may suggest excessive or unintended configuration changes.  \n- Trigger an alert if update events occur outside of scheduled maintenance windows or change management periods.\n\n**Impact of Values:**  \n- **High frequency of updates:** May lead to instability, performance degradation, or increased costs due to rapid scaling or misconfigured indexes.  \n- **Low or no updates:** Generally indicates stable table configurations, but lack of expected updates during deployments could signal deployment failures.\n\n**Example Usage:**  \n- **Dashboard:** Display a time series graph showing the count of DynamoDB Update* events over time, annotated with deployment windows.  \n- **Alert Rule:**  \n  ```\n  WHEN count(events where EventSource=\"dynamodb.amazonaws.com\" AND EventName LIKE \"Update%\") > 5 \n  WITHIN 10 minutes \n  AND current_time NOT IN maintenance_window \n  THEN trigger alert \"Excessive DynamoDB table updates detected\"\n  ```"
+  },
+  {
+    "query": {
+      "EventSource": "dynamodb.amazonaws.com",
+      "EventName": "Put*"
+    },
+    "description": "This pattern matches DynamoDB events where items are added or replaced in tables. It captures all write operations starting with \"Put,\" including single item puts, conditional puts, and batch put requests. The measurement is event occurrence count, indicating how many put operations were performed. Each event corresponds to one put action recorded by DynamoDB."
+  },
+  {
+    "query": {
+      "EventSource": "dynamodb.amazonaws.com",
+      "EventName": "Get*"
+    },
+    "description": "This pattern matches all DynamoDB API calls that begin with \"Get,\" such as GetItem and GetRecords. It measures the occurrence of read operations where data is retrieved from DynamoDB tables. Each matched event represents a single request to fetch data. This helps monitor and audit data access activity in DynamoDB."
+  },
+  {
+    "query": {
+      "EventSource": "dynamodb.amazonaws.com",
+      "EventName": "Query*"
+    },
+    "description": "This pattern matches events where DynamoDB query operations are performed. It captures all API calls starting with \"Query,\" including queries on tables and indexes. It does not include scan operations, which are separate API calls. The measurement is based on the count of these query events recorded by AWS CloudTrail."
+  },
+  {
+    "query": {
+      "EventSource": "sqs.amazonaws.com",
+      "EventName": "Create*"
+    },
+    "description": "This pattern detects AWS CloudTrail events where new Amazon SQS queues are created (EventSource: \"sqs.amazonaws.com\", EventName starting with \"Create\"). It helps SREs monitor the provisioning of new queues, including their initial configurations such as visibility timeout and message retention settings. Alert thresholds should be set based on the expected rate of queue creation in your environment—for example, triggering an alert if more than 5 queues are created within a 10-minute window, which may indicate unexpected automation or potential security issues. A sudden spike in queue creation can impact resource limits and increase costs, while consistently low or zero creation events may suggest underutilization or stalled deployments. Example alert rule:  \n`WHEN count() OF events WHERE EventSource=\"sqs.amazonaws.com\" AND EventName LIKE \"Create*\" OVER last 10 minutes > 5 THEN trigger alert`  \nThis can be visualized in a dashboard as a time series graph showing the count of SQS queue creation events over time, enabling quick detection of anomalies in queue provisioning activity."
+  },
+  {
+    "query": {
+      "EventSource": "sqs.amazonaws.com",
+      "EventName": "Delete*"
+    },
+    "description": "This pattern detects API calls to delete Amazon SQS queues. It captures all events where the event source is \"sqs.amazonaws.com\" and the event name starts with \"Delete,\" such as DeleteQueue. The measurement is event occurrence count, indicating how many delete operations were initiated. Monitoring these events helps track queue removals that may affect message processing or system cleanup."
+  },
+  {
+    "query": {
+      "EventSource": "sqs.amazonaws.com",
+      "EventName": "Send*"
+    },
+    "description": "This pattern captures all Amazon SQS message send events recorded in CloudTrail, identifying when messages are sent to SQS queues by applications or services. It helps SREs monitor the volume and frequency of messages entering the queue, which is critical for understanding application throughput and detecting anomalies in message flow.\n\n**Threshold guidance:**  \n- Set alert thresholds based on baseline message send rates for your application. For example, trigger an alert if the number of Send* events drops below 50% of the normal rate over a 5-minute window, indicating potential upstream issues or message loss.  \n- Conversely, alert if the send rate spikes above 150% of the baseline, which may signal unexpected load, misbehaving producers, or potential flooding that could overwhelm downstream consumers.\n\n**Impact of values:**  \n- **High send event volume:** May indicate increased application activity or a surge in workload; sustained spikes can lead to queue congestion, increased processing latency, or throttling.  \n- **Low send event volume:** Could suggest upstream failures, application downtime, or message generation issues, potentially causing downstream starvation and impacting system responsiveness.\n\n**Example usage:**  \nIn a monitoring dashboard, plot the count of **{\"EventSource\": \"sqs.amazonaws.com\", \"EventName\": \"Send*\"}** events per minute to visualize message inflow trends. Configure an alert rule to notify the SRE team if the send event count deviates by more than ±50% from the established baseline over a rolling 5-minute period, enabling rapid detection and response to abnormal message flow patterns."
+  },
+  {
+    "query": {
+      "EventSource": "sqs.amazonaws.com",
+      "EventName": "Receive*"
+    },
+    "description": "This pattern captures CloudTrail events where messages are received from Amazon SQS queues (EventSource: \"sqs.amazonaws.com\", EventName starting with \"Receive\"), indicating when consumers poll and retrieve messages for processing. Monitoring these events helps SREs track message consumption rates, detect potential processing delays, and ensure downstream systems are actively handling queued workloads. \n\n**Alert Threshold Guidance:**  \n- Set alerts for unusually low receive event counts over a defined period (e.g., fewer than 10 receives in 5 minutes), which may indicate consumer failures or processing bottlenecks.  \n- Conversely, a sudden spike in receive events (e.g., a 2x increase compared to baseline) could signal increased load or potential message flooding that might overwhelm downstream services.\n\n**Impact:**  \n- **Low receive event counts** can lead to message backlog growth, increased latency, and potential service degradation.  \n- **High receive event counts** may reflect healthy throughput or, if excessive, could cause resource exhaustion or indicate abnormal traffic patterns.\n\n**Example Alert Rule:**  \nTrigger an alert if the count of ReceiveMessage events from SQS falls below 10 in a rolling 5-minute window, signaling possible consumer inactivity.  \n```  \nWHEN count(events where EventSource=\"sqs.amazonaws.com\" AND EventName LIKE \"Receive%\") < 10 OVER last 5 minutes  \nTHEN alert \"SQS message consumption is below expected levels\"  \n```  \n\nThis enables proactive detection of issues in message processing pipelines and helps maintain system reliability."
+  },
+  {
+    "query": {
+      "EventSource": "sns.amazonaws.com",
+      "EventName": "Create*"
+    },
+    "description": "This pattern detects SNS topic creation events recorded in CloudTrail, specifically any API calls starting with \"Create\" from the SNS service (e.g., CreateTopic). It helps SREs monitor when new SNS topics are provisioned, which can indicate changes in messaging architecture or potential unauthorized resource creation. An alert threshold could be set on the number of Create* events within a given time window (e.g., more than 5 topic creations in 10 minutes), as a sudden spike may signal automation errors or security issues. Low or expected values typically indicate normal operations, while high values may impact system stability by increasing resource usage or indicate potential misuse. For example, an alert rule could trigger if the count of {\"EventSource\": \"sns.amazonaws.com\", \"EventName\": \"Create*\"} events exceeds 5 in 10 minutes, and a dashboard widget could display a time series graph of topic creation events to track trends and detect anomalies."
+  },
+  {
+    "query": {
+      "EventSource": "sns.amazonaws.com",
+      "EventName": "Delete*"
+    },
+    "description": "This pattern detects API calls made through the SNS service that begin with \"Delete,\" such as deleting SNS topics or subscriptions. It measures the occurrence of deletion events triggered via the AWS SNS API. Each matched event represents a single deletion action recorded in AWS CloudTrail logs. This helps monitor resource removals that may impact notification workflows."
+  },
+  {
+    "query": {
+      "EventSource": "sns.amazonaws.com",
+      "EventName": "Publish*"
+    },
+    "description": "This pattern captures all SNS Publish API calls recorded in CloudTrail, indicating when messages are sent to SNS topics. For an SRE, this helps monitor the volume and frequency of notifications within your applications and infrastructure. \n\n**Purpose:**  \n- Track message publishing activity to detect unusual spikes or drops that may indicate application issues, misconfigurations, or potential abuse.  \n- Correlate with downstream system behavior to troubleshoot notification delivery problems or failures.\n\n**Threshold guidance:**  \n- Set alert thresholds based on baseline publish rates (e.g., average publishes per minute/hour).  \n- Trigger alerts if publish events exceed a high threshold (e.g., 2-3x normal volume), which may indicate a runaway process or spam.  \n- Trigger alerts if publish events drop below a low threshold (e.g., near zero for a sustained period), which may indicate a failure in upstream systems or broken notification flows.\n\n**Impact of values:**  \n- **High publish rates:** Could lead to increased costs, throttling, or downstream system overload. May signal application errors or security incidents.  \n- **Low publish rates:** May cause delayed or missing notifications, impacting user experience or operational awareness.\n\n**Example usage:**  \n- Dashboard widget showing SNS Publish event count per minute with baseline and threshold lines.  \n- Alert rule: “Alert if SNS Publish events exceed 500 per 5 minutes or drop below 10 per 5 minutes for more than 10 minutes.”  \n- Use CloudWatch Logs Insights or a SIEM query filtering on `EventSource = \"sns.amazonaws.com\"` and `EventName` starting with `Publish` to visualize trends and anomalies."
+  },
+  {
+    "query": {
+      "EventSource": "sns.amazonaws.com",
+      "EventName": "Subscribe*"
+    },
+    "description": "This pattern detects API calls related to creating or confirming SNS topic subscriptions. It captures events where a subscription request is made or confirmed, including details about the subscription endpoint and protocol. The measurement is event-based, counting each subscription action as a single event. This helps monitor and audit SNS subscription activities in real time."
+  },
+  {
+    "query": {
+      "EventSource": "sns.amazonaws.com",
+      "EventName": "Unsubscribe*"
+    },
+    "description": "This pattern captures SNS unsubscription events recorded in CloudTrail, indicating when endpoints or subscribers are removed from SNS topics. For an SRE, monitoring these events helps track changes in notification delivery and detect potential disruptions or configuration changes.\n\n**Purpose:**  \n- Identify when subscribers unsubscribe from SNS topics, which may reflect endpoint decommissioning, application changes, or user-initiated opt-outs.  \n- Detect unusual spikes that could indicate mass unsubscriptions due to misconfigurations, security incidents, or service issues.\n\n**Alert Threshold:**  \n- Trigger an alert if the number of Unsubscribe events exceeds a baseline threshold (e.g., more than 5 unsubscriptions within 5 minutes) or shows a sudden increase compared to historical averages. Thresholds should be tuned based on normal subscription churn rates.\n\n**Impact:**  \n- **High values:** May signal widespread endpoint removals causing notification delivery failures, potential service degradation, or security concerns (e.g., unauthorized unsubscriptions). Immediate investigation is warranted.  \n- **Low or zero values:** Typically expected during stable operations; a sudden drop to zero after a period of regular unsubscriptions might indicate logging issues or CloudTrail misconfigurations.\n\n**Example Usage:**  \n- **Dashboard:** Display a time series graph of Unsubscribe event counts per minute to visualize trends and detect anomalies.  \n- **Alert Rule (pseudo-code):**  \n  ```\n  WHEN count(Events where EventSource=\"sns.amazonaws.com\" AND EventName LIKE \"Unsubscribe%\") \n  OVER last 5 minutes > 5 \n  THEN trigger alert \"High SNS Unsubscription Rate\"\n  ```"
+  },
+  {
+    "query": {
+      "EventSource": "elasticache.amazonaws.com",
+      "EventName": "Create*"
+    },
+    "description": "This pattern matches all AWS ElastiCache API events where a resource creation action is initiated, indicated by event names starting with \"Create\". It captures detailed records of new ElastiCache resource creations, such as clusters, snapshots, or parameter groups. The data includes configuration parameters and initial settings specified during creation. Events are measured as discrete API calls logged by AWS CloudTrail."
+  },
+  {
+    "query": {
+      "EventSource": "elasticache.amazonaws.com",
+      "EventName": "Delete*"
+    },
+    "description": "This pattern captures all ElastiCache deletion events recorded in CloudTrail, specifically any API calls starting with \"Delete\" (e.g., DeleteCacheCluster, DeleteReplicationGroup). Its primary purpose is to monitor when ElastiCache resources are removed, which can signal intentional cleanup or unintended cache loss that may impact application performance or availability.\n\n**Alert Threshold:**  \nTrigger an alert if more than 1 deletion event occurs within a 5-minute window, as multiple deletions in a short period may indicate a misconfiguration, automation error, or potential security incident.\n\n**Impact:**  \n- **High frequency:** Multiple deletions can lead to significant cache data loss, increased latency due to cache warm-up, or service disruption. Immediate investigation is required.  \n- **Low frequency (single event):** Usually expected during planned maintenance or scaling down, but should still be reviewed to confirm authorization.\n\n**Example Alert Rule:**  \n- **Condition:** Count of events matching {\"EventSource\": \"elasticache.amazonaws.com\", \"EventName\": \"Delete*\"} > 1 in 5 minutes  \n- **Action:** Send notification to SRE team and trigger incident response workflow.\n\n**Dashboard Use Case:**  \nVisualize the count of ElastiCache deletion events over time to quickly identify spikes or unusual patterns, correlating with deployment or incident timelines for root cause analysis."
+  },
+  {
+    "query": {
+      "EventSource": "elasticache.amazonaws.com",
+      "EventName": "Modify*"
+    },
+    "description": "This pattern captures CloudTrail events where ElastiCache clusters are modified, including scaling operations (e.g., changing node count or instance types), parameter group updates, and configuration changes. It helps SREs monitor critical changes that can impact cache performance, availability, or cost.\n\n**Purpose:**  \nDetect when ElastiCache resources are altered to ensure changes are intentional, authorized, and do not degrade system stability.\n\n**Alert Threshold:**  \nTrigger an alert on any **Modify\\*** event to catch all configuration changes. For noisy environments, consider alerting only on modifications that increase or decrease node count by more than 1, or changes to parameter groups affecting performance-critical settings.\n\n**Impact of Values:**  \n- **High frequency of Modify events:** May indicate repeated scaling or configuration changes, potentially causing instability or unexpected behavior.  \n- **Low or zero Modify events:** Suggests stable cache configuration, but lack of changes during scaling needs may indicate missed updates.\n\n**Example Alert Rule:**  \nAlert when an event with `EventSource = \"elasticache.amazonaws.com\"` and `EventName` matching `Modify*` occurs, optionally filtering for changes in node count or parameter group names. This can be visualized in a dashboard showing a timeline of modification events alongside cluster performance metrics to correlate changes with impact."
+  },
+  {
+    "query": {
+      "EventSource": "elasticache.amazonaws.com",
+      "EventName": "Reboot*"
+    },
+    "description": "This pattern captures ElastiCache reboot events recorded in CloudTrail, specifically any API calls starting with \"Reboot\" (e.g., RebootCacheCluster). It helps SREs monitor when ElastiCache nodes undergo reboots, which typically occur during maintenance, configuration changes, or troubleshooting. Frequent or unexpected reboots may indicate instability or underlying issues affecting cache availability and performance.\n\n**Alert Threshold:**  \nTrigger an alert if the number of reboot events exceeds a defined threshold within a short time window (e.g., more than 3 reboots per node within 1 hour), as this may signal recurring failures or misconfigurations.\n\n**Impact:**  \n- **High reboot frequency:** Can cause increased latency, cache misses, and potential downtime for applications relying on ElastiCache, impacting user experience and system reliability.  \n- **Low or expected reboot frequency:** Indicates normal maintenance or controlled troubleshooting with minimal impact.\n\n**Example Alert Rule (CloudWatch or SIEM):**  \nMonitor CloudTrail logs for events matching `{\"EventSource\": \"elasticache.amazonaws.com\", \"EventName\": \"Reboot*\"}` and trigger an alert if the count of such events per cache cluster exceeds 3 within 60 minutes. This helps proactively detect and respond to abnormal reboot patterns before they affect service stability."
+  },
+  {
+    "query": {
+      "EventSource": "elasticache.amazonaws.com",
+      "EventName": "Failover*"
+    },
+    "description": "This pattern detects ElastiCache failover events recorded in CloudTrail, indicating when a primary node in a cluster is replaced due to failure or maintenance to maintain high availability. Monitoring these events helps SREs quickly identify potential service disruptions or instability in cache performance.\n\n**Purpose:**  \nTrack failover occurrences to ensure cluster resilience and detect abnormal failover frequency that may signal underlying issues.\n\n**Alert Threshold:**  \nTrigger an alert if the number of failover events exceeds a defined threshold within a given time window (e.g., more than 1 failover per hour or 3 failovers within 24 hours), as frequent failovers can degrade application performance and availability.\n\n**Impact:**  \n- **High failover frequency:** May indicate hardware problems, network instability, or misconfiguration, potentially causing increased latency or downtime. Immediate investigation and remediation are required.  \n- **Low or zero failovers:** Reflects stable cluster operation and healthy failover mechanisms.\n\n**Example Alert Rule:**  \nAlert when `count({\"EventSource\": \"elasticache.amazonaws.com\", \"EventName\": \"Failover*\"}) > 1` within 1 hour.\n\n**Example Dashboard Widget:**  \nA time-series graph showing the count of ElastiCache failover events per hour, enabling trend analysis and rapid detection of spikes in failovers."
+  },
+  {
+    "query": {
+      "EventSource": "elasticloadbalancing.amazonaws.com",
+      "EventName": "Create*"
+    },
+    "description": "This pattern matches AWS Elastic Load Balancing API calls that create resources, such as load balancers and related components. It captures events where new load balancers or their configurations are initiated. The data measured is the occurrence of creation events, counted as discrete API calls. This helps track when and how often load balancing resources are provisioned."
+  },
+  {
+    "query": {
+      "EventSource": "elasticloadbalancing.amazonaws.com",
+      "EventName": "Delete*"
+    },
+    "description": "This pattern captures all deletion events related to Elastic Load Balancers (ELBs) in AWS, as recorded by CloudTrail under the event source \"elasticloadbalancing.amazonaws.com\" with event names starting with \"Delete\". Its primary purpose is to monitor when ELBs are removed, which can be part of routine cleanup or indicate unintended service disruptions due to the loss of load balancing resources.\n\n**Purpose:**  \nSREs use this pattern to track ELB deletions to quickly detect and investigate potential impacts on application availability and traffic routing.\n\n**Alert Threshold:**  \nAn alert should be triggered if the number of ELB deletion events exceeds a predefined threshold within a short time window—for example, more than 1 deletion event within 5 minutes—since multiple deletions in quick succession may indicate a misconfiguration, automation error, or malicious activity.\n\n**Impact of Values:**  \n- **High values:** Frequent or bulk ELB deletions can cause significant service disruption, leading to downtime or degraded performance due to loss of traffic distribution. Immediate investigation and remediation are required.  \n- **Low values:** Occasional single deletions may be expected during normal maintenance or scaling operations and typically do not require urgent action but should still be logged for audit purposes.\n\n**Example Usage:**  \nIn a monitoring dashboard or alert rule, you might configure a query to count ELB deletion events over a rolling 5-minute window and trigger an alert if the count exceeds 1. For example:\n\n```\ncount_over_time({EventSource=\"elasticloadbalancing.amazonaws.com\", EventName=~\"Delete.*\"}[5m]) > 1\n```\n\nThis alert helps ensure that unexpected or excessive ELB deletions are promptly detected and addressed to maintain service reliability."
+  },
+  {
+    "query": {
+      "EventSource": "elasticloadbalancing.amazonaws.com",
+      "EventName": "Modify*"
+    },
+    "description": "This pattern captures all modification events related to Elastic Load Balancing (ELB) resources in AWS, such as changes to load balancer configurations, target groups, and listeners. In CloudTrail, these events indicate when an ELB’s setup is altered, which can affect traffic routing, availability, and security posture.\n\n**Purpose:**  \nTo monitor and audit any configuration changes to ELB components that could impact application availability or security.\n\n**Alert Threshold:**  \nTrigger an alert if the number of ELB modification events exceeds a defined threshold within a short time window (e.g., more than 3 Modify* events within 10 minutes), as this may indicate unintended or unauthorized changes.\n\n**Impact of Values:**  \n- **High frequency of Modify* events:** Could signal potential misconfigurations, automated deployment issues, or malicious activity altering load balancer behavior, risking downtime or security breaches.  \n- **Low or no Modify* events:** Typically expected during stable operation; absence of changes suggests configuration stability.\n\n**Example Usage:**  \nIn a monitoring dashboard or alert rule, track the count of **{\"EventSource\": \"elasticloadbalancing.amazonaws.com\", \"EventName\": \"Modify*\"}** events over rolling 10-minute intervals. Configure alerts to notify the SRE team when this count spikes above the threshold, enabling prompt investigation and rollback if necessary."
+  },
+  {
+    "query": {
+      "EventSource": "elasticloadbalancing.amazonaws.com",
+      "EventName": "Register*"
+    },
+    "description": "This pattern captures events where targets are registered with Elastic Load Balancers (ELB). It includes actions such as registering instances or targets to target groups. Each event records the occurrence of a registration action but does not measure quantities or durations. The data is event-based and indicates when a registration operation took place within the ELB service."
+  },
+  {
+    "query": {
+      "EventSource": "elasticloadbalancing.amazonaws.com",
+      "EventName": "Deregister*"
+    },
+    "description": "This pattern captures Elastic Load Balancing (ELB) target deregistration events from CloudTrail, indicating when backend targets (such as EC2 instances or IP addresses) are removed from a load balancer. These events typically occur during scaling operations, deployments, or maintenance activities that affect service availability.\n\n**Purpose:**  \nMonitoring deregistration events helps SREs track changes in load balancer target groups, ensuring that scaling or maintenance actions do not inadvertently reduce capacity or cause service disruptions.\n\n**Alert Threshold Guidance:**  \n- Trigger an alert if the number of deregistration events exceeds a defined threshold within a short time window (e.g., more than 5 deregistrations within 5 minutes), which may indicate unexpected or excessive target removals.  \n- Conversely, a prolonged absence of deregistration events during expected scaling periods might signal issues with autoscaling or deployment processes.\n\n**Impact of Values:**  \n- **High deregistration rate:** Could lead to reduced backend capacity, increased latency, or service outages if targets are removed too quickly or unexpectedly. Immediate investigation is warranted.  \n- **Low or no deregistration events:** May indicate stable operations or, if scaling is expected, potential failures in scaling mechanisms.\n\n**Example Alert Rule:**  \n```\nWHEN count of events WHERE EventSource = \"elasticloadbalancing.amazonaws.com\" AND EventName LIKE \"Deregister%\"  \nIN last 5 minutes > 5  \nTHEN trigger alert \"High ELB Target Deregistration Rate\"\n```\n\n**Example Dashboard Widget:**  \nA time-series graph showing the count of deregistration events per minute, overlaid with thresholds, to visualize spikes or drops in deregistration activity aligned with deployment or scaling events."
+  },
+  {
+    "query": {
+      "EventSource": "cloudfront.amazonaws.com",
+      "EventName": "Create*"
+    },
+    "description": "This pattern captures all CloudFront distribution creation events recorded in CloudTrail, identified by event names starting with \"Create\" from the CloudFront service. Its purpose is to monitor when new CloudFront distributions are provisioned, including their initial configuration details. Tracking these events helps SREs detect unexpected or unauthorized distribution creations that could impact content delivery, security, or cost.\n\n**Alert Threshold:**  \nTrigger an alert if the number of CloudFront distribution creation events exceeds a defined threshold within a short time window (e.g., more than 3 creations within 1 hour), as this may indicate automation errors, misconfigurations, or potential security incidents.\n\n**Impact of Values:**  \n- **High values:** A spike in creation events could signal rapid environment changes, possible misconfigurations, or unauthorized activity, potentially leading to increased costs or service disruptions.  \n- **Low or zero values:** Normal operation typically involves infrequent distribution creations; zero or low values indicate stable infrastructure without unexpected provisioning.\n\n**Example Alert Rule:**  \n\"Alert when count of events matching {EventSource: 'cloudfront.amazonaws.com', EventName: 'Create*'} exceeds 3 within 1 hour.\"\n\n**Example Dashboard Widget:**  \nA time-series graph showing the count of CloudFront distribution creation events over time, enabling quick identification of unusual spikes or trends in distribution provisioning activity."
+  },
+  {
+    "query": {
+      "EventSource": "cloudfront.amazonaws.com",
+      "EventName": "Delete*"
+    },
+    "description": "This pattern detects API calls to CloudFront that delete resources, such as distributions or configurations. It captures all events where the event name starts with \"Delete\" from the CloudFront service. The measurement is the count of deletion events recorded in AWS CloudTrail logs. Monitoring these events helps track resource removals that may impact content delivery or indicate cleanup activities."
+  },
+  {
+    "query": {
+      "EventSource": "cloudfront.amazonaws.com",
+      "EventName": "Update*"
+    },
+    "description": "This pattern captures all update events triggered by the CloudFront service. It specifically detects modifications to CloudFront distributions, such as changes to distribution settings, cache behaviors, and origin configurations. Each event represents a single update action performed on a CloudFront distribution. The unit of measurement is individual update events logged by AWS CloudTrail."
+  },
+  {
+    "query": {
+      "EventSource": "cloudfront.amazonaws.com",
+      "EventName": "Invalidate*"
+    },
+    "description": "This pattern captures CloudFront cache invalidation events recorded in CloudTrail, which occur when cached content is explicitly removed or refreshed to ensure users receive the latest versions of assets. For an SRE, monitoring these events helps track content deployment activities and detect potential operational issues such as excessive invalidations that may indicate misconfigurations or abuse.\n\n**Purpose:**  \n- Identify when CloudFront distributions are updated via cache invalidations.  \n- Correlate invalidation frequency with deployment cycles or troubleshooting efforts.\n\n**Alert Threshold Guidance:**  \n- Trigger an alert if the number of invalidation requests exceeds a defined threshold within a short time window (e.g., more than 10 invalidations in 5 minutes), as this may signal abnormal activity or inefficient cache management.  \n- Conversely, unusually low invalidation activity during expected deployment periods might indicate deployment failures or monitoring gaps.\n\n**Impact:**  \n- **High invalidation rates:** Can increase latency and cost, as CloudFront must fetch fresh content from origin servers more frequently, potentially degrading user experience.  \n- **Low invalidation rates:** May cause users to receive stale content, impacting application correctness and user satisfaction.\n\n**Example Usage:**  \n- **Dashboard:** Display a time-series graph of invalidation event counts per minute to visualize spikes or drops in cache refresh activity.  \n- **Alert Rule (pseudo-code):**  \n  ```  \n  WHEN count(EventName LIKE \"Invalidate*\") FROM cloudtrail  \n  OVER last 5 minutes > 10  \n  THEN alert \"High CloudFront invalidation rate detected\"  \n  ```"
+  },
+  {
+    "query": {
+      "EventSource": "cloudfront.amazonaws.com",
+      "EventName": "Tag*"
+    },
+    "description": "This pattern captures CloudFront tagging events recorded in CloudTrail, specifically when CloudFront distributions are tagged or untagged. Tagging actions are critical for resource organization, cost allocation, and access management. Monitoring these events helps SREs detect unauthorized or unexpected changes to distribution metadata that could affect billing, security policies, or operational workflows.\n\n**Alert Threshold:**  \nTrigger an alert if the number of CloudFront Tag* events exceeds a baseline threshold within a short time window (e.g., more than 5 tagging operations in 10 minutes), as this may indicate automated misconfigurations, potential security breaches, or bulk updates requiring review.\n\n**Impact of Values:**  \n- **High frequency:** Could signal mass tagging/untagging possibly due to automation errors, policy violations, or malicious activity, potentially leading to misallocated costs or broken access controls.  \n- **Low or zero frequency:** Normal state; tagging changes are typically infrequent and deliberate.\n\n**Example Usage:**  \nIn a monitoring dashboard, plot the count of CloudFront Tag* events over time to visualize tagging activity spikes. An alert rule might be:  \n`WHEN count(events where EventSource=\"cloudfront.amazonaws.com\" AND EventName LIKE \"Tag%\") > 5 within 10 minutes THEN trigger alert \"Unusual CloudFront tagging activity detected\"`  \nThis enables proactive investigation and mitigation of tagging anomalies impacting resource governance."
+  },
+  {
+    "query": {
+      "EventSource": "route53.amazonaws.com",
+      "EventName": "Create*"
+    },
+    "description": "This pattern captures all Route 53 resource creation events recorded in CloudTrail, such as the creation of hosted zones, DNS record sets, and health checks. Monitoring these events helps SREs detect configuration changes that could impact DNS resolution and application availability. \n\n**Purpose:** Track when new Route 53 resources are created to identify potential unauthorized changes or misconfigurations early.\n\n**Alert Threshold:** Trigger an alert if the number of creation events exceeds a baseline threshold (e.g., more than 5 creation events within 10 minutes), which may indicate automated misconfigurations, security breaches, or unintended mass changes.\n\n**Impact:**  \n- **High values:** A spike in creation events could lead to DNS inconsistencies, increased attack surface, or service disruptions if malicious or erroneous resources are introduced.  \n- **Low or zero values:** Normal operation, assuming no planned infrastructure changes.\n\n**Example Alert Rule:**  \nAlert when `count({\"EventSource\": \"route53.amazonaws.com\", \"EventName\": \"Create*\"})` > 5 within 10 minutes.\n\n**Example Dashboard Widget:**  \nA time-series graph showing the count of Route 53 creation events over time, enabling quick identification of unusual spikes in resource creation activity."
+  },
+  {
+    "query": {
+      "EventSource": "route53.amazonaws.com",
+      "EventName": "Delete*"
+    },
+    "description": "This pattern captures all Route 53 deletion events recorded in CloudTrail, such as deleting hosted zones, record sets, or health checks. It helps SREs monitor when DNS configurations are removed, which could be part of routine cleanup or signal accidental or malicious disruptions to DNS resolution.\n\n**Purpose:**  \nTrack and alert on Route 53 resource deletions to quickly detect potential service impact caused by DNS changes.\n\n**Alert Threshold:**  \nTrigger an alert if more than 3 deletion events occur within a 10-minute window, as multiple deletions in a short period may indicate an ongoing incident or misconfiguration.\n\n**Impact:**  \n- **High volume:** May cause widespread DNS outages or service disruptions, requiring immediate investigation.  \n- **Low volume (single event):** Could be routine maintenance but should still be reviewed to confirm legitimacy.\n\n**Example Alert Rule:**  \n“Alert when count of events matching {EventSource: route53.amazonaws.com, EventName: Delete*} exceeds 3 within 10 minutes.”\n\n**Example Dashboard Widget:**  \nA time-series graph showing the count of Route 53 deletion events over time, with a threshold line at 3 events per 10 minutes to highlight potential issues."
+  },
+  {
+    "query": {
+      "EventSource": "route53.amazonaws.com",
+      "EventName": "Change*"
+    },
+    "description": "This pattern captures Route 53 change events. It identifies when Route 53 resources are modified, including record set changes, health check updates, and routing policy modifications."
+  },
+  {
+    "query": {
+      "EventSource": "route53.amazonaws.com",
+      "EventName": "Get*"
+    },
+    "description": "This pattern captures all Route 53 \"Get\" API operations logged in CloudTrail, such as retrieving hosted zone details, record sets, and health check statuses. It helps SREs monitor read access to DNS configurations and health data, which can indicate normal operational queries or potential reconnaissance activity. A sudden spike in these \"Get\" requests—exceeding a baseline threshold (e.g., 3 standard deviations above the average hourly rate)—may signal unusual interest in DNS infrastructure, warranting investigation. Conversely, a significant drop could indicate issues with monitoring or automation systems relying on these queries. For example, an alert rule could trigger when the count of **{\"EventSource\": \"route53.amazonaws.com\", \"EventName\": \"Get*\"}** events exceeds 100 requests per hour, and a dashboard widget might display a time series graph of these events to track trends and detect anomalies in DNS query activity."
+  },
+  {
+    "query": {
+      "EventSource": "route53.amazonaws.com",
+      "EventName": "List*"
+    },
+    "description": "This pattern detects API calls made to Amazon Route 53 that begin with \"List,\" such as ListHostedZones, ListResourceRecordSets, and ListHealthChecks. It measures the count of these list operations performed within a given time frame. Each event corresponds to a single request to retrieve a collection of Route 53 resources. The unit of measurement is the number of list API calls executed."
+  },
+  {
+    "query": {
+      "EventSource": "cloudwatch.amazonaws.com",
+      "EventName": "Create*"
+    },
+    "description": "This pattern detects CloudTrail events where CloudWatch resources are created, such as alarms, dashboards, and log groups. Its purpose is to monitor the provisioning of new CloudWatch components, which can indicate changes in monitoring coverage or potential configuration drift. An alert should be triggered when the number of creation events exceeds a defined threshold within a short time window (e.g., more than 5 Create* events in 10 minutes), as a sudden spike may signal automated deployments, misconfigurations, or unauthorized activity. Conversely, a prolonged absence of creation events might suggest stagnation in monitoring updates or missed deployments. For example, in a monitoring dashboard, you can visualize the count of CloudWatch Create* events over time and set an alert rule to notify the SRE team if the event count surpasses the threshold, enabling timely investigation and response to unexpected changes in monitoring infrastructure."
+  },
+  {
+    "query": {
+      "EventSource": "cloudwatch.amazonaws.com",
+      "EventName": "Delete*"
+    },
+    "description": "This pattern captures CloudWatch deletion events. It identifies when CloudWatch resources are removed, which can indicate cleanup operations or potential monitoring loss incidents."
+  },
+  {
+    "query": {
+      "EventSource": "cloudwatch.amazonaws.com",
+      "EventName": "Put*"
+    },
+    "description": "This pattern captures all CloudWatch API operations that begin with \"Put\", such as PutMetricData, PutLogEvents, and PutAlarm, indicating when CloudWatch resources or configurations are created, updated, or modified. In CloudTrail, monitoring these events helps SREs detect changes to monitoring metrics, log ingestion, and alarm settings that could impact observability or alerting behavior.\n\n**Threshold guidance:**  \nAn alert should trigger if the rate of Put* events exceeds a baseline threshold (e.g., a sudden spike beyond normal operational patterns, such as a 3x increase within 5 minutes), which may indicate automated scripts or unauthorized changes modifying monitoring configurations. Conversely, an unusually low rate over an extended period might suggest disruptions in metric or log ingestion.\n\n**Impact:**  \n- High volumes of Put* events can lead to configuration drift, unexpected alert noise, or resource misconfigurations affecting system reliability.  \n- Low volumes may result in missing critical metrics or logs, reducing visibility into system health.\n\n**Example alert rule:**  \nTrigger an alert when the count of CloudTrail events with EventSource = \"cloudwatch.amazonaws.com\" and EventName starting with \"Put\" exceeds 100 events within 5 minutes, signaling potential bulk updates to monitoring configurations that require investigation. This can be visualized in a dashboard showing Put* event counts over time alongside key system metrics to correlate changes with system behavior."
+  },
+  {
+    "query": {
+      "EventSource": "cloudwatch.amazonaws.com",
+      "EventName": "Get*"
+    },
+    "description": "This pattern matches API calls to CloudWatch services where the operation name starts with \"Get\". It captures requests that retrieve data, such as fetching metric statistics, log events, or alarm details. The pattern measures the occurrence of these read operations as discrete API call events. Each matched event represents a single CloudWatch data retrieval request."
+  },
+  {
+    "query": {
+      "EventSource": "cloudwatch.amazonaws.com",
+      "EventName": "List*"
+    },
+    "description": "This pattern captures CloudWatch API operations that list resources, such as metrics, log groups, and alarms, as recorded in CloudTrail under EventSource \"cloudwatch.amazonaws.com\" with EventNames starting with \"List\". It helps SREs monitor enumeration activity on CloudWatch resources, which can indicate normal operational queries or potential reconnaissance by unauthorized users.\n\n**Purpose:**  \nTo track and analyze the frequency of CloudWatch resource listing actions, enabling detection of unusual spikes that may signal automated scanning, misconfigurations, or security incidents.\n\n**Threshold Guidance:**  \nSet alert thresholds based on baseline activity for your environment. For example, trigger an alert if the number of List* events exceeds 3 standard deviations above the daily average or if more than 100 list operations occur within a 5-minute window, indicating abnormal enumeration.\n\n**Impact of Values:**  \n- **High values:** May indicate excessive or automated querying of CloudWatch resources, potentially revealing reconnaissance attempts or inefficient scripts causing performance overhead.  \n- **Low values:** Typically normal, but a sudden drop could suggest issues with monitoring tools or API access problems.\n\n**Example Alert Rule:**  \nTrigger an alert when the count of CloudWatch List* events in CloudTrail exceeds 100 within 5 minutes, signaling potential unauthorized or excessive enumeration activity.\n\n**Example Dashboard Widget:**  \nA time-series graph showing the count of CloudWatch List* events per 5-minute interval, overlaid with the alert threshold line, to visualize normal versus anomalous listing activity."
+  },
+  {
+    "query": {
+      "EventSource": "logs.amazonaws.com",
+      "EventName": "Create*"
+    },
+    "description": "This pattern detects API calls to AWS CloudWatch Logs that create resources. It captures events where log groups, log streams, or related configurations are created. Each event represents a single creation action recorded as an individual API call. The measurement unit is the count of these creation events."
+  },
+  {
+    "query": {
+      "EventSource": "logs.amazonaws.com",
+      "EventName": "Delete*"
+    },
+    "description": "This event pattern captures all CloudTrail events where CloudWatch Logs resources—such as log groups or log streams—are deleted (e.g., DeleteLogGroup, DeleteLogStream). Its purpose is to monitor and audit log deletion activities, which can be legitimate cleanup or indicate potential loss of critical log data needed for troubleshooting and compliance.\n\n**Alert Threshold:**  \nTrigger an alert if the number of delete events exceeds a baseline threshold within a defined time window (e.g., more than 3 deletions within 1 hour), or if deletions occur unexpectedly outside of scheduled maintenance windows.\n\n**Impact:**  \n- **High frequency of deletions:** May indicate accidental or malicious removal of logs, risking loss of observability and forensic data. Immediate investigation is recommended.  \n- **Low or zero deletions:** Normal operation, indicating logs are retained as expected.\n\n**Example Alert Rule:**  \n“Alert if DeleteLogGroup or DeleteLogStream events from logs.amazonaws.com exceed 3 occurrences in 60 minutes.”  \n\n**Example Dashboard Widget:**  \nA time-series graph showing the count of Delete* events over time, annotated with alert thresholds and maintenance windows, enabling quick identification of unusual spikes in log deletions."
+  },
+  {
+    "query": {
+      "EventSource": "logs.amazonaws.com",
+      "EventName": "Put*"
+    },
+    "description": "This pattern captures CloudWatch Logs Put operations, which occur when log events are written to log streams from applications, systems, or custom sources. In CloudTrail, these events indicate active ingestion of log data into CloudWatch Logs, essential for monitoring application health and troubleshooting.\n\n**Purpose:**  \nMonitor the frequency and volume of log ingestion to detect anomalies such as sudden drops (potentially indicating logging failures or agent issues) or spikes (which may signal increased application activity or potential log flooding).\n\n**Alert Threshold Guidance:**  \n- Trigger an alert if the number of Put operations drops below a baseline threshold for a sustained period (e.g., less than 50% of average daily Put events over 15 minutes), indicating possible logging disruptions.  \n- Trigger an alert if Put operations spike above a defined upper threshold (e.g., 2x the average rate), which could indicate abnormal application behavior or excessive logging that may impact costs and performance.\n\n**Impact:**  \n- **High values:** May lead to increased CloudWatch Logs ingestion costs and potential performance degradation; could also indicate abnormal application behavior or security events generating excessive logs.  \n- **Low values:** May result in loss of critical log data, hindering troubleshooting and incident response.\n\n**Example Usage:**  \nIn a monitoring dashboard or alert rule, track the count of CloudTrail events where `EventSource` is `logs.amazonaws.com` and `EventName` matches `Put*` over rolling 5-minute intervals. Set alerts to notify the SRE team if counts fall below or exceed defined thresholds, enabling timely investigation into logging pipeline health."
+  },
+  {
+    "query": {
+      "EventSource": "logs.amazonaws.com",
+      "EventName": "Get*"
+    },
+    "description": "This pattern captures CloudWatch Logs retrieval operations (any API call starting with \"Get\") recorded in CloudTrail, such as GetLogEvents and GetQueryResults. Its purpose is to monitor access to log data, helping SREs detect unusual or excessive log reads that may indicate troubleshooting activity, data exfiltration, or unauthorized access.\n\n**Threshold guidance:**  \n- Trigger an alert if the number of Get* events exceeds a baseline by 3x within a 5-minute window, or if there is a sudden spike compared to historical averages.  \n- Low or normal values typically indicate routine log access during debugging or monitoring.\n\n**Impact:**  \n- High values may signal active investigation, potential security incidents, or misuse of log data.  \n- Low values generally reflect normal operations with minimal log retrieval.\n\n**Example alert rule:**  \n“Alert when logs.amazonaws.com Get* events exceed 100 calls in 5 minutes.”  \n\n**Example dashboard usage:**  \nVisualize the count of Get* events over time to identify spikes in log access, correlating with incident response or suspicious activity. This helps ensure log data is accessed appropriately and supports timely detection of anomalies."
+  },
+  {
+    "query": {
+      "EventSource": "logs.amazonaws.com",
+      "EventName": "Filter*"
+    },
+    "description": "This pattern captures CloudWatch Logs filter operations recorded in CloudTrail, including metric filter creations, updates, deletions, and CloudWatch Logs Insights queries. It helps SREs monitor how log data is being queried or transformed into metrics, which is critical for detecting unusual or unauthorized access to log data and ensuring the integrity of monitoring configurations.\n\n**Purpose:**  \nTrack and audit all filter-related activities on CloudWatch Logs to detect potential misuse, configuration drift, or performance issues caused by excessive or complex log queries and metric filters.\n\n**Alert Threshold Guidance:**  \n- Trigger an alert if the number of Filter* events exceeds a baseline threshold (e.g., more than 10 filter operations or queries within 5 minutes), indicating potential automated or anomalous activity.  \n- Alternatively, alert on sudden spikes compared to historical averages or on unauthorized users performing filter operations.\n\n**Impact of Values:**  \n- **High values:** May indicate heavy querying or frequent changes to metric filters, which can increase CloudWatch costs, degrade log ingestion performance, or signal suspicious activity such as data exfiltration attempts.  \n- **Low or zero values:** Normal in stable environments but could also mean lack of monitoring updates or insufficient log analysis, potentially missing critical insights.\n\n**Example Usage in Dashboard/Alert Rule:**  \n- Create a CloudWatch metric filter on CloudTrail logs for events where EventSource = \"logs.amazonaws.com\" and EventName starts with \"Filter\".  \n- Visualize the count of these events over time in a dashboard to identify trends or spikes.  \n- Set an alert rule to notify the SRE team if the count exceeds 10 events in a 5-minute window, prompting investigation into recent log filter activity."
+  },
+  {
+    "query": {
+      "EventSource": "sts.amazonaws.com",
+      "EventName": "Assume*"
+    },
+    "description": "This pattern captures AWS Security Token Service (STS) AssumeRole API calls, which occur when an identity assumes a role to obtain temporary security credentials. In CloudTrail, these events indicate role assumption activities such as cross-account access, privilege escalation, or session switching within the same account. Monitoring these events helps detect unusual or unauthorized access patterns.\n\n**Purpose:**  \n- Track when and how often roles are assumed to identify potential security risks or operational anomalies.  \n- Detect spikes in assume role activity that may indicate compromised credentials or misuse of permissions.\n\n**Alert Threshold Guidance:**  \n- Set alert thresholds based on baseline activity for your environment. For example, trigger an alert if the number of AssumeRole events exceeds the daily average by 3x or if assume role events occur from unexpected source IPs or accounts.  \n- Low or zero assume role activity may indicate service disruptions or misconfigurations if role assumption is expected regularly.\n\n**Impact of Values:**  \n- **High values:** Could signal automated processes, legitimate scaling activities, or potential security incidents such as credential compromise or privilege escalation attempts.  \n- **Low values:** May indicate reduced operational activity or potential failures in systems relying on role assumption.\n\n**Example Alert Rule:**  \nTrigger an alert if the count of **{\"EventSource\": \"sts.amazonaws.com\", \"EventName\": \"AssumeRole\"}** events in a 1-hour window exceeds 100 or deviates by more than 3 standard deviations from the 7-day rolling average.\n\n**Example Dashboard Widget:**  \nA time-series graph showing the count of AssumeRole events per hour, annotated with alerts when thresholds are breached, alongside a table listing top source IPs and assumed roles to aid investigation."
+  },
+  {
+    "query": {
+      "EventSource": "sts.amazonaws.com",
+      "EventName": "Get*"
+    },
+    "description": "This pattern captures all AWS Security Token Service (STS) \"Get\" operations, such as `GetSessionToken`, `GetCallerIdentity`, and similar API calls that issue or validate temporary security credentials. In CloudTrail, these events indicate when users or services request short-lived credentials to access AWS resources.\n\n**Purpose:**  \nMonitor STS Get* events to detect unusual or excessive requests for temporary credentials, which can signal automation activity, credential misuse, or potential security incidents like privilege escalation or compromised identities.\n\n**Alert Threshold:**  \nTrigger an alert when the count of STS Get* events exceeds a baseline threshold established from normal activity patterns—commonly, a sudden spike above 3-5 times the average hourly rate or an absolute count exceeding 100 requests per hour, depending on your environment size and usage.\n\n**Impact of Values:**  \n- **High values:** May indicate automated processes requesting many temporary credentials, potential credential abuse, or an attacker attempting to escalate privileges or move laterally. Prompt investigation is warranted.  \n- **Low or expected values:** Reflect normal operation with routine credential issuance and validation.\n\n**Example Usage:**  \nIn a monitoring dashboard, plot the count of `sts.amazonaws.com` events with `EventName` matching `Get*` over time. Set an alert rule such as:  \n`WHEN count(events where EventSource=\"sts.amazonaws.com\" AND EventName LIKE \"Get*\") > 100 within 1 hour THEN alert \"High STS Get* activity detected\"`  \nThis helps SREs quickly identify abnormal credential request patterns and respond accordingly."
+  },
+  {
+    "query": {
+      "EventSource": "sts.amazonaws.com",
+      "EventName": "Decode*"
+    },
+    "description": "This pattern matches AWS Security Token Service (STS) API calls that begin with \"Decode,\" such as DecodeAuthorizationMessage. It captures events where encoded authorization messages are decoded to reveal detailed error or permission information. These events help diagnose authentication and authorization failures by providing decoded message content. The measurement is event occurrence, counted per API call matching the pattern."
+  },
+  {
+    "query": {
+      "EventSource": "kms.amazonaws.com",
+      "EventName": "Create*"
+    },
+    "description": "This pattern captures KMS creation events. It identifies when KMS keys are created, including key configurations, key material generation, and key policy settings."
+  },
+  {
+    "query": {
+      "EventSource": "kms.amazonaws.com",
+      "EventName": "Delete*"
+    },
+    "description": "This pattern detects AWS KMS key deletion events captured in CloudTrail, specifically any API calls starting with \"Delete\" (e.g., DeleteKey). Its purpose is to monitor the removal of cryptographic keys, which are critical for data encryption and access control. Frequent or unexpected deletions may indicate potential security risks, accidental data loss, or cleanup activities.\n\n**Alert Threshold:**  \nTrigger an alert if more than 1 Delete* event occurs within a short time window (e.g., 1 hour), as multiple deletions could signify malicious activity or misconfiguration.\n\n**Impact:**  \n- **High values:** Multiple key deletions in a brief period can lead to irreversible data access loss, service disruptions, or security breaches. Immediate investigation is required.  \n- **Low values:** Occasional single deletions may be part of routine key rotation or cleanup but should still be reviewed for authorization.\n\n**Example Alert Rule:**  \n```\nWHEN count of events WHERE EventSource = \"kms.amazonaws.com\" AND EventName LIKE \"Delete%\" OVER last 1 hour > 1  \nTHEN trigger alert \"Multiple KMS key deletions detected\"\n```\n\n**Dashboard Use Case:**  \nVisualize the count of Delete* events over time to identify spikes or unusual patterns, correlating with operational changes or security incidents. This helps SREs proactively manage key lifecycle and maintain data protection integrity."
+  },
+  {
+    "query": {
+      "EventSource": "kms.amazonaws.com",
+      "EventName": "Encrypt*"
+    },
+    "description": "This pattern captures AWS KMS encryption API calls (e.g., Encrypt, EncryptData) recorded in CloudTrail, indicating when data is being encrypted using customer-managed or AWS-managed KMS keys. It helps SREs monitor cryptographic operations to ensure data protection policies are enforced and to detect unusual encryption activity that could signal misuse or security incidents.\n\n**Purpose:** Track the frequency and context of encryption operations to verify normal application behavior and compliance with data security standards.\n\n**Alert Threshold:** Trigger an alert if the number of Encrypt* events exceeds a baseline threshold (e.g., a sudden spike beyond 3 standard deviations from the average hourly rate) or if encryption requests originate from unexpected principals or regions.\n\n**Impact of Values:**  \n- **High volume:** May indicate increased data processing, potential automated encryption loops, or unauthorized bulk encryption attempts, which could impact performance or signal a security breach.  \n- **Low or zero volume:** Could suggest application issues, disabled encryption, or misconfigured services failing to encrypt data as required, risking data exposure.\n\n**Example Alert Rule:**  \nAlert when Encrypt* events exceed 500 per hour or when encryption requests come from an unrecognized IAM role, triggering an investigation into possible misuse or operational anomalies.\n\n**Dashboard Use:**  \nVisualize Encrypt* event counts over time alongside related Decrypt* events and key usage metrics to correlate encryption activity with application workloads and detect deviations from normal patterns."
+  },
+  {
+    "query": {
+      "EventSource": "kms.amazonaws.com",
+      "EventName": "Decrypt*"
+    },
+    "description": "This pattern captures AWS KMS Decrypt API calls recorded in CloudTrail, indicating when encrypted data is accessed and decrypted using KMS keys. It helps SREs monitor data access events for security auditing and anomaly detection. A sudden spike in Decrypt events may signal unusual or unauthorized data access, while consistently low or expected volumes suggest normal operation. As a threshold, alerting on a sustained increase exceeding 3 standard deviations above the historical average or a sudden burst of Decrypt calls within a short time window (e.g., 5 minutes) is recommended. For example, an alert rule could trigger when the count of Decrypt events exceeds 100 in 5 minutes, indicating potential data exfiltration or misuse. In dashboards, tracking the rate of Decrypt events over time alongside user identities and key IDs can help quickly identify suspicious patterns or compromised credentials."
+  },
+  {
+    "query": {
+      "EventSource": "kms.amazonaws.com",
+      "EventName": "Generate*"
+    },
+    "description": "This pattern detects AWS KMS API calls that begin with \"Generate,\" such as GenerateDataKey and GenerateRandom. It captures events where cryptographic keys, data keys, or random byte sequences are created. The measurement is event occurrence count, indicating how many such generation requests were made. This helps monitor key material creation activities within AWS KMS."
+  },
+  {
+    "query": {
+      "EventSource": "secretsmanager.amazonaws.com",
+      "EventName": "Create*"
+    },
+    "description": "This pattern detects Secrets Manager creation events in CloudTrail, specifically any API calls starting with \"Create\" (e.g., CreateSecret). It helps SREs monitor when new secrets, secret versions, or related configurations are added, which could indicate deployment changes or potential security risks.  \n**Alert threshold:** Trigger an alert if the number of create events exceeds a baseline (e.g., more than 5 creates within 10 minutes), as a sudden spike may signal unauthorized secret creation or misconfiguration. Conversely, zero create events over an extended period in an active environment might indicate issues with deployment pipelines or automation failures.  \n**Impact:**  \n- High values: Could indicate potential security breaches, unauthorized secret provisioning, or rapid environment changes requiring immediate investigation.  \n- Low values: May suggest stalled deployments or automation problems, potentially delaying application updates or secret rotations.  \n**Example usage:**  \nIn a dashboard, plot the count of Secrets Manager Create* events over time to visualize spikes. An alert rule could be:  \n`WHEN count(secretsmanager.amazonaws.com Create* events) > 5 within 10 minutes THEN trigger alert \"Unusual Secrets Creation Activity\"`  \nThis enables proactive detection of abnormal secret creation activity, helping maintain security and operational stability."
+  },
+  {
+    "query": {
+      "EventSource": "secretsmanager.amazonaws.com",
+      "EventName": "Delete*"
+    },
+    "description": "This pattern captures Secrets Manager deletion events. It identifies when secrets are removed, which can indicate cleanup operations or potential credential loss incidents."
+  },
+  {
+    "query": {
+      "EventSource": "secretsmanager.amazonaws.com",
+      "EventName": "Update*"
+    },
+    "description": "This pattern captures all update-related events from AWS Secrets Manager, such as modifications to secret values, rotation configurations, and access policy changes, as recorded in CloudTrail. Its purpose is to monitor changes that could affect the confidentiality, integrity, or availability of secrets critical to application security and operations.\n\n**Threshold guidance:**  \n- Trigger an alert if the number of update events exceeds a baseline threshold within a short time window (e.g., more than 5 update events in 10 minutes), as this may indicate unusual or potentially unauthorized activity.  \n- Conversely, an absence of expected rotation updates over a longer period (e.g., no rotation updates in 30 days) could signal stale secrets and increased security risk.\n\n**Impact of values:**  \n- **High frequency of update events:** May indicate automated rotation, bulk secret changes, or suspicious activity such as credential compromise or insider threat. Immediate investigation is recommended.  \n- **Low or zero update events:** Could mean secrets are not being rotated as per policy, increasing the risk of secret leakage or misuse.\n\n**Example alert rule:**  \nAlert when `count(secretsmanager.amazonaws.com Update* events) > 5` within 10 minutes, excluding known maintenance windows.  \n**Example dashboard widget:**  \nA time-series graph showing the count of Secrets Manager update events over time, annotated with alerts triggered when thresholds are breached, helping SREs quickly identify abnormal secret modification patterns."
+  },
+  {
+    "query": {
+      "EventSource": "secretsmanager.amazonaws.com",
+      "EventName": "Get*"
+    },
+    "description": "This pattern matches all Secrets Manager API calls that begin with \"Get,\" such as GetSecretValue and GetRandomPassword. It measures the count of secret retrieval operations performed within a specified time frame. Each event represents a single request to access secret data. This is useful for tracking how often secrets are accessed for authentication or application use."
+  },
+  {
+    "query": {
+      "EventSource": "secretsmanager.amazonaws.com",
+      "EventName": "Put*"
+    },
+    "description": "This pattern captures Secrets Manager put operations. It identifies when secrets are stored or updated, including secret value changes and configuration modifications."
+  },
+  {
+    "query": {
+      "EventSource": "ssm.amazonaws.com",
+      "EventName": "Create*"
+    },
+    "description": "This pattern captures all AWS Systems Manager (SSM) resource creation events logged in CloudTrail, such as the creation of parameters, documents, and maintenance windows. It helps SREs monitor the provisioning of new SSM assets, which can indicate configuration changes or automation deployments.\n\n**Purpose:**  \nTo detect when new SSM resources are created, enabling timely awareness of infrastructure changes that may affect system behavior or security posture.\n\n**Alert Threshold Guidance:**  \nSet an alert threshold based on your environment’s baseline creation activity. For example, trigger an alert if more than 5 creation events occur within 10 minutes, which may indicate unexpected or unauthorized provisioning.\n\n**Impact of Values:**  \n- **High values:** A spike in creation events could signal automated deployments, configuration drift, or potential security incidents such as unauthorized resource creation.  \n- **Low or zero values:** Normal in stable environments; however, a sudden drop might indicate issues with deployment pipelines or monitoring gaps.\n\n**Example Alert Rule:**  \nTrigger an alert when the count of events matching `{\"EventSource\": \"ssm.amazonaws.com\", \"EventName\": \"Create*\"}` exceeds 5 within a 10-minute window.\n\n**Example Dashboard Widget:**  \nA time-series graph showing the count of SSM creation events over time, with thresholds marked to highlight unusual spikes, helping SREs quickly identify and investigate abnormal provisioning activity."
+  },
+  {
+    "query": {
+      "EventSource": "ssm.amazonaws.com",
+      "EventName": "Delete*"
+    },
+    "description": "This pattern matches AWS Systems Manager API calls where the event name begins with \"Delete\". It captures actions that remove or delete SSM resources such as documents, parameters, or associations. The pattern measures the occurrence of these deletion events as discrete API call records. Each matched event represents one instance of a resource deletion operation within Systems Manager."
+  },
+  {
+    "query": {
+      "EventSource": "ssm.amazonaws.com",
+      "EventName": "Update*"
+    },
+    "description": "This pattern captures all update-related events from AWS Systems Manager (SSM) recorded in CloudTrail, such as modifications to parameters, documents, and maintenance windows. It helps SREs monitor changes to critical SSM resources that could affect system configuration, automation workflows, or maintenance schedules.  \n\n**Purpose:** Detect when SSM resources are altered to ensure changes are authorized and to quickly identify unexpected or potentially disruptive updates.\n\n**Alert Threshold:** Trigger an alert if the number of update events exceeds a baseline threshold within a short time window (e.g., more than 5 update events in 10 minutes), indicating possible misconfiguration, automation errors, or unauthorized changes.\n\n**Impact:**  \n- **High values:** A spike in update events may signal bulk or automated changes that could introduce instability or security risks if unplanned. Immediate investigation is warranted.  \n- **Low or zero values:** Normal operation if no updates are expected; however, if updates are regularly scheduled, a sudden drop might indicate monitoring gaps or failures in deployment pipelines.\n\n**Example Usage:**  \nIn a monitoring dashboard, display a time series graph of the count of **{\"EventSource\": \"ssm.amazonaws.com\", \"EventName\": \"Update*\"}** events over time. Configure an alert rule to notify the SRE team when update events exceed 5 within any rolling 10-minute window, enabling rapid response to unexpected configuration changes."
+  },
+  {
+    "query": {
+      "EventSource": "ssm.amazonaws.com",
+      "EventName": "Send*"
+    },
+    "description": "This pattern matches AWS Systems Manager events where commands or requests are sent. It captures actions such as sending Run Command instructions, starting automation executions, and initiating Session Manager connections. Each event represents a discrete send operation triggered by a user or system. The measurement unit is the count of these send events occurring within the monitored timeframe."
+  },
+  {
+    "query": {
+      "EventSource": "ssm.amazonaws.com",
+      "EventName": "Get*"
+    },
+    "description": "This pattern captures all Systems Manager (SSM) \"Get\" operations recorded in CloudTrail, such as retrieving parameters from Parameter Store, downloading SSM documents, or requesting instance information. It helps SREs monitor read access to SSM resources, which can indicate normal operational queries or potential reconnaissance activity by unauthorized users.\n\n**Purpose:**  \nTrack and analyze the frequency of SSM \"Get\" API calls to detect unusual spikes or drops in read operations that may impact system performance or signal security concerns.\n\n**Alert Threshold Guidance:**  \nSet alert thresholds based on baseline usage patterns. For example, trigger an alert if the number of \"Get\" operations exceeds 2-3 times the average hourly rate within a short time window (e.g., 5-15 minutes), or if there is a sudden drop to near zero, which might indicate service disruption or misconfiguration.\n\n**Impact of Values:**  \n- **High values:** May indicate automated scripts, bulk data retrieval, or potential reconnaissance by attackers trying to gather system details. Excessive reads can also increase API costs or cause throttling.  \n- **Low values:** Could suggest issues with monitoring tools, broken automation, or loss of visibility into SSM-managed resources.\n\n**Example Usage:**  \nIn a CloudWatch dashboard or alert rule, aggregate CloudTrail events filtered by `{\"EventSource\": \"ssm.amazonaws.com\", \"EventName\": \"Get*\"}` and plot the count over time. Configure an alarm to notify the SRE team if the count spikes above the defined threshold within a 15-minute window, enabling rapid investigation of unusual access patterns."
+  },
+  {
+    "query": {
+      "EventSource": "ecs.amazonaws.com",
+      "EventName": "Create*"
+    },
+    "description": "This pattern matches AWS ECS API calls that create resources. It captures events where ECS entities such as clusters, services, task definitions, and capacity providers are created. Each event represents a single creation action recorded by AWS CloudTrail. The measurement unit is the count of creation events triggered within ECS."
+  },
+  {
+    "query": {
+      "EventSource": "ecs.amazonaws.com",
+      "EventName": "Delete*"
+    },
+    "description": "This pattern captures ECS deletion events recorded in CloudTrail, specifically any API calls starting with \"Delete\" from the ECS service (e.g., DeleteCluster, DeleteService, DeleteTaskSet). Its purpose is to monitor when ECS resources are removed, which can signal intentional cleanup or unintended disruptions affecting service availability.\n\n**Threshold guidance:**  \n- Trigger an alert if the number of ECS deletion events exceeds a baseline threshold within a short time window (e.g., more than 3 Delete* events in 5 minutes), as this may indicate accidental mass deletion or a security incident.  \n- Low or expected deletion rates typically reflect routine maintenance or scaling down of resources and generally have minimal impact.\n\n**Impact:**  \n- High deletion event counts can lead to service downtime, loss of running tasks, or cluster instability, requiring immediate investigation.  \n- Low or zero deletion events usually indicate stable ECS resource management.\n\n**Example alert rule:**  \n- Alert when `count(events where EventSource=\"ecs.amazonaws.com\" and EventName starts with \"Delete\") > 3` within 5 minutes.  \n- This alert can be visualized on a dashboard showing ECS Delete* event counts over time, helping SREs quickly identify unusual spikes and correlate with service health metrics."
+  },
+  {
+    "query": {
+      "EventSource": "ecs.amazonaws.com",
+      "EventName": "Update*"
+    },
+    "description": "This pattern captures all ECS update events recorded in CloudTrail, such as modifications to ECS services, task definitions, and cluster configurations. Its purpose is to monitor changes that could affect the stability, performance, or security of ECS workloads. An SRE should use this pattern to detect unexpected or frequent updates that may indicate configuration drift, deployment issues, or unauthorized changes.\n\n**Threshold guidance:**  \n- Trigger an alert if the number of ECS update events exceeds a baseline threshold (e.g., more than 5 updates within 10 minutes), as this may signal rapid or unintended changes.  \n- A low or zero count over a long period is typically normal but should be reviewed if updates are expected during deployments.\n\n**Impact:**  \n- High frequency of update events can lead to service instability, deployment failures, or security risks if changes are unplanned or unauthorized.  \n- Low frequency indicates stable ECS configurations but may also suggest stalled deployments or lack of necessary updates.\n\n**Example alert rule:**  \n“Alert when the count of CloudTrail events with EventSource = 'ecs.amazonaws.com' and EventName starting with 'Update' exceeds 5 within a 10-minute window.”  \n\n**Example dashboard widget:**  \nA time-series graph showing the count of ECS update events per 5-minute interval, annotated with deployment windows to correlate updates with expected changes."
+  },
+  {
+    "query": {
+      "EventSource": "ecs.amazonaws.com",
+      "EventName": "Run*"
+    },
+    "description": "This pattern captures ECS task run events from CloudTrail, specifically any API calls starting with \"Run\" (e.g., RunTask, RunTaskSync). It indicates when ECS tasks are initiated, including manual task launches, service deployments, and scheduled executions. Monitoring these events helps SREs track workload activity and detect anomalies in task start rates.\n\n**Threshold guidance:**  \n- Alert if the number of Run* events spikes significantly above the baseline (e.g., a 2x increase within 5 minutes), which may indicate runaway task launches or deployment issues.  \n- Alert if the count drops to near zero during expected deployment windows, potentially signaling failures in task scheduling or service disruptions.\n\n**Impact:**  \n- High values can lead to resource exhaustion, increased costs, or cascading failures if tasks are repeatedly started without completion.  \n- Low values may indicate stalled deployments, scheduler failures, or service outages, impacting application availability.\n\n**Example alert rule:**  \nTrigger an alert when the count of ECS Run* events exceeds 100 within 5 minutes or falls below 5 during a scheduled deployment window, prompting investigation into task launch behavior.\n\n**Example dashboard widget:**  \nA time-series graph showing the count of ECS Run* events per minute, overlaid with deployment schedules, enabling correlation between task launches and expected operational activities."
+  },
+  {
+    "query": {
+      "EventSource": "ecs.amazonaws.com",
+      "EventName": "Stop*"
+    },
+    "description": "This pattern captures ECS stop events. It identifies when ECS tasks are stopped, which can indicate task completion, scaling operations, or service updates."
+  },
+  {
+    "query": {
+      "EventSource": "eks.amazonaws.com",
+      "EventName": "Create*"
+    },
+    "description": "This pattern captures all creation events initiated through the Amazon EKS service, such as the creation of EKS clusters, node groups, and add-on components, as recorded in CloudTrail. It enables SREs to monitor when new Kubernetes infrastructure is provisioned, which can impact cluster capacity, security posture, and operational costs.\n\n**Purpose:**  \nTo detect and track the provisioning of new EKS resources, helping teams respond promptly to unexpected or unauthorized cluster creations that may indicate misconfigurations or security risks.\n\n**Alert Threshold Guidance:**  \nTrigger an alert if the number of EKS creation events exceeds a defined baseline within a short time window (e.g., more than 2 cluster or node group creations within 1 hour), as this may signal automated or unintended deployments. Conversely, an unusually low number of creation events over a longer period could indicate deployment pipeline issues or stalled infrastructure scaling.\n\n**Impact of Values:**  \n- **High frequency:** May lead to resource sprawl, increased costs, or potential security vulnerabilities if clusters are created without proper governance.  \n- **Low frequency:** Could reflect deployment failures or delays, impacting application availability or scalability.\n\n**Example Usage:**  \nIn a monitoring dashboard, display a time series graph of EKS creation events filtered by this pattern to visualize provisioning trends. An alert rule might be:  \n`WHEN count(events matching {\"EventSource\": \"eks.amazonaws.com\", \"EventName\": \"Create*\"}) > 2 within 1 hour THEN trigger alert \"Unusual EKS resource creation activity detected\"`  \nThis helps SREs quickly identify and investigate abnormal cluster provisioning activities."
+  },
+  {
+    "query": {
+      "EventSource": "eks.amazonaws.com",
+      "EventName": "Delete*"
+    },
+    "description": "This pattern matches all deletion events initiated by the Amazon EKS service. It captures API calls where the event name starts with \"Delete,\" such as deleting clusters, node groups, or other EKS resources. The measurement is a count of these deletion events occurring within the monitored timeframe. Tracking these events helps identify resource removals that may impact cluster availability or indicate cleanup activities."
+  },
+  {
+    "query": {
+      "EventSource": "eks.amazonaws.com",
+      "EventName": "Update*"
+    },
+    "description": "This pattern captures all update-related events from Amazon EKS recorded in CloudTrail, such as cluster version upgrades, managed node group modifications, and add-on updates. Its purpose is to monitor changes that can affect cluster stability, security, or performance. An SRE should set alert thresholds based on the frequency and timing of these update events—for example, triggering an alert if more than 3 update events occur within a 1-hour window, which may indicate unexpected or automated changes that require investigation. High volumes of update events in a short period could signal potential configuration drift, deployment issues, or unauthorized modifications, increasing risk to cluster availability and security. Conversely, low or no update events over extended periods may suggest stagnation in maintenance or missed critical updates. An example alert rule could be: “Alert if count of events matching {EventSource: 'eks.amazonaws.com', EventName: 'Update*'} exceeds 3 within 60 minutes.” In a dashboard, this pattern can be visualized as a time series graph showing update event counts per hour, helping SREs quickly identify unusual spikes or trends in cluster modifications."
+  },
+  {
+    "query": {
+      "EventSource": "eks.amazonaws.com",
+      "EventName": "Describe*"
+    },
+    "description": "This pattern captures all Amazon EKS \"Describe\" API operations logged in CloudTrail, which occur when cluster metadata, node group configurations, or add-on details are queried. It helps SREs monitor how often EKS cluster information is accessed, providing visibility into potential reconnaissance or troubleshooting activities. A sudden spike in Describe calls—such as exceeding 100 requests within 5 minutes—may indicate unusual or automated querying that could precede configuration changes or security incidents, warranting an alert. Conversely, consistently low or zero Describe activity might suggest lack of monitoring or insufficient operational visibility. For example, an alert rule could trigger when Describe API calls surpass 100 in a 5-minute window, and a dashboard widget might display a time series graph of Describe call counts to track trends and detect anomalies in cluster information access patterns."
+  },
+  {
+    "query": {
+      "EventSource": "eks.amazonaws.com",
+      "EventName": "List*"
+    },
+    "description": "EKS List* events in CloudTrail capture API calls that enumerate EKS resources such as clusters, node groups, add-ons, and other related components. These operations are primarily read-only and used for infrastructure discovery, capacity planning, and operational visibility. Monitoring the frequency of List* calls helps detect unusual activity patterns: a sudden spike may indicate automated scanning, reconnaissance, or potential misuse, while an abnormally low rate could suggest monitoring gaps or service disruptions. A practical alert threshold might be set at a rate exceeding the baseline average by 3x within a 5-minute window. For example, a dashboard widget could track the count of eks.amazonaws.com List* events per minute, with an alert rule triggering when this count surpasses the defined threshold, enabling timely investigation of unexpected enumeration activity."
+  },
+  {
+    "query": {
+      "EventSource": "guardduty.amazonaws.com",
+      "EventName": "*"
+    },
+    "description": "GuardDuty events capture detailed findings related to potential security threats detected within your AWS environment. These include alerts on suspicious activities such as unauthorized access, compromised credentials, and known malicious behavior. Each event provides metadata and severity scores to quantify the risk level of the detected threat. This data is essential for continuous security monitoring and incident response."
+  },
+  {
+    "query": {
+      "EventSource": "securityhub.amazonaws.com",
+      "EventName": "*"
+    },
+    "description": "Security Hub events capture findings and compliance status related to your AWS environment's security posture. They measure detected security issues, compliance checks, and control evaluations as discrete event records. Each event represents a specific security or compliance occurrence, enabling centralized monitoring and audit reporting. These events are counted individually to track security and compliance activities over time."
+  },
+  {
+    "query": {
+      "EventSource": "config.amazonaws.com",
+      "EventName": "*"
+    },
+    "description": "This event captures all AWS Config activity related to resource configuration changes and compliance evaluations. It measures configuration drift, compliance status, and resource inventory updates across your AWS environment. Events track changes in resource states and compliance rules, enabling auditing and governance. Data is recorded as discrete configuration and compliance change events."
+  },
+  {
+    "query": {
+      "EventSource": "macie.amazonaws.com",
+      "EventName": "*"
+    },
+    "description": "Macie data discovery events in CloudTrail capture detailed records of sensitive data identification and classification activities performed by Amazon Macie. These events help monitor the discovery of Personally Identifiable Information (PII), data loss risks, and compliance with privacy regulations. An SRE can use these events to track when Macie detects sensitive data or policy violations, enabling proactive data governance and security posture management.\n\n**Alert Thresholds:**  \n- Trigger alerts when the number of sensitive data findings exceeds a predefined threshold within a given time window (e.g., > 10 new PII findings in 1 hour).  \n- Alert on sudden spikes or unusual patterns in data classification events that may indicate data exfiltration or misconfiguration.\n\n**Impact of Values:**  \n- **High values:** A surge in sensitive data findings may indicate increased exposure of PII or potential data leaks, requiring immediate investigation.  \n- **Low or zero values:** May indicate normal operation or, conversely, that Macie scanning is not running correctly, potentially missing critical data.\n\n**Example Usage:**  \n- **Dashboard:** Visualize the count of Macie findings over time, segmented by severity or data type, to monitor trends and identify anomalies.  \n- **Alert Rule:**  \n  ```\n  WHEN count(maciedata.findings) > 10 WITHIN 1 hour  \n  THEN trigger alert \"High number of sensitive data findings detected by Macie\"\n  ```"
+  },
+  {
+    "query": {
+      "EventSource": "detective.amazonaws.com",
+      "EventName": "*"
+    },
+    "description": "Detective security investigation events capture detailed activity logs related to threat analysis, security incident investigations, and behavioral analytics within AWS Detective. These events help SREs monitor and correlate security forensics and threat intelligence to identify suspicious or anomalous behavior in the environment.\n\n**Purpose in CloudTrail:**  \nEvents from `detective.amazonaws.com` provide visibility into investigative actions and findings performed by AWS Detective, enabling tracking of security-related activities and potential threat escalations.\n\n**Alert Threshold Guidance:**  \n- Trigger alerts when the volume of Detective investigation events spikes significantly above baseline (e.g., a 3x increase in investigative queries or findings within a short time window), indicating potential active threat hunting or incident response.  \n- Alert on unusual event types or repeated failed investigation attempts that may suggest misuse or compromised credentials.\n\n**Impact of Values:**  \n- **High event volume:** May indicate active security incidents, ongoing investigations, or potential security breaches requiring immediate attention.  \n- **Low or no events:** Could suggest normal operation or lack of active investigations; however, a sudden drop after a period of activity might also warrant review.\n\n**Example Alert Rule:**  \n```\nWHEN count(detective.amazonaws.com EventName=*) OVER 15 minutes > 3 * baseline_average THEN alert \"Unusual Detective investigation activity detected\"\n```\n\n**Example Dashboard Widget:**  \n- A time-series graph showing the count of Detective events per minute, annotated with alerts on spikes.  \n- A table listing top EventNames and their frequencies to identify unusual investigative patterns."
+  },
+  {
+    "query": {
+      "EventSource": "ce.amazonaws.com",
+      "EventName": "*"
+    },
+    "description": "These events originate from AWS Cost Explorer and capture detailed billing and cost management activities. They measure usage and spending data across AWS services, reported in monetary units (USD). The events support cost optimization, budget tracking, and financial governance by providing insights into resource utilization and spending patterns."
+  },
+  {
+    "query": {
+      "EventSource": "apigateway.amazonaws.com",
+      "EventName": "Create*"
+    },
+    "description": "This event captures the creation of API Gateway resources, including APIs, stages, and deployments. It records actions such as provisioning endpoints and integrating backend services. The event measures the occurrence of these creation activities as discrete events. Each event represents a single creation action within the API Gateway service."
+  },
+  {
+    "query": {
+      "EventSource": "apigateway.amazonaws.com",
+      "EventName": "Update*"
+    },
+    "description": "API Gateway update events. API modifications, configuration changes, and deployment updates. API versioning, performance tuning, and security policy updates."
+  },
+  {
+    "query": {
+      "EventSource": "apigateway.amazonaws.com",
+      "EventName": "Delete*"
+    },
+    "description": "API Gateway deletion events captured by CloudTrail indicate when APIs, stages, or related resources are removed. These events are critical for tracking decommissioning activities, ensuring that endpoint removals are intentional and authorized, and preventing accidental service disruptions.  \n\n**Purpose:**  \nMonitor all delete operations initiated via API Gateway (e.g., DeleteRestApi, DeleteStage) to maintain visibility into changes that reduce API surface area or remove critical endpoints.\n\n**Alert Threshold:**  \nTrigger an alert if the number of Delete* events exceeds a predefined baseline within a short time window (e.g., more than 3 deletions within 10 minutes), as this may indicate accidental mass deletions, unauthorized activity, or a misconfigured automation script.\n\n**Impact:**  \n- **High frequency:** Could lead to service outages, broken integrations, or data loss if APIs or stages are removed unexpectedly. Immediate investigation is required.  \n- **Low or zero frequency:** Normal operation; deletion events are infrequent and typically planned.\n\n**Example Usage:**  \nIn a monitoring dashboard, display a time series graph of Delete* events from apigateway.amazonaws.com. Set an alert rule such as:  \n`IF count(Delete* events) > 3 within 10 minutes THEN trigger high-severity alert \"Potential API Gateway mass deletion detected\"`  \nThis enables rapid response to potentially disruptive changes in the API infrastructure."
+  },
+  {
+    "query": {
+      "EventSource": "cloudformation.amazonaws.com",
+      "EventName": "Create*"
+    },
+    "description": "CloudFormation stack creation events (**EventSource: cloudformation.amazonaws.com**, **EventName: Create\\*** ) represent API calls initiating the provisioning of AWS infrastructure and resources via CloudFormation templates. These events in CloudTrail help SREs monitor the start of environment setups and infrastructure deployments as part of Infrastructure as Code workflows.\n\n**Purpose:** Track and audit when new CloudFormation stacks or stack components are being created, enabling visibility into changes in infrastructure state and deployment activities.\n\n**Alert Thresholds:**  \n- Trigger an alert if the number of Create* events exceeds a baseline threshold within a short time window (e.g., >10 stack creation attempts in 5 minutes), which may indicate automated deployment loops, misconfigurations, or potential security incidents.  \n- Alert if Create* events spike unexpectedly outside of scheduled deployment windows or change management periods.\n\n**Impact of Values:**  \n- **High volume:** May signal rapid infrastructure changes that could lead to instability, resource contention, or deployment failures. It could also indicate unauthorized or accidental mass provisioning.  \n- **Low or zero volume:** Normal during steady-state operations; however, a sudden drop during expected deployment windows might indicate pipeline failures or blocked deployments.\n\n**Example Usage:**  \n- **Dashboard:** Visualize the count of CloudFormation Create* events over time, segmented by stack name or user identity, to correlate deployments with system performance or incidents.  \n- **Alert Rule:**  \n  ```  \n  WHEN count(events where EventSource=\"cloudformation.amazonaws.com\" AND EventName LIKE \"Create%\") > 10 within 5 minutes  \n  THEN trigger alert \"High rate of CloudFormation stack creation events detected\"  \n  ```  \nThis enables proactive detection of abnormal infrastructure provisioning activity and supports rapid investigation and response."
+  },
+  {
+    "query": {
+      "EventSource": "cloudformation.amazonaws.com",
+      "EventName": "Update*"
+    },
+    "description": "CloudFormation stack update events (**EventSource**: \"cloudformation.amazonaws.com\", **EventName**: \"Update*\") capture all modifications to AWS CloudFormation stacks, including infrastructure changes, resource additions/removals, and configuration updates. These events are critical for tracking infrastructure evolution and ensuring change management compliance.\n\n**Purpose:**  \nThey provide visibility into when and how infrastructure is altered via CloudFormation, enabling SREs to audit changes, detect unauthorized or unexpected updates, and correlate incidents with recent deployments.\n\n**Alert Threshold Guidance:**  \n- Trigger alerts on unusually high frequencies of update events within a short time window (e.g., >5 updates in 10 minutes), which may indicate automation loops, deployment failures, or misconfigurations.  \n- Alert on failed or rollback update events to quickly identify deployment issues impacting system stability.\n\n**Impact of Values:**  \n- **High volume of updates:** May signal instability, rapid iterative deployments, or potential automation errors, increasing risk of outages or configuration drift.  \n- **Low or zero updates:** Normal during stable periods but prolonged absence of updates might indicate stalled deployments or lack of infrastructure changes.\n\n**Example Usage:**  \n- **Dashboard:** Display a time-series graph of CloudFormation Update* events per hour, highlighting failed updates in red.  \n- **Alert Rule:** Trigger an alert if the count of UpdateStack events exceeds 5 within 10 minutes or if any update event has a status of FAILED or ROLLBACK_COMPLETE, enabling rapid response to deployment issues."
+  },
+  {
+    "query": {
+      "EventSource": "cloudformation.amazonaws.com",
+      "EventName": "Delete*"
+    },
+    "description": "CloudFormation Delete* events in CloudTrail indicate the initiation or completion of stack deletion operations, signaling infrastructure teardown and resource decommissioning activities. These events help SREs monitor environment lifecycle changes and ensure that deletions are intentional and controlled. \n\n**Alert Threshold:** Trigger an alert if the number of Delete* events exceeds a predefined baseline (e.g., more than 3 deletions within 1 hour) or occurs unexpectedly outside of scheduled maintenance windows, as this may indicate accidental or malicious infrastructure removal.\n\n**Impact of Values:**  \n- **High frequency:** May lead to unintended service disruptions, data loss, or compliance risks due to rapid or bulk resource deletions. Requires immediate investigation.  \n- **Low or zero frequency:** Normal in stable environments; indicates no recent stack deletions and stable infrastructure.\n\n**Example Usage:**  \nCreate a dashboard widget tracking the count of CloudFormation Delete* events over time. Set an alert rule to notify the SRE team if Delete* events spike above the threshold within a rolling 1-hour window, enabling prompt response to potential infrastructure teardown incidents."
+  },
+  {
+    "query": {
+      "EventSource": "codedeploy.amazonaws.com",
+      "EventName": "*"
+    },
+    "description": "CodeDeploy events in CloudTrail capture API calls made to the AWS CodeDeploy service (EventSource: \"codedeploy.amazonaws.com\") across all event names (EventName: \"*\"). These events provide detailed records of deployment lifecycle actions such as creating, updating, starting, stopping, and deleting deployments, deployment groups, and applications. The data source is the AWS CodeDeploy API, and each event includes metadata like timestamps, user identity, deployment IDs, status changes, and error messages. Metrics derived from these events typically count the number of deployment-related API calls or track deployment status transitions over time (units: count of events or status occurrences). Unusual values—such as a sudden spike in failed deployment events, unexpected deployment cancellations, or unauthorized API calls—should trigger alerts as they may indicate deployment issues, configuration errors, or potential security incidents requiring immediate investigation."
+  },
+  {
+    "query": {
+      "EventSource": "codepipeline.amazonaws.com",
+      "EventName": "*"
+    },
+    "description": "Tracks all events generated by AWS CodePipeline, including pipeline executions, stage transitions, and action results. Measures the status and progress of continuous integration and continuous delivery (CI/CD) workflows. Events are recorded as discrete occurrences without quantitative units, capturing state changes and execution details throughout the software release process."
+  },
+  {
+    "query": {
+      "EventSource": "glue.amazonaws.com",
+      "EventName": "*"
+    },
+    "description": "Tracks all AWS Glue ETL job events, including job start, success, failure, and state changes. Measures the execution status and lifecycle of data processing and transformation workflows. Events are recorded as discrete state change notifications without quantitative units. Enables monitoring and management of Glue job performance and pipeline execution."
+  },
+  {
+    "query": {
+      "EventSource": "athena.amazonaws.com",
+      "EventName": "*"
+    },
+    "description": "Athena query execution events captured by CloudTrail track all SQL query operations initiated via Athena (EventSource: \"athena.amazonaws.com\", EventName: \"*\"). These events provide visibility into query submissions, completions, failures, and cancellations, enabling SREs to monitor query performance, usage patterns, and potential operational issues. \n\n**Purpose:**  \n- Identify query execution trends and anomalies.  \n- Detect failed or long-running queries that may indicate resource contention or misconfigurations.  \n- Correlate query activity with downstream system performance or cost spikes.\n\n**Alert Thresholds:**  \n- Alert if query failure rate exceeds 5% over a 15-minute window.  \n- Alert if average query execution time surpasses 5 minutes consistently over 30 minutes.  \n- Alert on sudden spikes in query volume (e.g., 2x baseline within 5 minutes), which may indicate unexpected load or abuse.\n\n**Impact:**  \n- High failure rates can signal syntax errors, permission issues, or service disruptions, potentially delaying data availability.  \n- Prolonged query durations may degrade user experience and increase Athena costs.  \n- Low query volume might indicate upstream data pipeline issues or reduced user activity, affecting business insights.\n\n**Example Usage:**  \n- Dashboard widget showing query counts, success vs failure rates, and average execution time over time.  \n- Alert rule: Trigger when failed queries > 10 in 15 minutes or average execution time > 300 seconds for 30 minutes, notifying the SRE team to investigate query performance or service health."
+  },
+  {
+    "query": {
+      "EventSource": "redshift.amazonaws.com",
+      "EventName": "Create*"
+    },
+    "description": "Redshift cluster creation events in CloudTrail capture all API calls initiating the provisioning of new Redshift clusters (e.g., CreateCluster). These events indicate when new data warehouse resources are being deployed or configured, impacting capacity and cost.  \n**Purpose:** Enables SREs to monitor and audit cluster provisioning activities for operational control and security compliance.  \n**Alert Threshold:** Trigger alerts on an unusually high number of cluster creation events within a short time window (e.g., >3 creates in 1 hour), which may indicate automation errors, misconfigurations, or unauthorized resource provisioning.  \n**Impact:**  \n- **High values:** May lead to resource sprawl, increased costs, and potential performance degradation due to over-provisioning. Could also signal security risks if unexpected clusters are created.  \n- **Low or zero values:** Normal in stable environments; no new clusters being created means stable infrastructure.  \n**Example Alert Rule:**  \n“Alert if count of events with EventSource='redshift.amazonaws.com' and EventName starting with 'Create' exceeds 3 within 60 minutes.”  \n**Dashboard Use:** Visualize the frequency of Redshift cluster creation events over time to detect spikes or anomalies, correlating with deployment activities or security incidents."
+  },
+  {
+    "query": {
+      "EventSource": "redshift.amazonaws.com",
+      "EventName": "Delete*"
+    },
+    "description": "This event captures all deletion actions initiated within Amazon Redshift, such as deleting clusters, snapshots, or other resources. It measures the occurrence of these delete operations as discrete event counts. Each event represents a single deletion action performed on Redshift resources. This helps track resource lifecycle changes for cost management and infrastructure maintenance."
+  },
+  {
+    "query": {
+      "EventSource": "elasticmapreduce.amazonaws.com",
+      "EventName": "*"
+    },
+    "description": "EMR cluster events captured by CloudTrail provide detailed records of actions and changes within Amazon EMR, including cluster creation, modification, scaling, and termination. These events enable SREs to monitor the health and lifecycle of big data processing jobs and Hadoop ecosystem workflows. \n\n**Purpose:** Track operational changes and anomalies in EMR clusters to ensure data processing pipelines run smoothly and to quickly identify failures or misconfigurations.\n\n**Alert Thresholds:**  \n- Alert on unexpected cluster terminations or failures (e.g., `TerminateJobFlows` or `RunJobFlow` failures).  \n- Alert if cluster scaling events occur too frequently within a short time window, indicating instability.  \n- Alert on prolonged cluster startup or shutdown times exceeding defined SLAs.\n\n**Impact:**  \n- High frequency of failure or termination events may indicate systemic issues causing job interruptions or data loss.  \n- Low or no cluster activity during expected processing windows could signal pipeline stalls or misconfigurations.  \n- Frequent scaling events might degrade performance or increase costs unnecessarily.\n\n**Example Alert Rule:**  \nTrigger an alert if more than 3 `TerminateJobFlows` events occur within 1 hour, or if a cluster remains in `Starting` state for over 15 minutes without transitioning to `Running`.  \n\n**Dashboard Use:**  \nVisualize event counts over time by event name (e.g., `RunJobFlow`, `AddInstanceGroups`, `TerminateJobFlows`) alongside cluster status metrics to correlate operational events with cluster health and job success rates."
+  },
+  {
+    "query": {
+      "EventSource": "kinesis.amazonaws.com",
+      "EventName": "*"
+    },
+    "description": "Kinesis streaming events capture all API operations performed on Amazon Kinesis streams, including data ingestion, shard management, and stream configuration changes. These events measure the occurrence and details of each action in real time. Metrics are recorded as discrete event counts, representing individual API calls made to the Kinesis service. This enables monitoring of stream activity and operational changes within your data streaming environment."
+  },
+  {
+    "query": {
+      "EventSource": "states.amazonaws.com",
+      "EventName": "*"
+    },
+    "description": "This event source captures all API calls made to AWS Step Functions (states.amazonaws.com). It records operations related to state machines, including workflow executions, state transitions, and management actions. Each event measures the occurrence of a specific Step Functions API call, logged as a discrete event without a unit of measurement. This enables monitoring and auditing of workflow orchestration and execution activities."
+  },
+  {
+    "query": {
+      "EventSource": "apprunner.amazonaws.com",
+      "EventName": "*"
+    },
+    "description": "App Runner deployment events track actions related to containerized application services managed by AWS App Runner. These events include application deployments, service scaling activities, and lifecycle changes such as start, stop, or update operations. Each event records the occurrence of a specific action with timestamps but does not measure quantitative units. This enables monitoring and auditing of application state changes within the App Runner environment."
+  },
+  {
+    "query": {
+      "EventName": "Tag*"
+    },
+    "description": "Tracks all resource tagging activities performed across AWS services. Measures the number of tagging API calls made to create, update, or delete tags on resources. Enables monitoring of cost allocation, resource organization, compliance, and governance through tag usage. Recorded as a count of tagging operations."
+  },
+  {
+    "query": {
+      "EventName": "Describe*"
+    },
+    "description": "Operations that retrieve detailed information about cloud resources across all services. This includes inspecting configurations, discovering resources, and providing operational visibility. It measures the number of API calls made to describe or list resource details. The unit of measurement is the count of these describe or list requests."
+  },
+  {
+    "query": {
+      "EventName": "List*"
+    },
+    "description": "Resource listing operations (events with names starting with \"List\") in CloudTrail capture API calls that enumerate or retrieve metadata about cloud resources across services (e.g., ListBuckets, ListInstances). These events help SREs monitor inventory changes, detect unusual enumeration activity, and maintain infrastructure visibility. \n\n**Purpose:** Track and audit resource discovery actions to identify potential reconnaissance or automation behaviors.\n\n**Alert Threshold:** Trigger alerts when the rate of List* events exceeds a baseline by 3x within a 5-minute window, indicating possible automated scanning or misconfigured scripts.\n\n**Impact:**  \n- **High values:** May signal excessive resource enumeration, potentially due to unauthorized scanning, automation loops, or misconfigured monitoring tools, increasing API costs and risk exposure.  \n- **Low values:** Could indicate loss of visibility or failures in inventory processes, risking outdated infrastructure awareness.\n\n**Example Alert Rule:**  \n`IF count(List*) > 300 events in 5 minutes THEN alert \"High resource enumeration activity detected\"`  \n\n**Dashboard Use:** Visualize List* event counts over time alongside other API calls to correlate spikes with deployments or incidents, aiding in capacity planning and anomaly detection."
+  },
+  {
+    "query": {
+      "EventName": "Start*"
+    },
+    "description": "**{\"EventName\": \"Start*\"}** events in CloudTrail indicate the initiation of resource start operations across various AWS services, such as starting EC2 instances, RDS databases, or other managed resources. These events help SREs track when resources transition from a stopped or inactive state to an active state, which is critical for service availability, cost management, and operational recovery.\n\n**Purpose:**  \nTo monitor and audit the activation of cloud resources, ensuring that start operations align with expected usage patterns and do not indicate unauthorized or unexpected activity.\n\n**Alert Thresholds:**  \n- Trigger an alert if the number of **Start*** events exceeds a predefined threshold within a short time window (e.g., more than 10 start operations within 5 minutes), which may indicate an automated scaling event, a potential misconfiguration, or a security incident.  \n- Conversely, alert if expected start operations do not occur during scheduled maintenance windows, indicating possible failures in recovery or deployment processes.\n\n**Impact of Values:**  \n- **High volume of Start* events:** Could lead to increased costs due to resource activation, potential service disruptions if resources are started unexpectedly, or indicate automated scaling or recovery actions.  \n- **Low or zero Start* events during expected periods:** May signal failed recovery attempts, stalled deployments, or issues in operational workflows, potentially impacting service availability.\n\n**Example Usage:**  \nIn a CloudWatch dashboard, plot the count of **Start*** events over time to visualize spikes or drops. An alert rule can be configured as:  \n```\nIF count(Start* events) > 10 within 5 minutes THEN trigger alert \"Unusual spike in resource start operations\"\n```\nThis enables proactive investigation into unexpected resource activations or failures to start critical services."
+  },
+  {
+    "query": {
+      "EventName": "Stop*"
+    },
+    "description": "**{\"EventName\": \"Stop*\"}**  \nThis event captures all resource stop operations across cloud services, such as stopping virtual machines, containers, or other compute resources. It signals intentional halting of resources for cost optimization, maintenance, or deactivation purposes.  \n\n**Purpose:**  \nTo monitor when resources are stopped, enabling tracking of operational changes that affect availability and cost.  \n\n**Alert Threshold:**  \nTrigger an alert if the number of Stop* events exceeds a defined baseline (e.g., a 50% increase over the average daily stop events) within a short time window (e.g., 15 minutes), which may indicate unexpected or mass shutdowns.  \n\n**Impact:**  \n- **High values:** May indicate large-scale maintenance, potential outages, or unauthorized shutdowns impacting service availability and user experience.  \n- **Low values:** Normal or no stop activity, indicating stable resource operation or potential lack of expected maintenance.  \n\n**Example Usage:**  \nIn a dashboard, plot the count of Stop* events over time to visualize stop operation trends. An alert rule could be:  \n`WHEN count(Stop* events) > baseline * 1.5 FOR 15 minutes THEN trigger alert`  \nThis helps SREs quickly detect abnormal stop activity and respond accordingly."
+  },
+  {
+    "query": {
+      "EventName": "Scale*"
+    },
+    "description": "Auto-scaling events triggered to adjust service capacity based on demand. Measures the number of scaling actions performed, including scale-up and scale-down operations. Units are counted as discrete scaling events per service. This metric helps monitor resource allocation efficiency and cost optimization."
+  }
+]

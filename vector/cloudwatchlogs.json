@@ -1,0 +1,808 @@
+[
+  {
+    "query": {
+      "LogGroup": "API-Gateway-Execution*",
+      "message": "ERROR*"
+    },
+    "description": "**API Gateway Execution Error Logs:** This log group captures all error-level messages generated during API Gateway request processing, including gateway errors, integration failures, client request issues, and downstream service connectivity problems. It is essential for monitoring API health and diagnosing failures impacting API availability and performance.  \n**Alert Threshold:** Trigger an alert if error count exceeds 5 errors per 5-minute interval, indicating a potential systemic issue requiring immediate investigation.  \n**Impact:**  \n- **High error rates** suggest widespread API failures, degraded user experience, or backend service outages, necessitating rapid remediation.  \n- **Low or zero errors** indicate stable API operation and healthy integrations.  \n**Example Usage:**  \nIn a CloudWatch dashboard, visualize the error count metric filtered by `LogGroup: API-Gateway-Execution*` and `message: ERROR*` over time. Configure a CloudWatch alarm to notify the SRE team when the 5-minute error count surpasses the threshold, enabling proactive incident response before customer impact escalates."
+  },
+  {
+    "query": {
+      "LogGroup": "API-Gateway-Execution*",
+      "message": "4XX*"
+    },
+    "description": "API Gateway 4XX client error logs capture client-side errors such as bad requests (400), unauthorized access (401), forbidden resources (403), and not found errors (404) within the API-Gateway-Execution* log groups in CloudWatch Logs. These logs help SREs monitor client request issues and detect potential misuse or misconfiguration of APIs.\n\n**Purpose:**  \nTo track and analyze client error rates, enabling early detection of client-side problems that may affect API reliability and user experience.\n\n**Alert Threshold:**  \nTrigger an alert if the 4XX error rate exceeds 5% of total API requests within a 5-minute window, indicating a potential spike in client errors that could signal broken clients, misconfigured API keys, or unauthorized access attempts.\n\n**Impact:**  \n- **High 4XX error rate:** Suggests widespread client issues, possibly due to invalid requests, expired tokens, or unauthorized access attempts, which can degrade user experience and increase support load.  \n- **Low 4XX error rate:** Indicates healthy client interactions with the API, with minimal client-side errors.\n\n**Example Usage:**  \nCreate a CloudWatch metric filter on API-Gateway-Execution* logs to count 4XX responses, then visualize this metric on a dashboard alongside total request counts. Set an alert rule to notify the SRE team when the 4XX error rate surpasses 5% for 3 consecutive 5-minute periods, enabling timely investigation and remediation."
+  },
+  {
+    "query": {
+      "LogGroup": "API-Gateway-Execution*",
+      "message": "5XX*"
+    },
+    "description": "This pattern matches log entries from API Gateway execution logs where the response status code indicates a server error (5XX). It captures errors such as internal server errors (500), service unavailable (503), and gateway timeouts (504). The measurement is based on the HTTP status code prefix \"5XX\" found in the log message. This helps monitor the frequency and occurrence of server-side failures in API Gateway requests."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/lambda/*",
+      "message": "ERROR*"
+    },
+    "description": "Monitors error logs from all AWS Lambda functions by capturing log entries in CloudWatch Logs where the LogGroup matches `/aws/lambda/*` and the message starts with \"ERROR\". This metric helps identify runtime exceptions, execution failures, cold start issues, and application errors that directly impact application reliability and user experience.  \n\n**Alert Threshold:** Trigger an alert when the number of ERROR logs exceeds a defined threshold (e.g., >5 errors within 5 minutes), indicating a potential widespread or critical failure requiring immediate investigation.  \n\n**Impact:**  \n- **High values:** Signal frequent or severe Lambda function failures, potentially causing degraded service, increased latency, or downtime. Immediate remediation is needed to maintain application health.  \n- **Low or zero values:** Indicate stable Lambda executions with no critical errors detected, reflecting healthy application performance.  \n\n**Example Usage:**  \nIn a CloudWatch dashboard, display a widget showing the count of ERROR logs from `/aws/lambda/*` over time to quickly spot error spikes. Set an alert rule to notify the SRE team via SNS if ERROR logs exceed 5 within a 5-minute window, enabling rapid response to Lambda function issues before they impact end users."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/lambda/*",
+      "message": "REPORT*"
+    },
+    "description": "This log captures AWS Lambda execution reports from all functions under the /aws/lambda/ log group. It measures function duration in milliseconds, memory usage in megabytes, and billed duration in milliseconds. The report also indicates whether a cold start occurred during invocation. These metrics support performance monitoring and cost optimization."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/lambda/*",
+      "message": "START*"
+    },
+    "description": "This log captures the start events of AWS Lambda functions within the specified log group. It records the timestamp when a function invocation begins, enabling detection of cold starts and initialization phases. Metrics derived include invocation start times measured in milliseconds. This data supports monitoring of function execution lifecycle and performance analysis."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/lambda/*",
+      "message": "END*"
+    },
+    "description": "Lambda function END log events in CloudWatch Logs mark the completion of each Lambda invocation, indicating whether the execution succeeded or failed. These logs are essential for tracking function lifecycle, monitoring execution duration, and identifying errors or timeouts. An SRE should set alert thresholds based on the frequency of END events with error statuses or unusually long execution times—for example, alert if >5% of END events indicate failures or if average execution duration exceeds the function’s configured timeout. High volumes of END events with errors signal potential application issues impacting reliability, while low volumes may indicate reduced traffic or invocation failures upstream. Example alert rule: trigger when the error rate in END logs exceeds 5% over a 5-minute window. Example dashboard widget: a time series graph showing total END events, error counts, and average execution duration to monitor Lambda health and performance trends."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/lambda/*",
+      "message": "TIMEOUT*"
+    },
+    "description": "Lambda function timeout events captured in CloudWatch Logs under **LogGroup: /aws/lambda/** with messages starting with \"TIMEOUT\" indicate that a function's execution exceeded its configured maximum runtime. Alerts should trigger when timeout occurrences exceed a defined threshold, such as more than 5 timeouts within 5 minutes, signaling potential performance bottlenecks or resource constraints. High timeout rates can lead to failed requests, degraded user experience, and SLA violations, while low or zero timeouts indicate healthy function execution within expected limits. For example, an alert rule can be set to trigger if the count of \"TIMEOUT*\" messages in **/aws/lambda/** exceeds 5 in a 5-minute window, and a dashboard widget can display a time series graph of timeout counts to monitor trends and quickly identify spikes requiring investigation."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/lambda/*",
+      "message": "OUT_OF_MEMORY*"
+    },
+    "description": "Monitors AWS Lambda functions for out-of-memory (OOM) errors by detecting log entries in **/aws/lambda/** log groups containing messages starting with \"OUT_OF_MEMORY\". An alert is triggered when any OOM event occurs, indicating the function exceeded its configured memory limit during execution. High frequency of OOM errors signals insufficient memory allocation, causing function failures and degraded application stability; low or zero occurrences indicate adequate memory provisioning. Example alert rule: trigger an alert if **OUT_OF_MEMORY** messages appear more than 0 times within 5 minutes. In dashboards, visualize OOM event counts per function over time to identify memory pressure trends and prioritize memory tuning or code optimization."
+  },
+  {
+    "query": {
+      "LogGroup": "API-Gateway-Execution*",
+      "message": "ERROR*"
+    },
+    "description": "This pattern monitors error logs from API Gateway execution logs in CloudWatch Logs, specifically capturing entries where the message starts with \"ERROR\". It helps SREs detect issues such as gateway errors, integration failures, and client request problems that impact API availability and reliability.\n\n**Purpose:**  \nTo identify and alert on error occurrences within API Gateway executions, enabling timely investigation and resolution of failures affecting API consumers.\n\n**Alert Threshold:**  \nTrigger an alert when the count of ERROR logs exceeds a defined threshold, for example, more than 5 errors within a 5-minute window. Thresholds should be adjusted based on normal traffic and error rates for the specific API.\n\n**Impact of Values:**  \n- **High error count:** Indicates potential service degradation, integration failures, or client request issues that may cause API downtime or poor user experience. Immediate investigation is required.  \n- **Low or zero error count:** Suggests normal operation and healthy API Gateway executions.\n\n**Example Usage:**  \nIn a CloudWatch dashboard, display a metric widget showing the count of ERROR logs from **{\"LogGroup\": \"API-Gateway-Execution*\", \"message\": \"ERROR*\"}** over time. Configure an alert rule to notify the SRE team if error counts exceed the threshold, enabling proactive response to API issues before they impact users."
+  },
+  {
+    "query": {
+      "LogGroup": "API-Gateway-Execution*",
+      "message": "4XX*"
+    },
+    "description": "This pattern monitors API Gateway logs for 4XX client error responses, such as bad requests (400), unauthorized access (401), forbidden resources (403), and not found errors (404). It helps SREs detect issues caused by client-side errors that may indicate misconfigured clients, broken integrations, or unauthorized access attempts.\n\n**Purpose:** To track the frequency of client errors returned by API Gateway, enabling timely identification of client-related problems affecting API usability and security.\n\n**Alert Threshold:** Trigger an alert if the count of 4XX errors exceeds a defined threshold (e.g., 5% of total requests or a fixed number like 50 errors) within a 5-minute window, indicating a potential spike in client errors that could degrade user experience or signal abuse.\n\n**Impact:**  \n- **High values:** Suggest widespread client issues, such as malformed requests, expired tokens, or unauthorized access attempts, potentially leading to increased support tickets and degraded service reliability.  \n- **Low values:** Indicate normal client behavior with minimal client-side errors, reflecting healthy API usage.\n\n**Example Usage:**  \nIn a CloudWatch dashboard, display a metric widget showing the count of 4XX errors over time from **{\"LogGroup\": \"API-Gateway-Execution*\", \"message\": \"4XX*\"}**. Configure an alert rule to notify the SRE team if 4XX errors exceed 50 within 5 minutes, prompting investigation into client-side issues or potential security incidents."
+  },
+  {
+    "query": {
+      "LogGroup": "API-Gateway-Execution*",
+      "message": "5XX*"
+    },
+    "description": "This pattern matches log entries from API Gateway execution logs where the response status code indicates a server error (5XX). It captures errors such as internal server errors (500), service unavailable (503), and gateway timeouts (504). The metric counts the number of these 5XX error responses occurring within the specified log group. The unit of measurement is the total count of 5XX error occurrences."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/ecs/*",
+      "message": "ERROR*"
+    },
+    "description": "ECS container error logs captured by **{\"LogGroup\": \"/aws/ecs/*\", \"message\": \"ERROR*\"}** in CloudWatch Logs track critical issues such as container startup failures, application runtime errors, service health check failures, and container lifecycle problems within ECS clusters. This log filter helps SREs monitor the health and stability of containerized applications by surfacing error-level events that may indicate service disruptions or degraded performance.\n\n**Alert Threshold:**  \nTrigger an alert when the count of ERROR logs exceeds a defined threshold within a specific time window (e.g., more than 5 ERROR entries in 5 minutes), signaling potential service instability or failure.\n\n**Impact:**  \n- **High ERROR log volume:** Indicates persistent or widespread issues affecting container availability or application functionality, requiring immediate investigation to prevent outages.  \n- **Low or zero ERROR logs:** Suggests stable container operation and healthy application behavior.\n\n**Example Usage:**  \nIn a CloudWatch dashboard or alert rule, use a metric filter based on **{\"LogGroup\": \"/aws/ecs/*\", \"message\": \"ERROR*\"}** to count ERROR log events per minute. Configure an alarm to notify the SRE team if ERROR counts spike above the threshold, enabling rapid response to container failures or application errors."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/ecs/*",
+      "message": "WARN*"
+    },
+    "description": "ECS container warning logs. Non-critical issues, resource constraints, configuration warnings, and performance degradation indicators. Proactive monitoring and capacity planning."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/ecs/*",
+      "message": "STOPPED*"
+    },
+    "description": "This log captures ECS container stop events recorded in the /aws/ecs/* log groups. It details reasons for container termination, including health check failures, resource constraints, and service scaling actions. Each entry represents a discrete container stop event, logged as a timestamped message. The data is qualitative event information, not measured in numeric units."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/ecs/*",
+      "message": "STARTED*"
+    },
+    "description": "Tracks ECS container start events by capturing log entries from any `/aws/ecs/*` log group with messages beginning with \"STARTED\". Measures the count of container start occurrences, indicating when a container has successfully initialized and begun processing. This metric is a simple event count without units, used to monitor container deployment and readiness within ECS services."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/ecs/*",
+      "message": "HEALTH_CHECK*"
+    },
+    "description": "This log group captures ECS health check events related to container instances and services. It records the status of health checks, including successes, failures, and configuration errors. Metrics include the count and timestamps of health check results, enabling monitoring of container health and service availability. Data is measured as discrete event logs without aggregated units."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/rds/*",
+      "message": "ERROR*"
+    },
+    "description": "RDS database error logs filtered by **{\"LogGroup\": \"/aws/rds/*\", \"message\": \"ERROR*\"}** capture critical error events such as connection failures, query execution errors, authentication problems, and database engine faults. These logs serve as an early warning system for database health and performance issues within CloudWatch Logs. \n\n**Alert Threshold:** Trigger alerts when the count of ERROR messages exceeds a baseline threshold (e.g., more than 5 errors within 5 minutes), indicating potential service degradation or outages.\n\n**Impact:**  \n- **High error rates** may signal database connectivity problems, query failures, or security issues, potentially leading to application downtime or data inconsistencies. Immediate investigation and remediation are required.  \n- **Low or zero error rates** typically indicate stable database operation and healthy performance.\n\n**Example Usage:**  \nCreate a CloudWatch metric filter on **{\"LogGroup\": \"/aws/rds/*\", \"message\": \"ERROR*\"}** to count error occurrences, then add a CloudWatch alarm that triggers when errors exceed 5 in a 5-minute window. This alarm can be visualized on a dashboard alongside RDS CPU and latency metrics to correlate errors with resource utilization and identify root causes quickly."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/rds/*",
+      "message": "WARN*"
+    },
+    "description": "This log group captures warning messages from AWS RDS instances, identified by log entries starting with \"WARN\". It records non-critical issues such as performance warnings and configuration anomalies. Each log entry is a textual message timestamped in UTC, detailing the event without specific numeric units. These logs support proactive monitoring and troubleshooting of RDS database health."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/rds/*",
+      "message": "SLOW_QUERY*"
+    },
+    "description": "RDS slow query logs capture queries exceeding predefined execution time thresholds, indicating potential performance bottlenecks in your database. In CloudWatch Logs, **{\"LogGroup\": \"/aws/rds/*\", \"message\": \"SLOW_QUERY*\"}** identifies these slow-running queries, typically triggered when query execution time surpasses a configured threshold (e.g., 1 second). High volumes or frequent occurrences of slow queries can degrade application responsiveness and increase latency, while low values suggest efficient query performance. For actionable monitoring, create a CloudWatch metric filter on this log pattern to count slow queries and set an alert when the count exceeds a threshold (e.g., more than 5 slow queries within 5 minutes). Example alert rule: trigger if slow query count > 5 in 5 minutes, enabling timely investigation and optimization of problematic queries to maintain database health and application performance."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/rds/*",
+      "message": "DEADLOCK*"
+    },
+    "description": "This log group captures RDS database deadlock events indicated by messages starting with \"DEADLOCK\". It records occurrences where two or more transactions mutually block each other, causing transaction failures. Each log entry represents a single deadlock event detected by the database engine. Monitoring these events helps identify and resolve concurrency issues to maintain database stability and performance."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/rds/*",
+      "message": "CONNECTION*"
+    },
+    "description": "RDS connection logs under **{\"LogGroup\": \"/aws/rds/*\", \"message\": \"CONNECTION*\"}** capture detailed events related to database connectivity, including connection attempts, successful connections, failed connections, and connection pool activity. These logs help SREs monitor database access patterns, detect connectivity issues early, and plan capacity to ensure reliable application performance.\n\n**Alert Thresholds:**  \n- Trigger an alert if the rate of failed connection attempts exceeds 5% of total connection attempts within a 5-minute window, indicating potential authentication issues, network problems, or resource exhaustion.  \n- Alert if the total number of connection attempts spikes unusually (e.g., > 2x baseline) in a short period, which may signal a sudden surge in traffic or a misbehaving client.\n\n**Impact:**  \n- High failed connection rates can lead to application downtime, degraded user experience, and increased latency.  \n- Low connection attempts over an extended period might indicate application issues or connectivity loss, potentially causing service unavailability.\n\n**Example Usage:**  \nIn a CloudWatch dashboard, visualize the ratio of failed to total connection attempts as a time series widget to quickly identify anomalies. Set a CloudWatch alarm on the metric filter that counts failed connections, configured to alert when failures exceed 5% of total attempts over 5 minutes, enabling proactive incident response before user impact escalates."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/elasticache/*",
+      "message": "ERROR*"
+    },
+    "description": "This pattern monitors ElastiCache log groups in CloudWatch Logs for entries where the message begins with \"ERROR,\" capturing critical issues such as Redis or Memcached errors, connection failures, memory exhaustion, and cache engine malfunctions. It serves as an early warning system to detect operational problems affecting cache availability and performance. An alert should be triggered when the count of \"ERROR\" messages exceeds a defined threshold—commonly 5 errors within a 5-minute window—indicating a potential service degradation or outage. High error counts often correlate with increased latency, failed cache requests, or complete cache unavailability, impacting application responsiveness and stability. Conversely, consistently low or zero errors suggest healthy cache operation. For example, in a CloudWatch dashboard or alert rule, you might configure a metric filter using this pattern to count error occurrences and set an alarm that notifies the SRE team when the threshold is breached, enabling prompt investigation and remediation."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/elasticache/*",
+      "message": "WARN*"
+    },
+    "description": "This pattern captures ElastiCache warning logs. It identifies performance warnings, memory pressure, and non-critical cache issues that start with 'WARN'."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/elasticache/*",
+      "message": "MEMORY*"
+    },
+    "description": "This pattern captures ElastiCache memory-related logs. It identifies memory usage, eviction events, and memory pressure situations in the cache cluster."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/elasticache/*",
+      "message": "CONNECTION*"
+    },
+    "description": "This pattern captures ElastiCache connection-related logs, including client connection attempts, connection failures, and connection pool events, from the specified CloudWatch LogGroup `/aws/elasticache/*`. It helps SREs monitor the health and stability of ElastiCache client connections by tracking successful and failed connection events.\n\n**Purpose:**  \nUse this pattern to detect anomalies in connection behavior that may indicate network issues, client misconfigurations, or resource exhaustion affecting cache accessibility.\n\n**Alert Thresholds:**  \n- Trigger an alert if the number of connection failures exceeds 5 within a 5-minute window, indicating potential connectivity problems.  \n- Alternatively, alert if connection attempts spike abnormally (e.g., a 3x increase over baseline), which may signal client-side issues or a sudden surge in traffic.\n\n**Impact:**  \n- **High connection failures:** May lead to increased latency, cache misses, or application errors due to inability to reach the cache. Immediate investigation is required.  \n- **Low connection attempts:** Could indicate reduced application traffic or potential client-side issues preventing connections.\n\n**Example Usage:**  \nIn a CloudWatch dashboard or alert rule, create a metric filter on `/aws/elasticache/*` logs with the pattern `\"CONNECTION*\"` to count connection failure events. Set an alarm to notify the SRE team when failures exceed 5 in 5 minutes, enabling proactive troubleshooting before application impact occurs."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/elasticache/*",
+      "message": "EVICTION*"
+    },
+    "description": "This pattern monitors ElastiCache eviction events by capturing log entries where keys are removed from the cache due to memory pressure or expiration policies. In CloudWatch Logs, it helps SREs detect when the cache is under stress and unable to retain all data, which can degrade application performance by increasing cache misses and backend load.\n\n**Alert Threshold:** Trigger an alert if eviction events exceed a sustained rate of 5-10 evictions per minute over a 5-minute window, indicating potential memory pressure or misconfigured cache size.\n\n**Impact:**  \n- **High eviction rates** suggest the cache is frequently purging data, leading to increased latency and higher load on origin databases or services. Immediate investigation and scaling or tuning of cache parameters may be required.  \n- **Low or zero eviction rates** generally indicate healthy cache operation with sufficient memory allocation.\n\n**Example Usage:**  \nCreate a CloudWatch metric filter on the log group `/aws/elasticache/*` with the pattern `\"EVICTION*\"` to count eviction events. Use this metric in a dashboard widget showing eviction rate over time, and configure an alarm to notify the SRE team when evictions exceed the defined threshold, enabling proactive cache capacity management."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/applicationloadbalancer/*",
+      "message": "ERROR*"
+    },
+    "description": "This pattern monitors Application Load Balancer (ALB) error logs within the specified log groups, specifically capturing log entries where the message begins with \"ERROR\". It helps SREs detect critical issues such as load balancer failures, target health check problems, and routing errors that can impact application availability and performance.\n\n**Purpose:**  \nTo identify and alert on error events generated by ALBs, enabling rapid detection and troubleshooting of infrastructure or configuration issues affecting traffic routing and backend health.\n\n**Alert Threshold Guidance:**  \nTrigger an alert if the count of ERROR messages exceeds a defined threshold within a given time window (e.g., more than 5 ERROR logs in 5 minutes). Thresholds should be adjusted based on baseline error rates and business impact tolerance.\n\n**Impact of Values:**  \n- **High ERROR count:** Indicates potential service degradation, failed health checks, or misrouted requests, which may lead to increased latency, failed user requests, or downtime. Immediate investigation is recommended.  \n- **Low or zero ERROR count:** Suggests normal ALB operation with no detected critical errors.\n\n**Example Usage:**  \nIn a CloudWatch dashboard or alert rule, use a metric filter on the log group `/aws/applicationloadbalancer/*` with the pattern `\"ERROR*\"` to count error occurrences. Set an alarm to notify the SRE team when the error count exceeds the threshold, enabling proactive incident response before customer impact escalates."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/applicationloadbalancer/*",
+      "message": "4XX*"
+    },
+    "description": "This pattern matches log entries from AWS Application Load Balancer groups where the HTTP response status code starts with 4XX. It specifically captures client error responses such as 400 (Bad Request), 401 (Unauthorized), 403 (Forbidden), and 404 (Not Found). The metric counts the number of these 4XX error responses recorded in the load balancer logs. The unit of measurement is the total count of 4XX error occurrences."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/applicationloadbalancer/*",
+      "message": "5XX*"
+    },
+    "description": "This pattern matches log entries from AWS Application Load Balancer groups that record HTTP 5XX status codes. It specifically captures server error responses indicating issues such as internal server errors (500), service unavailability (503), and gateway timeouts (504). The measurement is the count of these error responses, identified by log messages starting with \"5XX\". This helps monitor the frequency of server-side failures handled by the load balancer."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/applicationloadbalancer/*",
+      "message": "TARGET*"
+    },
+    "description": "This pattern captures logs related to Application Load Balancer (ALB) target events within the specified log group `/aws/applicationloadbalancer/*` where messages start with \"TARGET\". It includes target health check results, target registration and deregistration events, and target group configuration changes.  \n\n**Purpose:**  \nIt helps SREs monitor the health and status of ALB targets to ensure backend services are reachable and properly balanced. Tracking these events enables early detection of target failures, misconfigurations, or scaling issues affecting application availability.\n\n**Alert Thresholds:**  \n- Trigger an alert if the number of consecutive target health check failures exceeds 3 within 5 minutes.  \n- Alert if there is an unexpected surge in target deregistration events (e.g., more than 5 deregistrations in 10 minutes), which may indicate instability or deployment issues.  \n- Notify on target group changes outside of scheduled maintenance windows.\n\n**Impact of Values:**  \n- **High failure counts:** Indicate backend targets are unhealthy or unreachable, potentially causing increased latency or downtime. Immediate investigation is required.  \n- **Low or zero failures:** Suggest targets are healthy and serving traffic normally.  \n- **Frequent target registrations/deregistrations:** May signal autoscaling activity or instability; excessive churn can degrade performance.\n\n**Example Usage:**  \nIn a CloudWatch dashboard, visualize the count of \"TARGET\" health check failures over time as a line graph. Set an alarm with the following rule:  \n- Metric filter on `/aws/applicationloadbalancer/*` logs for messages matching `\"TARGET*\"` with health check failure keywords.  \n- Alarm triggers if failures > 3 within 5 minutes.  \n\nThis alert enables proactive response to backend target issues before they impact end users."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/applicationloadbalancer/*",
+      "message": "HEALTH_CHECK*"
+    },
+    "description": "This pattern matches log entries from AWS Application Load Balancer (ALB) log groups that begin with \"HEALTH_CHECK\". It captures detailed records of ALB health check events, including successes, failures, and configuration errors. Each log entry represents an individual health check attempt, reporting its status and related metadata. The data is qualitative, describing the outcome and state of health checks rather than measuring numeric values."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/cloudfront/*",
+      "message": "ERROR*"
+    },
+    "description": "This pattern matches log entries from any CloudFront log group whose messages begin with \"ERROR\". It specifically captures error events related to CloudFront distributions, including origin server failures and edge location problems. Each matched entry represents a single error occurrence recorded in the log. The measurement unit is the count of error log entries within the specified log groups."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/cloudfront/*",
+      "message": "4XX*"
+    },
+    "description": "This pattern monitors CloudFront logs for 4XX client error responses, such as bad requests (400), unauthorized access (401), forbidden resources (403), and not found errors (404). It helps SREs detect issues related to client-side errors impacting content delivery. Set alert thresholds based on your traffic volume and tolerance—for example, trigger an alert if 4XX errors exceed 1% of total requests within a 5-minute window, indicating potential misconfigurations, broken links, or unauthorized access attempts. High 4XX rates may signal user experience problems or security issues, while low rates generally indicate healthy client interactions. Example alert rule: trigger when the count of 4XX errors in **/aws/cloudfront/** logs surpasses 500 in 5 minutes or exceeds 1% of total requests, enabling timely investigation and remediation."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/cloudfront/*",
+      "message": "5XX*"
+    },
+    "description": "This pattern matches log entries from all CloudFront log groups that report HTTP 5XX status codes. It specifically captures server error responses indicating issues like internal server errors (500), service unavailability (503), and gateway timeouts (504). The measurement is a count of these error occurrences within the log data. This helps monitor the frequency of server-side errors returned by the CloudFront CDN."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/cloudfront/*",
+      "message": "CACHE*"
+    },
+    "description": "This pattern filters logs from CloudFront log groups that start with \"/aws/cloudfront/\". It captures messages beginning with \"CACHE\" related to cache operations such as hits, misses, and invalidations. The logs provide counts and status codes indicating cache performance and effectiveness. Metrics are typically measured as event counts or status indicators per request."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/cloudfront/*",
+      "message": "ORIGIN*"
+    },
+    "description": "This pattern filters CloudFront logs related specifically to origin interactions. It captures events such as origin requests sent by CloudFront, responses received from the origin server, origin error messages, and origin health check results. The data represents individual log entries without aggregation, measured as discrete event occurrences."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/s3/*",
+      "message": "ERROR*"
+    },
+    "description": "S3 error logs capturing all ERROR-level events across S3 buckets, including access denied errors, bucket policy violations, storage operation failures, and service connectivity issues. This log filter helps monitor data access anomalies and security incidents by highlighting failed operations that may impact application functionality or data integrity.  \n**Alert threshold:** Trigger an alert if error count exceeds 10 errors within 5 minutes, indicating potential service disruption or security risks.  \n**Impact:**  \n- High error rates suggest ongoing access issues, misconfigurations, or service outages requiring immediate investigation to prevent data loss or downtime.  \n- Low or zero errors indicate normal operation and stable S3 service interactions.  \n**Example usage:**  \nIn a CloudWatch dashboard, display a metric widget showing the count of ERROR logs from **{\"LogGroup\": \"/aws/s3/*\", \"message\": \"ERROR*\"}** over time. Configure an alert rule to notify the SRE team when error counts spike above the threshold, enabling rapid response to S3 access or operation failures."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/s3/*",
+      "message": "ACCESS_DENIED*"
+    },
+    "description": "This log captures all S3 access attempts that were denied, indicated by messages starting with \"ACCESS_DENIED\". It records unauthorized access events caused by insufficient IAM permissions, bucket policy restrictions, or other access control failures. Each entry represents a single denied request, providing a countable measure of access denials. Monitoring these logs helps identify security risks and ensure compliance with data access policies."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/s3/*",
+      "message": "NO_SUCH_BUCKET*"
+    },
+    "description": "S3 bucket not found logs. Non-existent bucket access attempts, incorrectly named buckets, and configuration errors. Data access troubleshooting and configuration validation."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/s3/*",
+      "message": "NO_SUCH_KEY*"
+    },
+    "description": "S3 NO_SUCH_KEY error logs indicate attempts to access objects that do not exist in the specified S3 bucket, captured under the log group pattern **/aws/s3/** with messages matching **NO_SUCH_KEY***. These logs help SREs identify issues such as incorrect object keys in application requests, potential data corruption, or unauthorized access attempts.\n\n**Purpose:**  \nMonitor and troubleshoot missing object access errors to ensure data integrity and application reliability.\n\n**Alert Threshold:**  \nTrigger an alert if the count of NO_SUCH_KEY errors exceeds a baseline threshold (e.g., more than 5 errors per 5-minute interval) or shows a sudden spike compared to historical averages, indicating possible misconfigurations or application bugs.\n\n**Impact:**  \n- **High values:** Suggest frequent failed data retrievals, leading to application errors, degraded user experience, or potential data loss scenarios. May also indicate security scanning or misuse.  \n- **Low or zero values:** Normal operation, indicating that object keys are correctly referenced and accessible.\n\n**Example Usage:**  \n- **Dashboard Widget:** Display a time series graph of NO_SUCH_KEY error counts over the last 24 hours to visualize trends and detect anomalies.  \n- **Alert Rule:** Create a CloudWatch metric filter on **/aws/s3/** logs for messages containing NO_SUCH_KEY, then set a CloudWatch alarm to notify the SRE team if errors exceed 5 occurrences within 5 minutes.  \n\nThis enables proactive detection and resolution of missing object access issues in S3-backed applications."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/s3/*",
+      "message": "PUT*"
+    },
+    "description": "Logs capturing all S3 PUT requests, including object uploads, multipart upload events, and object creation operations. Each log entry records the occurrence of a PUT action on S3 objects within the specified log group. Measurements are event counts, representing individual PUT operations performed. These logs enable monitoring of data ingestion and storage activity in S3."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/s3/*",
+      "message": "GET*"
+    },
+    "description": "S3 GET operation logs capture detailed records of all object retrieval requests (e.g., GET, GET Object) within your S3 buckets, tracked under the CloudWatch Logs group pattern \"/aws/s3/*\". These logs enable monitoring of data access patterns, usage trends, and performance metrics related to object downloads.\n\n**Purpose:**  \nThis log filter helps SREs identify the volume and frequency of read operations on S3 objects, which is critical for understanding application behavior, detecting unusual access spikes, and ensuring data availability.\n\n**Alert Threshold Guidance:**  \n- Set alerts for sudden spikes in GET requests (e.g., a 50% increase over baseline within 5 minutes), which may indicate abnormal usage, potential data exfiltration, or a DDoS attack.  \n- Alternatively, alert on sustained drops below expected GET request rates, which could signal application issues or connectivity problems.\n\n**Impact of Values:**  \n- **High GET request rates:** May increase S3 costs, cause throttling, or indicate security incidents. Prompt investigation is needed to confirm legitimacy.  \n- **Low GET request rates:** Could reflect service degradation, broken integrations, or reduced user activity, potentially impacting application functionality.\n\n**Example Usage:**  \nIn a CloudWatch dashboard, visualize the count of GET requests over time using a metric filter on **{\"LogGroup\": \"/aws/s3/*\", \"message\": \"GET*\"}**. Create an alert rule that triggers if the GET request count exceeds 10,000 requests in 5 minutes or drops below 1,000 requests, enabling proactive response to anomalies in data access patterns."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/s3/*",
+      "message": "DELETE*"
+    },
+    "description": "S3 DELETE operation logs capture all delete-related activities within S3 buckets, including object deletions, bucket removals, lifecycle cleanup, and data retention enforcement. These logs help SREs monitor data governance and compliance by tracking when and how data is removed, ensuring unauthorized or accidental deletions are detected promptly.\n\n**Purpose:**  \nThis log filter monitors DELETE operations across all S3 buckets, providing visibility into deletion patterns and potential data loss events.\n\n**Alert Thresholds:**  \n- Trigger an alert if the number of DELETE operations exceeds a baseline threshold (e.g., a sudden spike above 3 standard deviations from the daily average) within a short time window (e.g., 5 minutes), indicating possible accidental mass deletions or malicious activity.  \n- Alternatively, alert if DELETE operations drop to zero over an extended period when deletions are expected (e.g., during scheduled lifecycle cleanups), which may signal a misconfiguration.\n\n**Impact of Values:**  \n- **High DELETE counts:** May indicate bulk data removal, potential data loss, or security incidents requiring immediate investigation.  \n- **Low or zero DELETE counts:** Could suggest lifecycle policies are not running, or cleanup jobs have failed, potentially leading to storage bloat and increased costs.\n\n**Example Usage:**  \nIn a CloudWatch dashboard, plot the count of DELETE operations over time using this filter to visualize deletion trends. Set a CloudWatch alarm to notify the SRE team if DELETE operations exceed 100 within 5 minutes, enabling rapid response to unusual deletion activity. For example, an alert rule could be:  \n`IF count(DELETE operations in /aws/s3/*) > 100 in 5 minutes THEN trigger alert.`"
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/dynamodb/*",
+      "message": "ERROR*"
+    },
+    "description": "This pattern monitors DynamoDB error logs within the CloudWatch Log Group `/aws/dynamodb/*`, specifically capturing log entries where the message begins with \"ERROR\". Its primary purpose is to detect critical issues such as throttling events, capacity constraints, and failed database operations that can impact application performance and availability.\n\n**Alert Threshold:**  \nTrigger an alert when the count of ERROR messages exceeds a defined threshold—commonly set to 5 or more errors within a 5-minute window—indicating a potential systemic issue requiring immediate investigation.\n\n**Impact of Values:**  \n- **High error count:** Suggests persistent or severe problems like request throttling, insufficient provisioned capacity, or operational failures, which can degrade application responsiveness or cause downtime. Immediate remediation is advised.  \n- **Low or zero error count:** Indicates normal operation with no detected critical DynamoDB errors.\n\n**Example Usage:**  \nIn a CloudWatch dashboard or alert rule, use this pattern to create a metric filter that counts ERROR logs over time. For instance, configure an alarm that triggers when the number of ERROR logs in `/aws/dynamodb/*` exceeds 5 within 5 minutes, enabling proactive response to DynamoDB issues before they impact end users."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/dynamodb/*",
+      "message": "THROTTLING*"
+    },
+    "description": "This pattern monitors DynamoDB CloudWatch Logs for throttling events, indicated by log messages starting with \"THROTTLING\". It helps SREs detect when DynamoDB requests are being throttled due to exceeding provisioned throughput capacity or on-demand limits. An alert should be triggered when the count of throttling events surpasses a defined threshold (e.g., more than 5 throttling occurrences within 5 minutes), signaling that the application is experiencing request rejections or delays. High throttling rates can lead to increased latency, failed transactions, and degraded user experience, while low or zero throttling indicates healthy capacity provisioning. For example, this pattern can be used in a CloudWatch Logs Insights query or metric filter to create an alert rule that notifies the team when throttling spikes, or displayed on a dashboard widget showing throttling event counts over time to correlate with application performance issues."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/dynamodb/*",
+      "message": "CAPACITY*"
+    },
+    "description": "This pattern captures DynamoDB capacity-related logs from CloudWatch Logs groups matching \"/aws/dynamodb/*\" where messages start with \"CAPACITY\". It helps SREs monitor read/write capacity unit usage, auto-scaling activities, and capacity planning events to ensure DynamoDB tables maintain optimal performance and cost-efficiency. Alerts should be triggered when consumed capacity approaches or exceeds 80-90% of provisioned capacity, indicating potential throttling or performance degradation. High capacity usage signals increased load or insufficient provisioning, risking request throttling and latency spikes; low usage may indicate over-provisioning and unnecessary costs. For example, use this pattern in a CloudWatch dashboard widget to track capacity utilization trends over time, and configure an alert rule that triggers when consumed capacity exceeds 85% for more than 5 minutes, enabling proactive scaling or investigation."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/dynamodb/*",
+      "message": "CONDITIONAL_CHECK*"
+    },
+    "description": "This pattern captures DynamoDB conditional check failure logs, which occur when a conditional write operation (such as a conditional update or delete) does not meet the specified condition, resulting in a failed request. These failures often indicate optimistic locking conflicts or unmet conditional expressions, signaling potential contention or logic issues in your application’s data writes.\n\n**Purpose:**  \nMonitor the frequency of conditional check failures to detect issues with concurrent writes, stale data updates, or application logic errors that rely on conditional expressions.\n\n**Alert Threshold:**  \nTrigger an alert if the count of conditional check failures exceeds a baseline threshold (e.g., more than 5 failures within 5 minutes) or shows a sustained increase compared to normal operation, indicating a potential problem with data consistency or application behavior.\n\n**Impact:**  \n- **High values:** Suggest frequent write conflicts or logic errors causing failed conditional writes, which can lead to data not being updated as expected, degraded user experience, or cascading application errors.  \n- **Low or zero values:** Indicate normal operation with successful conditional writes and no detected contention or logic issues.\n\n**Example Usage:**  \nIn a CloudWatch dashboard or alert rule, create a metric filter on the log group `/aws/dynamodb/*` with the pattern `\"CONDITIONAL_CHECK*\"` to count occurrences over time. Set an alarm to notify the SRE team if the count exceeds 5 within a 5-minute window, enabling timely investigation and remediation of underlying issues."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/dynamodb/*",
+      "message": "PROVISIONED*"
+    },
+    "description": "This pattern captures DynamoDB provisioned capacity logs from the CloudWatch LogGroup `/aws/dynamodb/*` where messages start with \"PROVISIONED\". It tracks changes to provisioned throughput settings, including increases or decreases in read and write capacity units. Monitoring these logs helps SREs ensure that DynamoDB tables have appropriate capacity to handle workload demands without throttling or over-provisioning.\n\n**Alert Threshold:**  \nTrigger an alert if provisioned capacity is decreased below the application's minimum required throughput or if frequent capacity changes occur within a short period (e.g., more than 3 changes in 1 hour), indicating potential instability or misconfiguration.\n\n**Impact:**  \n- **High provisioned capacity:** May lead to unnecessary costs due to over-provisioning.  \n- **Low provisioned capacity:** Can cause throttling, increased latency, and degraded application performance.\n\n**Example Usage:**  \nIn a dashboard, visualize the count and timestamps of \"PROVISIONED\" events to track capacity changes over time. An alert rule can be configured to notify the SRE team when provisioned capacity drops below a critical threshold or when multiple capacity adjustments happen rapidly, enabling proactive capacity planning and cost optimization."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/sqs/*",
+      "message": "ERROR*"
+    },
+    "description": "This pattern captures SQS error logs. It identifies message processing failures, queue access errors, and service issues that start with 'ERROR'."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/sqs/*",
+      "message": "MESSAGE*"
+    },
+    "description": "This pattern monitors all SQS-related message activity within CloudWatch Logs by capturing logs from any SQS log group (`/aws/sqs/*`) containing messages that start with \"MESSAGE\". It tracks key events such as message sends, receives, deletions, and processing, providing visibility into queue throughput and health.\n\n**Purpose:** Enables SREs to monitor SQS message flow and detect anomalies in queue operations that could indicate processing delays, message loss, or system backlogs.\n\n**Alert Thresholds:**  \n- Trigger an alert if the rate of message receives or deletes drops below a defined baseline (e.g., 10% below average over 5 minutes), indicating potential processing stalls.  \n- Alert if the number of message sends spikes unexpectedly (e.g., 2x normal rate), which may signal upstream issues or message storms.  \n- Alert on increased error or failure messages related to message processing.\n\n**Impact of Values:**  \n- **High message send rates** may lead to queue saturation and increased processing latency.  \n- **Low message receive/delete rates** suggest consumers are lagging or failing, risking message buildup and delayed processing.  \n- **Consistent error messages** can indicate systemic failures requiring immediate investigation.\n\n**Example Usage:**  \nIn a CloudWatch dashboard, graph the count of \"MESSAGE*\" logs over time to visualize message throughput trends. Set an alert rule to notify when message receive counts fall below 90% of the 7-day moving average for 5 consecutive minutes, enabling proactive response to processing delays."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/sqs/*",
+      "message": "QUEUE*"
+    },
+    "description": "This pattern monitors CloudWatch Logs from all SQS queues (LogGroup: \"/aws/sqs/*\") filtering messages starting with \"QUEUE\", which typically indicate key queue lifecycle events such as creation, deletion, configuration changes, and health status updates. It helps SREs track operational changes and potential issues affecting queue availability and performance.\n\n**Alert Threshold:**  \nTrigger an alert if the number of error or warning-level \"QUEUE*\" messages exceeds a defined threshold (e.g., >5 errors within 5 minutes), indicating possible queue misconfigurations, failures, or degraded health.\n\n**Impact of Values:**  \n- **High count:** May signal frequent queue disruptions, configuration errors, or health degradation, potentially impacting message processing reliability and downstream services. Immediate investigation is required.  \n- **Low or zero count:** Indicates stable queue operations with no recent critical events.\n\n**Example Usage:**  \n- **Dashboard:** Display a time series widget showing the count of \"QUEUE*\" messages per queue over time to visualize trends in queue events.  \n- **Alert Rule:** Create a CloudWatch metric filter on \"/aws/sqs/*\" logs for \"QUEUE*\" messages with severity ERROR or WARNING, then set an alarm to notify the SRE team if the count exceeds 5 within 5 minutes, enabling proactive response to queue issues."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/sqs/*",
+      "message": "VISIBILITY*"
+    },
+    "description": "This pattern monitors SQS visibility timeout events by capturing logs where messages become visible again after their visibility timeout expires without successful processing. It helps SREs detect when messages are not processed within the expected timeframe, potentially indicating processing delays or failures.\n\n**Purpose:**  \nTo track occurrences of messages reappearing in the queue due to visibility timeouts, signaling that consumers failed to process them in time.\n\n**Alert Threshold:**  \nTrigger an alert if the count of visibility timeout events exceeds a defined threshold (e.g., more than 5 occurrences within 5 minutes), indicating potential processing bottlenecks or consumer failures.\n\n**Impact:**  \n- **High values:** Suggest that messages are frequently timing out and re-entering the queue, which can lead to increased processing latency, duplicate processing, and potential message loss if retries fail.  \n- **Low or zero values:** Indicate that messages are being processed within their visibility timeout, reflecting healthy consumer performance.\n\n**Example Usage:**  \nIn a CloudWatch dashboard or alert rule, use this pattern to create a metric filter counting visibility timeout logs in the last 5 minutes. Set an alarm to notify the SRE team if the count exceeds 5, enabling rapid investigation and remediation of processing delays."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/sqs/*",
+      "message": "DEAD_LETTER*"
+    },
+    "description": "This pattern detects log entries from AWS SQS queues where messages are sent to dead letter queues. It specifically matches logs in any SQS log group with messages starting with \"DEAD_LETTER\". The metric counts the number of such dead letter events, representing the total occurrences of messages moved after processing failures. The unit of measurement is a simple event count."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/sns/*",
+      "message": "ERROR*"
+    },
+    "description": "This pattern captures SNS error logs. It identifies message delivery failures, subscription errors, and service issues that start with 'ERROR'."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/sns/*",
+      "message": "PUBLISH*"
+    },
+    "description": "This pattern matches log entries from all AWS SNS log groups where the message begins with \"PUBLISH\". It captures events related specifically to the publishing of messages to SNS topics. The data reflects the count of publish operations recorded in the logs. Each matched entry corresponds to a single publish event."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/sns/*",
+      "message": "SUBSCRIPTION*"
+    },
+    "description": "This pattern monitors Amazon SNS subscription-related log events within the `/aws/sns/*` log groups, specifically filtering messages that begin with \"SUBSCRIPTION\". It captures key subscription lifecycle activities such as subscription confirmations, unsubscriptions, and subscription health checks.  \n\n**Purpose:**  \nEnable SREs to track the health and status of SNS topic subscriptions by identifying successful and failed subscription events, which are critical for ensuring message delivery to subscribers.\n\n**Alert Thresholds:**  \n- Trigger an alert if the number of failed subscription confirmations or unexpected unsubscriptions exceeds a defined threshold (e.g., more than 5 failures within 5 minutes).  \n- Alert on sudden spikes in unsubscriptions that may indicate configuration issues or subscriber-side problems.\n\n**Impact:**  \n- **High values:** A surge in failed subscription confirmations or unsubscriptions can lead to message delivery failures, impacting downstream systems relying on SNS notifications. Immediate investigation is required to maintain system reliability.  \n- **Low or zero values:** Normal operation, indicating stable subscription management and healthy message routing.\n\n**Example Usage:**  \n- **Dashboard Widget:** Display a time series graph showing counts of \"SUBSCRIPTION CONFIRMED\", \"SUBSCRIPTION FAILED\", and \"UNSUBSCRIPTION\" events over time to visualize trends.  \n- **Alert Rule:** Create a CloudWatch metric filter on `/aws/sns/*` logs with the pattern `\"SUBSCRIPTION FAILED\"` and set an alarm to notify the SRE team if failures exceed 5 within a 5-minute window.  \n\nThis enables proactive monitoring and rapid response to subscription-related issues affecting SNS message delivery."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/sns/*",
+      "message": "DELIVERY*"
+    },
+    "description": "This pattern captures SNS delivery logs from the CloudWatch LogGroup `/aws/sns/*` where log messages start with \"DELIVERY\". It tracks the status of message deliveries, including successful deliveries, failures, and retry attempts.  \n\n**Purpose:**  \nMonitor the health and reliability of SNS message delivery to subscribers, enabling early detection of delivery issues that could impact downstream systems or user notifications.\n\n**Alert Thresholds:**  \n- Trigger an alert if the number of delivery failures exceeds 5 within a 5-minute window.  \n- Trigger an alert if the retry attempts spike significantly (e.g., a 50% increase compared to the previous hour), indicating potential transient issues.\n\n**Impact:**  \n- **High failure or retry rates:** Indicate problems delivering messages, which may cause delayed or lost notifications, impacting system reliability and user experience.  \n- **Low or zero failures:** Reflect healthy SNS delivery operations.\n\n**Example Usage:**  \nIn a CloudWatch dashboard, visualize the count of delivery successes, failures, and retries over time using this pattern to quickly identify trends.  \n\n**Alert Rule Example:**  \nCreate a CloudWatch metric filter on `/aws/sns/*` logs with the pattern `\"DELIVERY FAILURE\"` to count failures, then set an alarm to notify the SRE team if failures exceed 5 in 5 minutes. Similarly, monitor retry counts to detect spikes."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/sns/*",
+      "message": "TOPIC*"
+    },
+    "description": "This pattern monitors AWS SNS topic-related logs within the CloudWatch Logs group `/aws/sns/*` that contain messages starting with \"TOPIC\". It captures key events such as topic creation, deletion, configuration changes, and health status updates. \n\n**Purpose:**  \nEnable SREs to track and respond to changes or issues affecting SNS topics, ensuring messaging infrastructure stability and timely detection of misconfigurations or failures.\n\n**Alert Thresholds:**  \n- Trigger an alert if the number of error or failure events related to SNS topics exceeds 5 within a 5-minute window, indicating potential issues with topic health or configuration.  \n- Trigger a warning if there are more than 10 topic creation or deletion events within 10 minutes, which may suggest unexpected or automated changes impacting system behavior.\n\n**Impact:**  \n- **High values:** Frequent topic errors or rapid topic changes can disrupt message delivery, cause downstream service failures, or indicate security risks. Immediate investigation is required.  \n- **Low or zero values:** Normal operation, indicating stable SNS topic management and health.\n\n**Example Usage:**  \nIn a CloudWatch dashboard, visualize the count of \"TOPIC*\" log events grouped by event type (creation, deletion, error) over time to identify spikes.  \nIn an alert rule, use a metric filter on `/aws/sns/*` logs with the pattern `\"TOPIC* ERROR\"` to trigger notifications when error counts exceed the defined threshold, enabling proactive incident response."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/cloudtrail/*",
+      "message": "ERROR*"
+    },
+    "description": "This pattern matches log entries in CloudTrail log groups whose messages begin with \"ERROR\". It captures error events related to API call failures, authentication problems, and service access issues recorded by CloudTrail. The measurement is a count of such error log entries within the specified log groups."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/cloudtrail/*",
+      "message": "API_CALL*"
+    },
+    "description": "This pattern monitors CloudTrail API call logs within the **/aws/cloudtrail/** log group, capturing detailed records of AWS API requests, including parameters, responses, and execution outcomes. It enables SREs to track the frequency and success/failure rates of API calls, helping detect unusual activity such as spikes in failed calls that may indicate security issues or service disruptions. A typical alert threshold might be set on an abnormal increase in failed API calls (e.g., >5% failure rate over 5 minutes) or a sudden surge in total API calls that deviates from baseline usage. High values can signal potential security breaches, misconfigurations, or service instability, while low values may indicate reduced system activity or logging issues. For example, an alert rule could trigger when the count of failed API_CALL events exceeds 50 within 5 minutes, and a dashboard widget might display a time series graph of total vs. failed API_CALL events to visualize trends and anomalies."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/cloudtrail/*",
+      "message": "AUTHENTICATION*"
+    },
+    "description": "This pattern matches log entries from CloudTrail log groups whose names start with \"/aws/cloudtrail/\". It specifically captures messages beginning with \"AUTHENTICATION\", indicating events related to user authentication. These events include login attempts, authentication successes or failures, and credential usage. The pattern counts the number of such authentication-related log entries."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/cloudtrail/*",
+      "message": "AUTHORIZATION*"
+    },
+    "description": "This pattern monitors CloudTrail logs within the `/aws/cloudtrail/*` LogGroup for messages starting with \"AUTHORIZATION\", capturing detailed records of authorization events such as permission checks, access denied errors, and policy evaluations. Its purpose is to detect and alert on potential security or access issues by identifying unusual spikes in authorization failures or denied access attempts.\n\n**Alert Threshold:**  \nTrigger an alert when the count of \"AUTHORIZATION*\" messages indicating access denied or failed permission checks exceeds a predefined threshold (e.g., more than 10 denied events within 5 minutes), signaling possible misconfigurations, unauthorized access attempts, or policy changes impacting system availability.\n\n**Impact of Values:**  \n- **High values:** May indicate security incidents such as brute force attempts, misconfigured IAM policies, or service disruptions due to denied permissions, requiring immediate investigation.  \n- **Low or zero values:** Typically expected under normal operation, indicating stable and authorized access patterns.\n\n**Example Usage:**  \n- **Dashboard:** Visualize the count of \"AUTHORIZATION*\" denied events over time to identify trends or sudden spikes.  \n- **Alert Rule:** Create a CloudWatch metric filter on `/aws/cloudtrail/*` logs for messages matching `\"AUTHORIZATION* access denied\"`, then set a CloudWatch alarm to notify the SRE team if the count exceeds 10 within a 5-minute window, enabling rapid response to potential security or access issues."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/cloudtrail/*",
+      "message": "SECURITY*"
+    },
+    "description": "This pattern captures CloudTrail security-related logs. It identifies security events, compliance violations, and security policy changes."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/vpcflowlogs/*",
+      "message": "REJECT*"
+    },
+    "description": "This pattern matches log entries from AWS VPC Flow Logs where the message begins with \"REJECT\". It specifically identifies network traffic that was blocked or denied by security groups, network ACLs, or other network access controls. Each matched event represents a single rejected network connection attempt. The data is measured as individual log records indicating rejection occurrences."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/vpcflowlogs/*",
+      "message": "ACCEPT*"
+    },
+    "description": "This pattern monitors VPC Flow Logs entries where network traffic is explicitly allowed (\"ACCEPT*\") by security groups, network ACLs, or other network policies. It helps SREs track permitted inbound and outbound traffic within the VPC to ensure expected connectivity and detect unusual spikes or drops.\n\n**Purpose:**  \nTo provide visibility into accepted network flows, confirming that legitimate traffic is passing through as intended and to identify potential misconfigurations or security issues.\n\n**Alert Threshold Guidance:**  \n- Trigger an alert if the volume of ACCEPTed traffic deviates significantly from baseline (e.g., a sustained 30% drop may indicate connectivity issues or misconfigurations; a sudden 50% spike could signal unexpected traffic or potential abuse).  \n- Thresholds should be customized based on normal traffic patterns per application or subnet.\n\n**Impact of Values:**  \n- **High ACCEPT counts:** May indicate increased legitimate usage or potential unauthorized access if unexpected.  \n- **Low ACCEPT counts:** Could signal network disruptions, overly restrictive policies, or service outages.\n\n**Example Usage:**  \nIn a CloudWatch dashboard, plot the count of ACCEPTed flow log entries over time to visualize traffic trends. Set an alert rule to notify the SRE team if ACCEPT counts fall below 70% of the 7-day moving average for more than 15 minutes, indicating possible network issues requiring investigation."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/vpcflowlogs/*",
+      "message": "ERROR*"
+    },
+    "description": "This pattern monitors the `/aws/vpcflowlogs/*` CloudWatch Log Groups for log entries where the message begins with \"ERROR\", specifically capturing network-related error events such as connection failures, routing issues, or dropped packets within your VPC. Its purpose is to provide early detection of network anomalies that could impact application availability or performance.\n\n**Alert Threshold:** Trigger an alert when the count of \"ERROR*\" messages exceeds a baseline threshold (e.g., more than 5 errors within 5 minutes), indicating a potential network disruption requiring investigation.\n\n**Impact:**  \n- **High values:** A spike in error messages suggests active network problems like misconfigured routing, firewall blocks, or connectivity failures, which can degrade service reliability and user experience. Immediate remediation is recommended.  \n- **Low or zero values:** Indicates normal network operation with no detected flow log errors, implying stable connectivity and routing.\n\n**Example Usage:**  \nIn a CloudWatch dashboard or alert rule, create a metric filter on `/aws/vpcflowlogs/*` for messages starting with \"ERROR\". Set an alarm to notify the SRE team if the error count exceeds 5 within a 5-minute window. This enables proactive response to network issues before they escalate into outages."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/vpcflowlogs/*",
+      "message": "TIMEOUT*"
+    },
+    "description": "This pattern monitors VPC Flow Logs for timeout events, specifically capturing network connections that did not complete within the expected timeframe, indicating potential connectivity issues, network congestion, or service unavailability. In CloudWatch Logs, it helps SREs detect and investigate intermittent or persistent network timeouts affecting application performance or availability.\n\n**Alert Threshold:** Trigger an alert when the count of timeout events exceeds a baseline threshold (e.g., more than 5 timeouts within 5 minutes) or shows a sustained increase compared to historical averages, signaling abnormal network behavior.\n\n**Impact:**  \n- **High values:** Indicate frequent network timeouts, which can lead to degraded application performance, failed service calls, or outages. Immediate investigation is required to identify root causes such as misconfigured security groups, routing issues, or overloaded network resources.  \n- **Low or zero values:** Represent normal network operation with successful connection completions.\n\n**Example Usage:**  \nIn a CloudWatch dashboard, visualize the number of timeout events over time using a metric filter based on this pattern. For alerting, create a CloudWatch alarm that triggers when the count of timeout events in the last 5 minutes exceeds 5, enabling proactive response to emerging network issues before they impact end users."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/vpcflowlogs/*",
+      "message": "RESET*"
+    },
+    "description": "This pattern monitors VPC Flow Logs for TCP connection reset events (messages starting with \"RESET\") within the **/aws/vpcflowlogs/** log groups. These reset events indicate that TCP connections were forcefully closed, which can signal network instability, misconfigurations, service restarts, or potential connectivity issues affecting application availability.\n\n**Purpose:**  \nTo detect abnormal spikes in TCP resets that may degrade network performance or cause service interruptions.\n\n**Alert Threshold:**  \nTrigger an alert if the count of RESET events exceeds a baseline threshold (e.g., more than 5 resets per minute sustained over 3 consecutive periods), indicating a potential network problem requiring investigation.\n\n**Impact:**  \n- **High values:** Suggest frequent connection disruptions, possibly due to network flaps, firewall rules, or overloaded services, leading to degraded user experience or failed communications.  \n- **Low or zero values:** Indicate stable TCP connections with no unexpected resets, reflecting healthy network behavior.\n\n**Example Usage:**  \nIn a CloudWatch dashboard, display a metric widget showing the count of RESET events per minute from **/aws/vpcflowlogs/**. Configure a CloudWatch alarm to notify the SRE team when resets exceed the threshold, enabling proactive troubleshooting before user impact escalates."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/route53/*",
+      "message": "ERROR*"
+    },
+    "description": "This pattern monitors Route 53 logs in CloudWatch Logs for entries where the message begins with \"ERROR,\" capturing DNS resolution failures, health check errors, and routing issues. It helps SREs quickly identify and respond to critical DNS problems affecting application availability and performance. An alert should be triggered when the count of these error messages exceeds a defined threshold—commonly set to 5 errors within a 5-minute window—indicating a potential outage or misconfiguration. High error counts suggest significant DNS or routing failures that can lead to service disruptions, while consistently low or zero errors indicate healthy DNS operations. For example, in a CloudWatch dashboard, this pattern can be used to create a metric filter that counts error occurrences, which then feeds into an alarm that notifies the SRE team when the threshold is breached, enabling prompt investigation and remediation."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/route53/*",
+      "message": "HEALTH_CHECK*"
+    },
+    "description": "This pattern captures Route 53 health check logs from the **/aws/route53/** log groups, specifically entries starting with \"HEALTH_CHECK\". It helps SREs monitor the status and reliability of Route 53 health checks by identifying failures, successes, and configuration issues. \n\n**Purpose:**  \nUse this pattern to track health check results that influence DNS failover and routing decisions, ensuring your applications remain reachable and performant.\n\n**Alert Thresholds:**  \n- Trigger an alert if the number of health check failures exceeds a defined threshold (e.g., >5 failures within 5 minutes), indicating potential service degradation or outage.  \n- Alert on repeated configuration errors or misconfigurations detected in health check logs.\n\n**Impact of Values:**  \n- **High failure counts:** May indicate backend service downtime, network issues, or misconfigured health checks, potentially causing traffic to be routed incorrectly or dropped.  \n- **Low or zero failures:** Indicates healthy endpoints and proper routing behavior. Sudden drops to zero after a period of failures may signal issue resolution.\n\n**Example Usage:**  \n- **Dashboard:** Display a time series graph of health check failure counts over the last hour, alongside success rates, to quickly assess service health trends.  \n- **Alert Rule:** Create a CloudWatch alarm that triggers when the count of \"HEALTH_CHECK\" failure messages in the last 5 minutes exceeds 5, notifying the SRE team to investigate potential outages or misconfigurations."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/route53/*",
+      "message": "DNS*"
+    },
+    "description": "This pattern captures DNS-related logs from AWS Route 53 within CloudWatch Logs, focusing on DNS queries, responses, resolution events, and DNS configuration changes. It helps SREs monitor the health and performance of DNS operations critical to application availability and user experience.\n\n**Purpose:**  \nUse this pattern to track DNS request volumes, error rates (such as NXDOMAIN or SERVFAIL responses), latency in DNS resolution, and configuration changes that could affect routing or domain resolution.\n\n**Alert Thresholds:**  \n- Trigger an alert if the rate of DNS errors (e.g., SERVFAIL, NXDOMAIN) exceeds a defined threshold (e.g., >5% of total queries) over a 5-minute window, indicating potential DNS resolution issues.  \n- Alert if DNS query latency spikes above a baseline threshold (e.g., >200ms average) consistently, which may signal performance degradation.  \n- Notify on unexpected or unauthorized DNS configuration changes to prevent misrouting or security risks.\n\n**Impact of Values:**  \n- **High DNS error rates** can lead to failed domain resolutions, causing application downtime or degraded user experience.  \n- **Increased DNS latency** can slow application response times and impact end-user satisfaction.  \n- **Frequent or unauthorized config changes** may introduce routing errors or security vulnerabilities.\n\n**Example Usage:**  \nIn a CloudWatch dashboard, visualize the total DNS queries, error rates, and average latency using metrics filtered by this pattern. Create an alert rule that triggers when DNS error rates exceed 5% over 5 minutes, sending notifications to the SRE team for immediate investigation. This proactive monitoring ensures DNS reliability and quick response to issues affecting service availability."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/route53/*",
+      "message": "ROUTING*"
+    },
+    "description": "This pattern matches logs from AWS Route 53 log groups that begin with \"/aws/route53/\" and contain messages starting with \"ROUTING\". It captures detailed records of routing policy evaluations, including how DNS queries are processed and routed. The logs also document traffic routing decisions and any changes made to routing configurations. Data is measured as discrete log events representing individual routing actions or configuration updates."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/route53/*",
+      "message": "FAILOVER*"
+    },
+    "description": "This pattern monitors Route 53 failover events by capturing logs from the **/aws/route53/** log group containing messages starting with \"FAILOVER\". It helps SREs detect when Route 53 switches traffic between primary and secondary endpoints due to health check failures or disaster recovery activations.  \n\n**Purpose:**  \n- Track failover occurrences to ensure DNS routing resilience and availability.  \n- Identify unexpected or frequent failovers that may indicate underlying infrastructure or application issues.\n\n**Alert Threshold:**  \n- Trigger an alert if the number of failover events exceeds a defined threshold within a given time window (e.g., more than 3 failovers in 15 minutes), signaling potential instability or repeated endpoint failures.  \n- Conversely, zero failovers over an extended period may indicate a lack of failover testing or monitoring gaps.\n\n**Impact:**  \n- **High failover count:** May cause increased latency, service disruption, or indicate failing endpoints requiring immediate investigation.  \n- **Low or no failovers:** Suggests stable routing but also warrants periodic validation to ensure failover mechanisms are operational.\n\n**Example Usage:**  \n- **Dashboard:** Display a time series graph showing the count of \"FAILOVER\" events per 5-minute interval to visualize failover frequency and trends.  \n- **Alert Rule:** Create a CloudWatch metric filter on **/aws/route53/** logs for messages starting with \"FAILOVER\", then set a CloudWatch alarm to notify the SRE team if failover events exceed 3 within 15 minutes."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/cloudwatch/*",
+      "message": "ERROR*"
+    },
+    "description": "This pattern monitors CloudWatch log groups under `/aws/cloudwatch/*` for log entries beginning with \"ERROR\", capturing critical issues such as metric collection failures, alarm evaluation errors, and monitoring service disruptions. It helps SREs detect when CloudWatch itself is experiencing problems that could impair monitoring reliability. An alert should be triggered when the count of \"ERROR\" messages exceeds a defined threshold (e.g., more than 5 errors within 5 minutes), indicating a potential systemic failure requiring immediate investigation. High error counts suggest degraded monitoring capabilities and increased risk of undetected incidents, while consistently low or zero errors indicate healthy CloudWatch operations. For example, an alert rule can be configured to trigger when the sum of logs matching **{\"LogGroup\": \"/aws/cloudwatch/*\", \"message\": \"ERROR*\"}** exceeds 5 in a 5-minute window, and a dashboard widget can display a time series graph of error counts to track trends and correlate with system events."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/cloudwatch/*",
+      "message": "ALARM*"
+    },
+    "description": "This pattern captures CloudWatch alarm logs. It identifies alarm state changes, threshold breaches, and alarm evaluation events."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/cloudwatch/*",
+      "message": "METRIC*"
+    },
+    "description": "This pattern captures logs from CloudWatch metric operations within the `/aws/cloudwatch/*` log groups, specifically entries starting with \"METRIC\". It tracks key events such as metric data ingestion, processing latency, and aggregation status, enabling monitoring of the health and performance of CloudWatch metric pipelines.  \n\n**Purpose:** Helps SREs detect delays, failures, or anomalies in metric collection and processing that could impact monitoring accuracy and alerting reliability.\n\n**Alert Thresholds:**  \n- Trigger an alert if metric processing latency exceeds 5 seconds consistently over 5 minutes, indicating potential ingestion delays.  \n- Alert on repeated metric aggregation failures or error counts above a defined baseline (e.g., >3 errors in 5 minutes).  \n\n**Impact of Values:**  \n- High latency or error counts may cause delayed or missing metrics, leading to blind spots in system observability and delayed incident response.  \n- Low or zero error counts with stable latency indicate healthy metric pipeline operation.  \n\n**Example Usage:**  \nIn a CloudWatch dashboard, visualize the average processing latency and error count from logs matching this pattern to monitor metric pipeline health.  \nAlert rule example (CloudWatch Logs Insights):  \n```\nfields @timestamp, @message\n| filter @message like /^METRIC/\n| stats avg(processingLatency) as avgLatency, count_if(error = true) as errorCount by bin(5m)\n| filter avgLatency > 5000 or errorCount > 3\n```\nThis triggers alerts when metric processing is slow or error-prone, enabling proactive investigation and remediation."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/cloudwatch/*",
+      "message": "DASHBOARD*"
+    },
+    "description": "This pattern matches log entries from CloudWatch log groups with names starting with \"/aws/cloudwatch/\". It specifically captures messages beginning with \"DASHBOARD\", which indicate events related to CloudWatch dashboard activities. These events include creation, modification, and viewing of dashboards. The pattern measures the count of such dashboard-related log events as discrete occurrences."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/cloudwatch/*",
+      "message": "LOG*"
+    },
+    "description": "This metric tracks events related to AWS CloudWatch log groups matching the pattern \"/aws/cloudwatch/*\" with messages starting with \"LOG\". It measures the count of log processing activities, including log ingestion, log group and stream operations, and pipeline monitoring. The unit of measurement is the number of events recorded. This enables monitoring of the centralized CloudWatch logging infrastructure’s operational activity."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/guardduty/*",
+      "message": "*"
+    },
+    "description": "Logs from AWS GuardDuty containing detailed threat detection events. These include findings on potential security threats such as unauthorized access, compromised credentials, and suspicious activities. Each log entry records the event type, severity level, and timestamp to support continuous security monitoring and incident response. Data is measured as discrete security findings per event."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/securityhub/*",
+      "message": "*"
+    },
+    "description": "Security Hub log group **/aws/securityhub/** collects detailed findings and compliance logs related to your AWS environment’s security posture. It aggregates security alerts, compliance status, and control evaluations from multiple AWS services to provide centralized visibility into risks and vulnerabilities.\n\n**Purpose:** Enables continuous monitoring of security findings and compliance checks, helping SREs detect deviations from security best practices and regulatory requirements.\n\n**Alert Thresholds:**  \n- Trigger alerts when the count of new high or critical severity findings exceeds a defined threshold (e.g., >10 in 1 hour), indicating emerging or escalating security risks.  \n- Alert on sudden spikes in failed compliance checks or repeated findings from the same resource, signaling potential misconfigurations or attacks.\n\n**Impact of Values:**  \n- **High values:** Indicate increased security risks, potential breaches, or compliance failures requiring immediate investigation and remediation.  \n- **Low or zero values:** Suggest a stable and compliant security posture but should be validated against expected baselines to avoid missing silent failures.\n\n**Example Usage:**  \n- **Dashboard:** Visualize the number of open findings by severity over time, compliance check pass/fail rates, and trending resource-specific issues.  \n- **Alert Rule:** Create a CloudWatch metric filter on **/aws/securityhub/** logs to count critical findings, triggering an SNS notification if the count exceeds 10 within a 1-hour window, enabling rapid response to security incidents."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/config/*",
+      "message": "*"
+    },
+    "description": "AWS Config log group captures detailed records of configuration changes and compliance status for AWS resources. It measures configuration drift, compliance evaluations, and resource changes as discrete event entries. Each log entry represents a specific configuration change or compliance check, enabling auditing and governance tracking. Data is recorded as timestamped JSON messages detailing resource states and compliance results."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/macie/*",
+      "message": "*"
+    },
+    "description": "Macie data discovery logs capture detailed records of sensitive data identification, classification, and monitoring activities within your AWS environment. These logs help track PII detection, data loss prevention events, and compliance with privacy regulations. Monitoring this log group enables SREs to detect unusual spikes in sensitive data findings or classification errors that may indicate misconfigurations or potential data exposure risks. A typical alert threshold could be set for a sudden increase in the number of sensitive data detections or classification failures within a short time window (e.g., more than 50 findings in 5 minutes), signaling possible data leakage or scanning issues. High values may indicate increased risk of data exposure or compliance violations, requiring immediate investigation, while consistently low values suggest normal operation and effective data governance. Example alert rule: trigger an alert if the count of sensitive data findings in **/aws/macie/** exceeds 50 within 5 minutes. In dashboards, visualize the trend of sensitive data findings over time alongside classification success rates to quickly identify anomalies or degradation in data protection effectiveness."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/detective/*",
+      "message": "*"
+    },
+    "description": "Logs from AWS Detective capturing detailed security investigation events. These logs record threat detection activities, incident analysis steps, and behavioral patterns related to security. Data is measured as discrete log entries, each representing a specific event or action within the investigation process."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/eks/*",
+      "message": "ERROR*"
+    },
+    "description": "EKS cluster error logs filtered by messages starting with \"ERROR\" capture critical issues within the Kubernetes environment, including node failures, pod scheduling errors, and overall cluster health degradation. This log filter in CloudWatch Logs helps SREs quickly identify and investigate operational problems affecting cluster stability and application availability. \n\nA typical alert threshold is when the count of ERROR messages exceeds 5 occurrences within a 5-minute window, indicating a potential systemic issue requiring immediate attention. High error rates often correlate with degraded cluster performance, failed deployments, or service outages, while low or zero error counts generally reflect a healthy cluster state.\n\nExample usage: Configure a CloudWatch metric filter on **{\"LogGroup\": \"/aws/eks/*\", \"message\": \"ERROR*\"}** to emit a metric for ERROR log entries, then create an alert rule that triggers when this metric surpasses 5 errors in 5 minutes. This metric can also be visualized on a dashboard alongside pod health and node status metrics to provide a comprehensive view of cluster health."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/eks/*",
+      "message": "WARN*"
+    },
+    "description": "EKS cluster warning logs. Non-critical cluster issues, resource constraints, configuration warnings, and performance degradation indicators. Proactive monitoring and capacity planning."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/eks/*",
+      "message": "POD*"
+    },
+    "description": "EKS pod lifecycle logs capture detailed events related to pod creation, deletion, scheduling, and health checks within your Kubernetes clusters. These logs, filtered by **{\"LogGroup\": \"/aws/eks/*\", \"message\": \"POD*\"}**, provide critical insights into pod state transitions and container orchestration activities, enabling SREs to monitor application deployment health and cluster stability.\n\n**Alert Thresholds:**  \n- Trigger an alert if the rate of pod failures (e.g., crash loops, failed scheduling) exceeds 5% of total pod events within a 5-minute window.  \n- Alert on repeated pod deletions or restarts exceeding a baseline threshold (e.g., more than 10 restarts per pod per hour), indicating instability.\n\n**Impact of Values:**  \n- **High pod failure or restart rates** suggest application instability, resource constraints, or misconfigurations, potentially leading to degraded service availability.  \n- **Low pod lifecycle event rates** may indicate underutilization or issues with workload scheduling, possibly affecting scalability or responsiveness.\n\n**Example Usage:**  \nIn a CloudWatch dashboard, visualize the count of pod lifecycle events over time, segmented by event type (creation, deletion, failure). Configure an alert rule to notify the SRE team when pod failure rates spike above the defined threshold, enabling rapid investigation and remediation of deployment or cluster issues."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/eks/*",
+      "message": "NODE*"
+    },
+    "description": "EKS node management logs capture detailed events related to node lifecycle within your Kubernetes cluster, including node registration, health status updates, scaling activities, and termination events. Monitoring these logs helps ensure cluster stability and capacity alignment.\n\n**Alert Thresholds:**  \n- Trigger an alert if the number of node failure or unhealthy node events exceeds 5 within 10 minutes, indicating potential cluster instability.  \n- Alert if node registration events drop to zero during expected scaling periods, signaling possible provisioning issues.\n\n**Impact:**  \n- High frequency of node failure or unhealthy events can lead to degraded application performance, reduced cluster capacity, and potential downtime.  \n- Low or absent node registration events during scaling windows may cause insufficient resources, impacting workload scheduling and availability.\n\n**Example Usage:**  \nCreate a CloudWatch Logs Insights query filtering **LogGroup: \"/aws/eks/*\"** with messages starting with \"NODE\" to track node health events. Use this query in a dashboard widget to visualize node failure trends over time. Configure an alert rule to notify the SRE team when unhealthy node events spike above the threshold, enabling rapid response to node-related issues."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/glue/*",
+      "message": "ERROR*"
+    },
+    "description": "This log group captures error messages from AWS Glue ETL jobs, specifically entries where the log message begins with \"ERROR\". It records occurrences of data processing failures, transformation errors, and pipeline execution issues during ETL workflows. Each log entry represents a single error event, providing detailed diagnostic information for troubleshooting. The data is measured as discrete error log entries within the Glue job execution logs."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/glue/*",
+      "message": "JOB*"
+    },
+    "description": "This log group captures AWS Glue job execution logs identified by messages starting with \"JOB\". It records detailed ETL job lifecycle events, including job start, progress, completion, and failure statuses. Metrics include data processing volumes (in bytes), execution durations (in seconds), and transformation counts. These logs enable monitoring of data pipeline orchestration and performance tracking at the job level."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/athena/*",
+      "message": "ERROR*"
+    },
+    "description": "Athena query error logs capturing all ERROR-level messages from Athena queries, including SQL syntax errors, query execution failures, and data access issues. These logs help SREs quickly identify and troubleshoot query problems affecting data analytics workflows. Set alert thresholds based on error count spikes—e.g., more than 5 ERROR logs within 5 minutes—to detect sudden query failures that may indicate systemic issues or data source problems. High error rates can signal degraded analytics reliability or broken pipelines, impacting downstream reporting and decision-making; low or zero errors indicate stable query execution. Example alert rule: trigger when count of ERROR messages in **{\"LogGroup\": \"/aws/athena/*\", \"message\": \"ERROR*\"}** exceeds 5 in a 5-minute window. In dashboards, visualize error trends over time alongside query success metrics to correlate failures with system changes or data anomalies."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/athena/*",
+      "message": "QUERY*"
+    },
+    "description": "Athena query execution logs capture detailed records of SQL queries run in AWS Athena. They include query statements, execution status, duration in milliseconds, and resource usage metrics such as scanned data volume in bytes. These logs enable monitoring of query performance and troubleshooting of data warehouse operations. They are essential for tracking business intelligence workflows and data exploration activities."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/redshift/*",
+      "message": "ERROR*"
+    },
+    "description": "This log group captures error messages from Amazon Redshift clusters, specifically entries starting with \"ERROR\". It records database errors, connection failures, query execution problems, and cluster health issues. Each log entry represents a discrete error event without a specific unit of measurement. This data is used for monitoring cluster stability and troubleshooting performance issues."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/redshift/*",
+      "message": "QUERY*"
+    },
+    "description": "This log group captures detailed Redshift query execution events. It records SQL query statements, execution times measured in milliseconds, and performance metrics such as CPU and I/O usage. These logs help monitor query processing, diagnose performance issues, and optimize data warehouse operations."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/elasticmapreduce/*",
+      "message": "ERROR*"
+    },
+    "description": "EMR cluster error logs capturing all ERROR-level messages from the Hadoop ecosystem and related big data processing components within the /aws/elasticmapreduce/ log group. These logs help SREs monitor cluster health by identifying failures in data processing pipelines, resource contention, or configuration issues. An alert should trigger when the count of ERROR messages exceeds a threshold (e.g., >10 errors within 5 minutes), indicating potential cluster instability or job failures requiring immediate investigation. High error rates often lead to delayed or failed data workflows impacting downstream systems, while low or zero errors indicate stable cluster operation. Example usage: create a CloudWatch metric filter on **{\"LogGroup\": \"/aws/elasticmapreduce/*\", \"message\": \"ERROR*\"}** to count ERROR logs, then set a CloudWatch alarm to notify the SRE team if errors exceed 10 in a 5-minute window, and visualize this metric on a dashboard alongside job success rates and cluster resource utilization for comprehensive monitoring."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/elasticmapreduce/*",
+      "message": "JOB*"
+    },
+    "description": "This log group captures Elastic MapReduce (EMR) job execution events and status updates. It records lifecycle stages of big data jobs, including start, progress, and completion timestamps. Metrics include job duration measured in seconds and resource usage details such as CPU and memory consumption. These logs enable monitoring of data processing workflows and cluster operation performance."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/kinesis/*",
+      "message": "ERROR*"
+    },
+    "description": "This log group captures error messages from all AWS Kinesis streams, indicated by the prefix \"/aws/kinesis/\". It records occurrences of stream processing failures, data ingestion errors, and connectivity issues with the Kinesis service. Each log entry represents a single error event, providing real-time monitoring of stream health and troubleshooting data pipeline problems. The measurement unit is the count of error events logged."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/kinesis/*",
+      "message": "STREAM*"
+    },
+    "description": "Kinesis stream management logs capture events related to the lifecycle and operation of Kinesis data streams. They record actions such as stream creation, deletion, scaling, and shard-level data throughput. Metrics include counts of API calls and data volume measured in bytes per second. These logs enable monitoring of stream health and real-time data processing performance."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/codebuild/*",
+      "message": "ERROR*"
+    },
+    "description": "This log captures all error messages from AWS CodeBuild projects within the specified log group pattern \"/aws/codebuild/*\". It records build failures, compilation errors, and other issues encountered during the CI/CD pipeline execution. Each entry represents an individual error event, logged as a text message. This data helps monitor and troubleshoot software build processes by identifying specific error occurrences."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/codebuild/*",
+      "message": "BUILD*"
+    },
+    "description": "These logs capture detailed events from AWS CodeBuild projects, specifically entries in log groups matching \"/aws/codebuild/*\" with messages starting with \"BUILD\". They record build lifecycle stages such as initialization, compilation, testing, and completion status. Metrics include timestamps, build durations measured in seconds, and success or failure indicators. This data enables monitoring and troubleshooting of automated software build processes within CI/CD pipelines."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/codedeploy/*",
+      "message": "ERROR*"
+    },
+    "description": "CodeDeploy error logs capture deployment failures, rollback events, and application deployment issues within the /aws/codedeploy/* log groups in CloudWatch Logs. This log filter identifies ERROR-level messages indicating problems during deployment processes. An alert should be triggered when the count of ERROR messages exceeds a threshold (e.g., 5 errors within 5 minutes), signaling potential deployment instability or failures requiring immediate investigation. High error counts often indicate failed deployments or rollback loops impacting application availability, while low or zero errors suggest stable deployment operations. For example, use this filter in a CloudWatch alarm or dashboard widget to monitor error frequency, triggering notifications to the SRE team when error rates spike, enabling rapid response to deployment issues."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/codedeploy/*",
+      "message": "DEPLOYMENT*"
+    },
+    "description": "Logs from AWS CodeDeploy capturing deployment lifecycle events and status updates. These entries track each deployment's progress, including start, success, failure, and rollback actions. The logs measure deployment occurrences as discrete event records with timestamps. They support monitoring and troubleshooting of application release processes within CI/CD pipelines."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/codepipeline/*",
+      "message": "ERROR*"
+    },
+    "description": "This log group captures error messages from AWS CodePipeline executions. It records failures occurring at the pipeline or stage level during CI/CD workflows. The entries measure the count and details of error events as text logs. These logs help monitor and troubleshoot software delivery automation issues."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/codepipeline/*",
+      "message": "PIPELINE*"
+    },
+    "description": "Logs from AWS CodePipeline capturing detailed events related to pipeline executions. These include lifecycle changes, stage transitions, and status updates for each pipeline run. The logs measure event occurrences and timestamps, providing a chronological record of CI/CD workflow progress. Data is recorded as discrete log entries without aggregated units."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/states/*",
+      "message": "ERROR*"
+    },
+    "description": "This log group captures error messages from AWS Step Functions workflows. It records failures in workflow executions, state machine errors, and issues within serverless workflows. Each log entry corresponds to an individual error event, providing detailed diagnostic information. The data is measured as discrete error occurrences without aggregated units."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/states/*",
+      "message": "EXECUTION*"
+    },
+    "description": "This log group captures detailed execution events for AWS Step Functions workflows. It records state transitions, execution start and stop times, and status updates for each workflow run. Metrics include counts of executions, durations in milliseconds, and success or failure statuses. These logs enable monitoring and troubleshooting of serverless workflow orchestration."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/apprunner/*",
+      "message": "ERROR*"
+    },
+    "description": "This log group captures error messages from AWS App Runner services, specifically those containing the keyword \"ERROR\". It records containerized application errors, deployment failures, and service health issues in text log entries. The data is measured as discrete error events logged over time. This enables monitoring and troubleshooting of application and orchestration problems within App Runner environments."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/apprunner/*",
+      "message": "DEPLOYMENT*"
+    },
+    "description": "App Runner deployment logs capture detailed events related to the deployment lifecycle of containerized applications, including service start, update, scaling actions, and deployment status changes. These logs help SREs monitor deployment success, detect failures, and track scaling behavior in real time within CloudWatch Logs under the log group pattern **/aws/apprunner/** with messages starting with **DEPLOYMENT**.\n\n**Alert Thresholds:**  \n- Trigger an alert if deployment failure messages appear more than 3 times within 5 minutes, indicating repeated deployment errors or rollback events.  \n- Alert if deployment duration exceeds expected thresholds (e.g., deployments taking longer than 10 minutes), signaling potential performance or configuration issues.\n\n**Impact of Values:**  \n- High frequency of deployment failure logs suggests instability or misconfiguration, potentially causing downtime or degraded service availability.  \n- Low or zero deployment logs during expected deployment windows may indicate missing telemetry or silent failures.  \n- Frequent scaling deployment logs may reflect fluctuating load or resource constraints impacting application performance.\n\n**Example Usage:**  \nIn a CloudWatch dashboard, create a metric filter on **/aws/apprunner/** log group for messages matching **DEPLOYMENT FAILURE** to count failure events. Set an alarm to notify the SRE team if failures exceed 3 within 5 minutes. Additionally, visualize deployment duration metrics alongside these logs to correlate deployment health with application performance trends."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/servicediscovery/*",
+      "message": "*"
+    },
+    "description": "Service Discovery logs capture detailed events related to service registration, health checks, and service mesh operations within your microservices architecture. These logs help SREs monitor the state and connectivity of services managed by AWS Cloud Map, enabling early detection of service registration failures, health check errors, or mesh communication issues.\n\n**Alert Thresholds:**  \n- Trigger alerts if the rate of service registration failures or health check errors exceeds 5% of total attempts within a 5-minute window.  \n- Alert on repeated service deregistrations or mesh connectivity timeouts exceeding predefined baselines, indicating potential service instability or network issues.\n\n**Impact of Values:**  \n- **High error rates** suggest service discovery problems that can lead to service unavailability, degraded performance, or cascading failures in dependent microservices.  \n- **Low or zero errors** indicate healthy service registration and connectivity, ensuring reliable service discovery and communication.\n\n**Example Usage:**  \n- Dashboard widget showing a time series graph of service registration success vs failure counts from **/aws/servicediscovery/** logs.  \n- Alert rule:  \n  ```\n  IF (service_registration_failures / total_registrations) > 0.05 FOR 5 minutes THEN trigger alert \"Service Discovery Registration Failure Rate High\"\n  ```  \nThis enables proactive identification and resolution of service discovery issues to maintain microservices reliability."
+  },
+  {
+    "query": {
+      "LogGroup": "/aws/costexplorer/*",
+      "message": "*"
+    },
+    "description": "Cost Explorer log group capturing detailed records of AWS Cost Explorer API requests and responses. Logs include JSON-formatted data on cost and usage queries, budget forecasts, and cost allocation reports. Metrics primarily represent monetary values (USD), usage quantities (e.g., hours, GB), and timestamps. Data originates from AWS Cost Explorer service interactions, reflecting real-time and historical cost and usage analytics. Unusual values—such as sudden spikes in cost metrics, unexpected budget overruns, or anomalous usage patterns—should trigger alerts to promptly identify potential billing issues, misconfigurations, or unauthorized resource consumption."
+  },
+  {
+    "query": {
+      "message": "LATENCY*"
+    },
+    "description": "Latency monitoring logs across all services capture response times for key transactions and API calls to track system performance and user experience. Alerts should be triggered when latency exceeds defined thresholds (e.g., 500ms for critical APIs or 2x the baseline average) indicating potential performance degradation or SLA violations. High latency values can lead to poor user experience and indicate underlying issues such as resource bottlenecks or network delays, while consistently low latency reflects healthy system responsiveness. For example, a CloudWatch dashboard widget can graph **{\"message\": \"LATENCY*\"}** metrics with a red alert line at 500ms, and an alert rule can notify the SRE team if the 95th percentile latency exceeds this threshold for more than 5 minutes."
+  },
+  {
+    "query": {
+      "message": "THROUGHPUT*"
+    },
+    "description": "Throughput monitoring logs the number of processed requests per second across all services. It tracks request rates, measures capacity utilization as a percentage of maximum throughput, and records performance metrics such as response time in milliseconds. This data supports application scalability monitoring and informs capacity planning decisions."
+  },
+  {
+    "query": {
+      "message": "AUTHENTICATION*"
+    },
+    "description": "Authentication logs capture all login attempts, credential validations, and identity verification events across services, providing critical visibility into user access and security posture. In CloudWatch Logs, **{\"message\": \"AUTHENTICATION*\"}** entries help SREs monitor authentication success and failure rates to detect potential security incidents or system issues. \n\n**Alert Thresholds:**  \n- Trigger an alert if the authentication failure rate exceeds 5% over a 5-minute window, indicating possible brute force attacks or credential issues.  \n- Alert if there are zero successful authentications for more than 10 minutes, which may signal service outages or misconfigurations.\n\n**Impact:**  \n- High failure rates can indicate security threats or user experience problems due to login issues.  \n- Low or zero authentication events may reflect service downtime or logging failures, impacting user access and system reliability.\n\n**Example Usage:**  \nCreate a CloudWatch metric filter on **{\"message\": \"AUTHENTICATION*\"}** to count failed login attempts, then build a dashboard widget showing failure rate trends. Set an alarm to notify the SRE team when failures exceed the 5% threshold, enabling rapid investigation and mitigation."
+  },
+  {
+    "query": {
+      "message": "AUTHORIZATION*"
+    },
+    "description": "Authorization logs capture detailed records of permission checks, access control decisions, and policy evaluations across all services. These logs help SREs monitor security enforcement, detect unauthorized access attempts, and ensure compliance with access policies. An alert should be triggered when the rate of authorization failures or denied access events exceeds a defined threshold (e.g., more than 5% of total authorization attempts within 5 minutes), indicating potential security issues or misconfigurations. High volumes of authorization failures may signal attempted breaches or broken permissions, impacting service availability or data security, while unusually low values could indicate logging gaps or disabled security controls. For example, a CloudWatch dashboard widget can display a time series of authorization failure counts, and an alert rule can be set to notify the team if failures spike above the threshold, enabling rapid investigation and remediation."
+  },
+  {
+    "query": {
+      "message": "COMPLIANCE*"
+    },
+    "description": "Compliance logs capture audit events, regulatory compliance checks, and governance monitoring across all cloud services. These logs help ensure that systems adhere to required policies and standards by tracking compliance-related activities and anomalies. An alert should be triggered when the volume of compliance violations or audit failures exceeds a predefined threshold (e.g., more than 5 critical compliance errors within 1 hour), indicating potential security or regulatory risks. High values suggest increased non-compliance or security issues requiring immediate investigation, while low or zero values indicate adherence to compliance standards. For example, a dashboard widget can display the count of compliance errors over time, and an alert rule can be configured to notify the SRE team if compliance error counts spike above the threshold, enabling proactive remediation."
+  },
+  {
+    "query": {
+      "message": "AUDIT*"
+    },
+    "description": "Audit logs capturing security-related events across all services, including access attempts, configuration changes, and compliance activities. These logs help SREs monitor unauthorized access, detect suspicious behavior, and ensure regulatory compliance. Set alert thresholds based on unusual spikes in audit events—for example, a sudden increase beyond the baseline by 50% within 5 minutes may indicate a security incident requiring immediate investigation. High volumes of audit logs can signal potential security breaches or misconfigurations, while consistently low volumes might suggest logging failures or disabled audit features. Example alert rule: trigger when the count of **{\"message\": \"AUDIT*\"}** events exceeds 1000 within a 5-minute window. In dashboards, visualize audit event trends over time alongside related security metrics to quickly identify anomalies."
+  }
+]

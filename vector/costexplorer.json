@@ -1,0 +1,711 @@
+[
+  {
+    "query": {
+      "Service": "EC2",
+      "MetricName": "UnblendedCost"
+    },
+    "description": "This metric tracks the actual unblended costs incurred by EC2 compute resources, including on-demand, reserved, and spot instances, as reported by AWS Cost Explorer. It helps SREs monitor and manage EC2 spending in near real-time to prevent unexpected budget overruns. A typical alert threshold might be set when daily EC2 costs exceed a predefined budget limit (e.g., $100/day), signaling potential over-provisioning or inefficient usage. High values indicate increased EC2 usage or costly instance types, potentially impacting operational budgets, while low values suggest cost savings or reduced resource consumption. For example, an alert rule could trigger if **{\"Service\": \"EC2\", \"MetricName\": \"UnblendedCost\"}** exceeds $100 in a 24-hour period, and a dashboard widget might display a daily cost trend line to visualize spending patterns and identify anomalies promptly."
+  },
+  {
+    "query": {
+      "Service": "EC2",
+      "MetricName": "BlendedCost"
+    },
+    "description": "This metric tracks the total blended cost of EC2 compute usage across all linked accounts in a consolidated billing family, providing a unified view of EC2 spending that includes discounted and reserved instance rates. SREs can use this metric to monitor overall EC2 cost trends and detect unexpected cost spikes that may indicate resource misconfiguration, over-provisioning, or runaway workloads. A typical alert threshold might be set at a 20% increase in blended EC2 cost compared to the previous week or month, signaling potential inefficiencies or budget overruns. For example, an alert rule could trigger if the daily blended EC2 cost exceeds $1,000 or rises by more than 20% week-over-week. In dashboards, this metric helps correlate cost changes with deployment events or scaling activities, enabling proactive cost management and optimization."
+  },
+  {
+    "query": {
+      "Service": "EC2",
+      "MetricName": "AmortizedCost"
+    },
+    "description": "This metric tracks the amortized cost of EC2 compute resources, spreading upfront fees (such as Reserved Instances or Savings Plans) evenly over their term to reflect the true monthly expense. SREs can use this to monitor ongoing EC2 spending more accurately than on-demand costs alone. A sudden increase beyond a defined threshold—e.g., a 20% rise compared to the previous month—may indicate unexpected usage growth or inefficient resource allocation, warranting investigation. Conversely, a significant drop could signal decommissioned resources or cost optimization success. For example, an alert rule might trigger if the daily amortized cost exceeds $5,000, prompting a review of EC2 usage patterns. In dashboards, this metric helps visualize predictable EC2 expenses over time, enabling proactive budget management and capacity planning."
+  },
+  {
+    "query": {
+      "Service": "EC2",
+      "MetricName": "UsageQuantity"
+    },
+    "description": "This metric tracks the total usage quantity of EC2 instances, measured in instance hours, as reported by Cost Explorer. It helps SREs monitor and analyze EC2 consumption to manage costs and optimize resource allocation. A sudden spike or sustained increase beyond expected thresholds—such as a 20% rise over the average weekly usage—should trigger an alert, indicating potential over-provisioning or unexpected workload growth. Conversely, unusually low values may signal underutilization or service disruptions. For example, an alert rule can be set to notify the team if daily EC2 usage exceeds 120% of the 7-day moving average, enabling proactive cost control. In dashboards, this metric can be visualized alongside cost and performance data to correlate usage patterns with operational impact."
+  },
+  {
+    "query": {
+      "Service": "EC2-OTHER",
+      "MetricName": "UnblendedCost"
+    },
+    "description": "This metric measures the unblended cost of miscellaneous Amazon EC2-related services not included in standard EC2 instance charges. It includes expenses for data transfer, NAT gateways, Elastic IP addresses, and other ancillary EC2 resources. Costs are reported in US dollars using unblended pricing, reflecting the actual rate before any discounts or credits."
+  },
+  {
+    "query": {
+      "Service": "EC2-OTHER",
+      "MetricName": "UnblendedCost",
+      "UsageType": "*"
+    },
+    "description": "This metric measures the unblended cost of miscellaneous EC2-related services not categorized under core EC2 instances. It includes charges for data transfer, NAT gateways, Elastic IPs, and other ancillary EC2 features. Costs are broken down by specific usage types and reported in US dollars. This detailed cost data supports precise tracking and optimization of EC2-associated expenses."
+  },
+  {
+    "query": {
+      "Service": "S3",
+      "MetricName": "UnblendedCost"
+    },
+    "description": "This metric measures the total unblended cost incurred for Amazon S3 services. It includes charges for storage, data transfer, and API requests. Costs are reported in the currency of the billing account, typically in USD. The value reflects the raw, undiscounted amount billed before any credits or discounts."
+  },
+  {
+    "query": {
+      "Service": "S3",
+      "MetricName": "BlendedCost"
+    },
+    "description": "This metric tracks the total blended cost incurred by Amazon S3 storage within your consolidated billing account, reflecting combined pricing from all linked accounts. It helps SREs monitor overall S3 storage expenses to detect unexpected cost increases. Set alert thresholds based on your typical monthly S3 spend—e.g., trigger an alert if daily blended costs exceed 120% of the average daily cost over the past month, indicating potential storage growth or misconfiguration. High values may signal inefficient storage use or data retention issues, leading to increased operational costs, while low values suggest cost optimization or reduced usage. For example, include **{\"Service\": \"S3\", \"MetricName\": \"BlendedCost\"}** in a cost dashboard to visualize daily spend trends, and configure alerts to notify the team when costs surpass defined thresholds, enabling proactive cost management."
+  },
+  {
+    "query": {
+      "Service": "S3",
+      "MetricName": "UsageQuantity"
+    },
+    "description": "This metric measures the total amount of Amazon S3 resources consumed. It includes storage usage measured in gigabyte-months (GB-months) and counts of API requests made. The data helps track raw usage quantities for capacity planning and cost management."
+  },
+  {
+    "query": {
+      "Service": "S3",
+      "MetricName": "UnblendedCost",
+      "UsageType": "*"
+    },
+    "description": "This metric tracks the unblended cost of all Amazon S3 usage types, providing a detailed breakdown of charges across storage classes, data transfer, and API requests. It helps SREs monitor and optimize S3 spending by identifying which usage types contribute most to costs. Set alert thresholds based on your typical monthly S3 spend—e.g., trigger an alert if daily unblended costs exceed 20% of your average daily budget, indicating unexpected usage or misconfiguration. High values may signal inefficient storage class usage, excessive data transfer, or abnormal API activity, potentially increasing operational expenses. Low values generally indicate cost efficiency but should be validated against service usage needs. For example, include this metric in a dashboard showing daily S3 costs by usage type, and configure alerts to notify when costs spike above the defined threshold, enabling proactive cost management."
+  },
+  {
+    "query": {
+      "Service": "RDS",
+      "MetricName": "UnblendedCost"
+    },
+    "description": "This metric tracks the unblended cost of all Amazon RDS resources, including instances, storage, and backup storage, as reported by AWS Cost Explorer. It helps SREs monitor the actual charges incurred for RDS usage without discounts or credits applied. Set alert thresholds based on your budget or historical spending patterns—for example, trigger an alert if daily RDS costs exceed $50 or increase by more than 20% compared to the previous week. High values may indicate unexpected usage spikes, inefficient instance sizing, or backup retention issues, potentially leading to budget overruns. Low values typically reflect optimized resource usage or reduced demand. For example, include **{\"Service\": \"RDS\", \"MetricName\": \"UnblendedCost\"}** in a cost monitoring dashboard to visualize daily RDS expenses alongside usage metrics, and configure alerts to notify the team when costs surpass defined thresholds, enabling proactive cost management."
+  },
+  {
+    "query": {
+      "Service": "RDS",
+      "MetricName": "BlendedCost"
+    },
+    "description": "This metric tracks the blended cost of Amazon RDS instances within consolidated billing accounts, reflecting the combined usage and pricing across linked accounts. It helps SREs monitor and manage database spending by providing visibility into overall RDS expenses under blended pricing models. A typical alert threshold might be set when daily RDS blended costs exceed a predefined budget limit or show an unexpected spike (e.g., a 20% increase compared to the previous week), indicating potential over-provisioning or anomalous usage. High values suggest increased operational costs that may require optimization, while low values could indicate underutilization or cost savings. For example, an SRE can create a dashboard widget displaying daily RDS blended costs alongside a threshold line, and configure an alert rule to notify the team if costs surpass $500 per day, enabling proactive cost control and capacity planning."
+  },
+  {
+    "query": {
+      "Service": "RDS",
+      "MetricName": "AmortizedCost"
+    },
+    "description": "This metric tracks the amortized cost of Amazon RDS services, reflecting the spread of upfront fees (such as Reserved Instances or Savings Plans) evenly over their term to provide a normalized view of ongoing database expenses. SREs can use this to monitor predictable RDS costs and detect unexpected increases that may indicate resource over-provisioning or billing anomalies. A typical alert threshold might be set at a 10-20% increase over the average monthly amortized cost, signaling potential cost inefficiencies or configuration changes. For example, an alert rule could trigger if the daily amortized cost exceeds $1,000, prompting investigation into recent RDS usage or reserved instance purchases. In dashboards, this metric helps correlate cost trends with operational changes, enabling proactive cost management without being misled by one-time upfront charges."
+  },
+  {
+    "query": {
+      "Service": "RDS",
+      "MetricName": "UsageQuantity"
+    },
+    "description": "This metric measures the total usage of Amazon RDS resources. It quantifies the consumption of RDS instance hours and allocated storage in gigabyte-months (GB-months). UsageQuantity reflects the raw count of these resources consumed during the billing period. It helps track how much compute and storage capacity your RDS instances have utilized."
+  },
+  {
+    "query": {
+      "Service": "LAMBDA",
+      "MetricName": "UnblendedCost"
+    },
+    "description": "This metric measures the total unblended cost incurred by AWS Lambda services. It includes charges for function invocations, execution duration, and request counts. Costs are reported in US dollars and reflect the actual amount billed without any blended pricing adjustments. This provides a precise view of Lambda usage expenses for the specified period."
+  },
+  {
+    "query": {
+      "Service": "LAMBDA",
+      "MetricName": "UsageQuantity"
+    },
+    "description": "This metric measures the total usage of AWS Lambda functions. It quantifies the number of invocations and the cumulative execution duration in milliseconds. The unit is typically expressed as count for invocations and milliseconds for duration. This data supports capacity planning and cost analysis for Lambda workloads."
+  },
+  {
+    "query": {
+      "Service": "EBS",
+      "MetricName": "UnblendedCost"
+    },
+    "description": "This metric measures the total unblended cost incurred for Amazon Elastic Block Store (EBS) services. It includes charges for EBS volumes, snapshots, and related data transfer. Costs are reported in the billing currency without any discounts or credits applied. The values represent the raw, itemized expenses before any pricing adjustments."
+  },
+  {
+    "query": {
+      "Service": "EBS",
+      "MetricName": "UsageQuantity"
+    },
+    "description": "This metric measures the total amount of Amazon EBS storage consumed over time. It reports usage in units of gigabyte-months (GB-months), representing the volume size multiplied by the duration of use within a month. It includes both EBS volume storage and snapshot storage. This data is used for capacity planning and billing purposes."
+  },
+  {
+    "query": {
+      "Service": "ELB",
+      "MetricName": "UnblendedCost"
+    },
+    "description": "This metric measures the actual, unblended AWS charges incurred for Elastic Load Balancer (ELB) usage. It includes costs for running load balancer instances and processing data through them. The values are reported in US dollars (USD). This provides a precise view of ELB expenses without any cost allocation or averaging."
+  },
+  {
+    "query": {
+      "Service": "ELB",
+      "MetricName": "UsageQuantity"
+    },
+    "description": "This metric measures the total number of Elastic Load Balancer (ELB) capacity units consumed. It includes both the count of active load balancer instances and the volume of processed data. The unit is in usage quantity, representing the raw usage count for billing and capacity planning purposes. This helps track ELB resource consumption over time."
+  },
+  {
+    "query": {
+      "Service": "CLOUDFRONT",
+      "MetricName": "UnblendedCost"
+    },
+    "description": "This metric tracks the actual unblended costs incurred by AWS CloudFront services, including distribution usage, data transfer, and request charges. It helps SREs monitor and control CDN expenses in Cost Explorer by providing precise cost visibility. Set alert thresholds based on your budget or historical spending patterns—for example, trigger an alert if daily CloudFront costs exceed $50, indicating potential traffic spikes or misconfigurations. High values may signal increased user demand or inefficient caching, leading to unexpected charges, while low values typically reflect normal or reduced usage. An example alert rule could be: \"Alert if CloudFront UnblendedCost > $50 in 24 hours,\" enabling proactive cost management. This metric can also be visualized in dashboards alongside traffic and cache hit ratios to correlate cost with performance metrics."
+  },
+  {
+    "query": {
+      "Service": "CLOUDFRONT",
+      "MetricName": "UsageQuantity"
+    },
+    "description": "This metric tracks the total usage quantity of AWS CloudFront resources, including data transfer in gigabytes and the number of requests, as reported in Cost Explorer. It helps SREs monitor consumption patterns to manage costs and capacity effectively. A sudden spike above typical thresholds—such as a 20% increase over the average daily usage—may indicate unexpected traffic surges or potential misuse, warranting an alert. Conversely, unusually low values might suggest service disruptions or configuration issues. For example, an alert rule can be set to trigger if UsageQuantity exceeds 1 TB of data transfer in a 24-hour period, enabling proactive scaling or cost control. In dashboards, this metric provides visibility into usage trends, helping teams correlate traffic patterns with operational events and optimize CloudFront distribution performance and expenses."
+  },
+  {
+    "query": {
+      "Service": "DYNAMODB",
+      "MetricName": "UnblendedCost"
+    },
+    "description": "This metric tracks the actual unblended costs incurred by DynamoDB, including charges for tables, read/write capacity units, and storage, as reported in AWS Cost Explorer. It helps SREs monitor and control DynamoDB spending by providing visibility into real-time cost trends. A typical alert threshold might be set at a sudden increase of 20% or more compared to the previous billing period or a fixed monthly cost limit aligned with budget constraints. High values indicate increased usage or inefficient capacity provisioning, potentially leading to unexpected expenses, while low values suggest cost optimization or reduced workload. For example, an alert rule could trigger when the daily unblended cost exceeds $50, and a dashboard widget might display a time series graph of daily DynamoDB costs to quickly identify cost spikes or trends."
+  },
+  {
+    "query": {
+      "Service": "DYNAMODB",
+      "MetricName": "UsageQuantity"
+    },
+    "description": "This metric measures the total usage quantity of DynamoDB resources. It includes the number of read capacity units, write capacity units, and the amount of data storage consumed, expressed in gigabyte-months (GB-months). The values represent raw usage counts used for billing and capacity planning."
+  },
+  {
+    "query": {
+      "Service": "ECS",
+      "MetricName": "UnblendedCost"
+    },
+    "description": "This metric tracks the actual unblended AWS costs incurred by ECS resources, including container tasks, services, and cluster management fees. It helps SREs monitor and control ECS-related spending by reflecting the true charges without discounts or credits applied. Set alert thresholds based on your budget or historical cost patterns—for example, trigger an alert if daily ECS unblended costs exceed $100, indicating potential over-provisioning or unexpected usage. High values may signal inefficient resource use or runaway tasks, increasing operational expenses, while low values suggest cost efficiency or reduced ECS activity. Example alert rule: \"Alert if ECS UnblendedCost > $100 over 24 hours,\" and dashboard visualization can display daily ECS costs alongside task counts to correlate cost spikes with workload changes."
+  },
+  {
+    "query": {
+      "Service": "EKS",
+      "MetricName": "UnblendedCost"
+    },
+    "description": "This metric measures the unblended cost incurred for Amazon Elastic Kubernetes Service (EKS). It includes charges related to EKS cluster management and control plane usage. The cost is reported in US dollars and reflects the actual amount billed without any discounts or credits applied. This helps track the precise expenditure for running and managing EKS clusters."
+  },
+  {
+    "query": {
+      "Service": "SQS",
+      "MetricName": "UnblendedCost"
+    },
+    "description": "This metric tracks the actual unblended costs incurred by the SQS service, including charges for message processing and API requests, as reported in AWS Cost Explorer. It helps SREs monitor and control expenses related to SQS usage. A typical alert threshold might be set when daily SQS costs exceed a predefined budget limit (e.g., $10/day), indicating unexpected or excessive usage. High values suggest increased message volume or inefficient queue usage, potentially leading to budget overruns, while low values indicate normal or reduced activity. For example, an alert rule could trigger if **{\"Service\": \"SQS\", \"MetricName\": \"UnblendedCost\"}** exceeds $10 in a 24-hour period, and a dashboard widget might display a daily cost trend line to visualize spending patterns over time."
+  },
+  {
+    "query": {
+      "Service": "SQS",
+      "MetricName": "UsageQuantity"
+    },
+    "description": "This metric tracks the total number of Amazon SQS messages processed, reflecting the raw usage quantity for cost and capacity planning in Cost Explorer. An SRE can use this to monitor message throughput and identify unexpected spikes or drops that may indicate application issues or cost anomalies. A typical alert threshold might be set at a sustained increase of 20% above the average daily message count over a 24-hour period, signaling potential overuse or a surge in traffic. High values can lead to increased costs and may indicate scaling needs, while unusually low values might suggest service disruptions or reduced workload. For example, an alert rule could trigger when UsageQuantity exceeds 1 million messages in an hour, and a dashboard widget could display hourly message counts alongside cost trends to correlate usage with expenses."
+  },
+  {
+    "query": {
+      "Service": "SNS",
+      "MetricName": "UnblendedCost"
+    },
+    "description": "This metric tracks the unblended cost incurred by Amazon SNS for message publishing and delivery, reflecting the actual charges without discounts or credits. It helps SREs monitor and control SNS-related expenses to prevent unexpected billing spikes. A typical alert threshold might be set when daily SNS costs exceed $10, indicating unusually high usage or potential misconfiguration. High values suggest increased messaging activity or inefficient usage patterns, potentially impacting budget and requiring investigation; low values indicate normal or minimal SNS usage. For example, an alert rule could trigger if **{\"Service\": \"SNS\", \"MetricName\": \"UnblendedCost\"}** exceeds $10 in a 24-hour period, and a dashboard widget might display a daily cost trend to visualize spending patterns over time."
+  },
+  {
+    "query": {
+      "Service": "SNS",
+      "MetricName": "UsageQuantity"
+    },
+    "description": "This metric measures the total number of Amazon SNS requests, including message publish and delivery operations. It quantifies the raw count of SNS API calls made within a specified time period. The unit of measurement is the number of requests. This data helps in monitoring SNS usage for capacity planning and cost management."
+  },
+  {
+    "query": {
+      "Service": "KINESIS",
+      "MetricName": "UnblendedCost"
+    },
+    "description": "This metric tracks the actual unblended AWS costs incurred by Kinesis services, including data streams and data processing, as reported in Cost Explorer. It helps SREs monitor and control streaming data expenses to prevent unexpected budget overruns. A typical alert threshold might be set when daily Kinesis costs exceed $100, indicating potential spikes in data volume or inefficient stream usage. High values suggest increased data throughput or retention, possibly signaling scaling events or misconfigurations, while low values indicate normal or reduced usage. For example, an alert rule could trigger if **{\"Service\": \"KINESIS\", \"MetricName\": \"UnblendedCost\"}** surpasses $100 in a 24-hour period, and a dashboard widget might display a daily cost trend line to visualize spending patterns over time."
+  },
+  {
+    "query": {
+      "Service": "KINESIS",
+      "MetricName": "UsageQuantity"
+    },
+    "description": "This metric tracks the total usage quantity of Amazon Kinesis resources, including shard hours and data transfer, as reported in Cost Explorer. It helps SREs monitor consumption patterns to manage costs and capacity effectively. A sustained increase beyond your typical baseline—such as shard hours exceeding 80% of your provisioned capacity or data transfer spikes above historical averages—should trigger alerts to prevent unexpected cost overruns or service degradation. High values may indicate increased data ingestion or scaling needs, while unusually low values could signal underutilization or potential issues in data flow. For example, an alert rule can be set to notify when shard hours exceed 90% of the allocated capacity for more than 1 hour, and a dashboard widget can visualize daily usage trends alongside cost forecasts to support proactive capacity planning."
+  },
+  {
+    "query": {
+      "Service": "REDSHIFT",
+      "MetricName": "UnblendedCost"
+    },
+    "description": "This metric measures the total unblended cost incurred for Amazon Redshift services. It includes charges for Redshift clusters, storage, and data transfer. Costs are reported in the currency of the billing account, typically in USD. The value reflects the actual amount billed before any discounts or credits."
+  },
+  {
+    "query": {
+      "Service": "REDSHIFT",
+      "MetricName": "UsageQuantity"
+    },
+    "description": "This metric measures the total usage of Amazon Redshift resources. It quantifies the consumption of Redshift clusters in units such as node hours and gigabyte-months of storage. These values represent the actual compute time and storage capacity utilized. This data is essential for monitoring resource usage and planning capacity."
+  },
+  {
+    "query": {
+      "Service": "ELASTICACHE",
+      "MetricName": "UnblendedCost"
+    },
+    "description": "This metric tracks the actual unblended AWS costs incurred by ElastiCache resources, including Redis and Memcached instances, as reported in Cost Explorer. It helps SREs monitor real-time spending on ElastiCache to detect unexpected cost spikes or anomalies. A typical alert threshold might be set at a percentage increase (e.g., 20%) over the average daily cost to catch sudden usage or configuration changes that could lead to budget overruns. High values indicate increased ElastiCache usage or misconfigurations causing elevated costs, potentially impacting budget and resource allocation, while low values suggest normal or reduced usage. For example, an alert rule could trigger if the daily unblended cost exceeds $100 or rises by more than 20% compared to the previous week, and a dashboard widget might display a time series graph of daily ElastiCache costs alongside budget limits for quick cost visibility."
+  },
+  {
+    "query": {
+      "Service": "ELASTICACHE",
+      "MetricName": "UsageQuantity"
+    },
+    "description": "This metric measures the total number of ElastiCache node hours consumed. It quantifies the actual usage of ElastiCache clusters over time. The unit of measurement is node hours, representing one node running for one hour. This data is used for capacity planning and cost analysis."
+  },
+  {
+    "query": {
+      "Service": "APIGATEWAY",
+      "MetricName": "UnblendedCost"
+    },
+    "description": "This metric measures the unblended cost incurred by the AWS API Gateway service. It includes charges for API requests, data transfer, and cache usage. The cost is reported in US dollars (USD) without any discounts or credits applied. This provides the raw, itemized expense for API Gateway usage."
+  },
+  {
+    "query": {
+      "Service": "APIGATEWAY",
+      "MetricName": "UsageQuantity"
+    },
+    "description": "This metric measures the total number of API Gateway requests made within a specified time period. It quantifies the raw count of API calls processed by the API Gateway service. The unit of measurement is the number of requests. This data is used for monitoring usage and planning capacity requirements."
+  },
+  {
+    "query": {
+      "Service": "ROUTE53",
+      "MetricName": "UnblendedCost"
+    },
+    "description": "This metric tracks the unblended cost incurred by AWS Route 53 services, including hosted zones, DNS queries, and health checks, as reported in AWS Cost Explorer. It helps SREs monitor and control DNS-related expenses in near real-time. A sudden increase beyond a defined threshold—such as a 20% rise over the average daily cost or exceeding a fixed budgeted amount (e.g., $50/day)—may indicate unexpected usage patterns, misconfigurations, or potential abuse, warranting investigation to prevent budget overruns. Conversely, consistently low costs suggest stable or reduced DNS activity. For example, an alert rule can be set to trigger when the daily unblended cost for Route 53 exceeds $50, enabling proactive cost management. In dashboards, this metric can be visualized alongside query volume and hosted zone counts to correlate cost spikes with operational changes."
+  },
+  {
+    "query": {
+      "Service": "ROUTE53",
+      "MetricName": "UsageQuantity"
+    },
+    "description": "This metric tracks the total number of Route 53 DNS queries and health checks consumed, reflecting your actual usage volume for cost and capacity management. In Cost Explorer, **UsageQuantity** helps you monitor and forecast Route 53 expenses by showing how query and health check volumes translate into billing units. \n\n**Alert Threshold:** Set alerts when UsageQuantity exceeds your typical baseline by 20-30% over a sustained period (e.g., 1 hour) to detect unexpected traffic spikes or potential misconfigurations that could increase costs.\n\n**Impact:**  \n- **High values** indicate increased DNS query or health check activity, which may lead to higher charges and could signal traffic surges, DDoS attacks, or inefficient DNS configurations.  \n- **Low values** might suggest reduced traffic or potential service disruptions affecting DNS resolution.\n\n**Example Usage:**  \nCreate a dashboard widget displaying the hourly UsageQuantity trend alongside cost estimates. An alert rule can trigger if UsageQuantity rises above 1.3x the 7-day moving average, notifying the SRE team to investigate abnormal usage patterns promptly."
+  },
+  {
+    "query": {
+      "Service": "CLOUDWATCH",
+      "MetricName": "UnblendedCost"
+    },
+    "description": "This metric measures the total unblended cost incurred for Amazon CloudWatch services. It includes charges for monitoring metrics, logs, alarms, and related CloudWatch features. The cost is reported in US dollars (USD) and reflects the actual amount billed without any discounts or credits. This provides a clear view of CloudWatch usage expenses on your AWS bill."
+  },
+  {
+    "query": {
+      "Service": "CLOUDWATCH",
+      "MetricName": "UsageQuantity"
+    },
+    "description": "This metric measures the total quantity of CloudWatch resources consumed. It includes usage from standard metrics, custom metrics, and log data ingestion. The values represent the count of units used, such as metric updates or ingested log events. This data helps in monitoring and planning CloudWatch capacity and costs."
+  },
+  {
+    "query": {
+      "Service": "SES",
+      "MetricName": "UnblendedCost"
+    },
+    "description": "This metric measures the total unblended cost incurred for using the Amazon Simple Email Service (SES). It includes charges for email sending, data transfer, and API requests associated with SES. The cost is reported in US dollars (USD) without any blended pricing adjustments. This provides the exact amount billed for SES usage during the specified period."
+  },
+  {
+    "query": {
+      "Service": "SES",
+      "MetricName": "UsageQuantity"
+    },
+    "description": "This metric measures the total number of Amazon SES emails sent and the volume of data transferred. It quantifies raw usage in units of email count and bytes of data. This information is used for monitoring service consumption and capacity planning. It does not include delivery or bounce rates, only the quantity of usage."
+  },
+  {
+    "query": {
+      "Service": "VPC",
+      "MetricName": "UnblendedCost"
+    },
+    "description": "This metric measures the unblended cost incurred for Amazon VPC services. It includes charges for NAT gateways, VPC endpoints, and data transfer within the VPC. Costs are reported in US dollars and reflect the actual amount billed without any discounts or credits. This provides a clear view of raw VPC networking expenses."
+  },
+  {
+    "query": {
+      "Service": "DIRECTCONNECT",
+      "MetricName": "UnblendedCost"
+    },
+    "description": "This metric measures the unblended cost of AWS Direct Connect services. It reflects the actual charges incurred for Direct Connect connections and associated data transfer. Costs are reported in US dollars (USD). This value excludes any discounts or credits applied to the billing period."
+  },
+  {
+    "query": {
+      "Service": "EFS",
+      "MetricName": "UnblendedCost"
+    },
+    "description": "This metric tracks the unblended cost incurred by Amazon Elastic File System (EFS) services, including storage and data transfer charges, as reported in AWS Cost Explorer. It helps SREs monitor actual EFS expenses to detect unexpected cost spikes or anomalies. A typical alert threshold might be set at a percentage increase (e.g., 20%) above the average daily cost over the past week, signaling potential misconfigurations or usage surges. High values indicate increased EFS usage or inefficient storage patterns, potentially impacting budget and resource allocation, while low values suggest normal or reduced usage. For example, an alert rule could trigger if the daily unblended cost exceeds $50 or rises by more than 20% compared to the 7-day average, and a dashboard widget might display a time series graph of daily EFS costs to visualize trends and support cost optimization efforts."
+  },
+  {
+    "query": {
+      "Service": "EFS",
+      "MetricName": "UsageQuantity"
+    },
+    "description": "This metric measures the total amount of Amazon EFS storage consumed over time. It reports usage in gigabyte-months (GB-months), representing the average storage size in gigabytes used during a month. This data helps track storage consumption for capacity planning and cost management."
+  },
+  {
+    "query": {
+      "Service": "GLACIER",
+      "MetricName": "UnblendedCost"
+    },
+    "description": "This metric measures the unblended cost of using the Amazon S3 Glacier service. It includes charges for storage, data retrieval, and data transfer associated with Glacier. Costs are reported in US dollars and reflect the actual amount billed without any discounts or credits applied."
+  },
+  {
+    "query": {
+      "Service": "GLACIER",
+      "MetricName": "UsageQuantity"
+    },
+    "description": "This metric tracks the total usage quantity for AWS Glacier, including storage measured in GB-months and retrieval requests. It helps SREs monitor Glacier storage consumption and access patterns to manage costs effectively. A threshold alert should be set based on expected storage growth or retrieval frequency—for example, triggering an alert if monthly storage exceeds 10 TB or retrieval requests spike beyond typical baselines, indicating potential cost overruns or unusual activity. High values suggest increased storage costs or heavy data retrieval impacting budget and performance, while low values indicate minimal Glacier usage and lower costs. For instance, an alert rule could be:  \n`IF UsageQuantity (GB-months) > 10,000 THEN notify SRE team`  \nor a dashboard widget could display daily usage trends to track storage growth and retrieval request volumes over time."
+  },
+  {
+    "query": {
+      "Service": "ATHENA",
+      "MetricName": "UnblendedCost"
+    },
+    "description": "This metric measures the total unblended cost incurred from running queries in Amazon Athena. It reflects the actual charges based on the amount of data scanned and query execution. Costs are reported in US dollars (USD). This provides a precise view of Athena query expenses without blended pricing adjustments."
+  },
+  {
+    "query": {
+      "Service": "ATHENA",
+      "MetricName": "UsageQuantity"
+    },
+    "description": "This metric measures the total amount of Athena query usage. It quantifies the volume of data scanned by Athena queries, expressed in terabytes (TB). The value represents raw usage quantities used for capacity planning and cost analysis."
+  },
+  {
+    "query": {
+      "Service": "QUICKSIGHT",
+      "MetricName": "UnblendedCost"
+    },
+    "description": "This metric tracks the actual, unblended AWS costs incurred by Amazon QuickSight, including user session charges and data transfer fees. It helps SREs monitor and manage QuickSight-related expenses in Cost Explorer to prevent unexpected billing spikes. A typical alert threshold might be set at a daily or monthly cost exceeding your budgeted QuickSight spend (e.g., $500/month), signaling potential overuse or configuration issues. High values indicate increased usage or data transfer, which could impact budget and require investigation; low values suggest normal or reduced activity. For example, an alert rule could trigger when **{\"Service\": \"QUICKSIGHT\", \"MetricName\": \"UnblendedCost\"}** exceeds $20/day, notifying the team to review recent QuickSight usage. In dashboards, this metric can be visualized alongside user session counts to correlate cost with user activity trends."
+  },
+  {
+    "query": {
+      "Service": "WORKSPACES",
+      "MetricName": "UnblendedCost"
+    },
+    "description": "This metric tracks the unblended cost associated with AWS WorkSpaces, reflecting the actual charges incurred for running WorkSpaces desktops and related data transfer. It helps SREs monitor and control expenses tied to virtual desktop infrastructure. Set alert thresholds based on your budget or usage patterns—for example, trigger an alert if daily costs exceed $100, indicating unexpected usage or configuration issues. High values may signal over-provisioned or underutilized WorkSpaces, leading to unnecessary expenses, while low values suggest efficient resource use or reduced demand. Example alert rule: “Alert if WorkSpaces UnblendedCost > $100 over 24 hours,” enabling proactive cost management. In dashboards, visualize this metric alongside active WorkSpaces count to correlate cost spikes with usage changes."
+  },
+  {
+    "query": {
+      "Service": "WORKDOCS",
+      "MetricName": "UnblendedCost"
+    },
+    "description": "This metric measures the unblended cost incurred for Amazon WorkDocs services. It includes charges for WorkDocs storage and data transfer. Costs are reported in US dollars (USD). The value reflects the actual amount billed without any blended pricing adjustments."
+  },
+  {
+    "query": {
+      "Service": "WORKMAIL",
+      "MetricName": "UnblendedCost"
+    },
+    "description": "This pattern captures WorkMail email costs using unblended pricing. It identifies the actual costs charged for WorkMail user accounts and data transfer."
+  },
+  {
+    "query": {
+      "Service": "CODECOMMIT",
+      "MetricName": "UnblendedCost"
+    },
+    "description": "This metric measures the total unblended cost incurred for AWS CodeCommit services. It includes charges for repository storage and data transfer. Costs are reported in US dollars (USD). The value reflects the actual amount billed without any discounts or credits applied."
+  },
+  {
+    "query": {
+      "Service": "CODEPIPELINE",
+      "MetricName": "UnblendedCost"
+    },
+    "description": "This metric tracks the actual unblended costs incurred by AWS CodePipeline, reflecting expenses from pipeline executions and associated data transfers. It helps SREs monitor and manage CI/CD pipeline spending to prevent unexpected budget overruns. A typical alert threshold might be set when daily costs exceed $10, signaling unusually high pipeline activity or potential inefficiencies. High values indicate increased pipeline usage or possible misconfigurations causing excess charges, while low values suggest minimal pipeline activity and cost. For example, in a dashboard, you can visualize daily **UnblendedCost** for CodePipeline alongside deployment frequency to correlate cost with usage, and set an alert rule to notify the team if daily costs surpass $10, enabling timely investigation and cost optimization."
+  },
+  {
+    "query": {
+      "Service": "COGNITO",
+      "MetricName": "UnblendedCost"
+    },
+    "description": "This metric measures the total unblended cost incurred by AWS Cognito services. It includes charges for user pools, identity pools, and associated data transfer. Costs are reported in US dollars and reflect the actual amount billed without any discounts or credits applied."
+  },
+  {
+    "query": {
+      "Service": "IAM",
+      "MetricName": "UnblendedCost"
+    },
+    "description": "This metric tracks the unblended cost associated with AWS IAM (Identity and Access Management) resources, including users, roles, and policies. Although IAM itself typically incurs no direct charges, this metric helps verify that no unexpected costs are attributed to IAM-related activities, ensuring cost transparency and completeness in your billing data. \n\n**Purpose:** Monitor IAM-related costs to detect anomalies or misconfigurations that might lead to unexpected charges, such as usage of third-party IAM integrations or policy misapplications.\n\n**Alert Threshold:** Trigger an alert if the unblended cost for IAM exceeds $0.01 within a billing period, as any non-zero cost is unusual and may indicate a billing anomaly or misconfiguration.\n\n**Impact:**  \n- **High values:** Suggest unexpected charges related to IAM, warranting immediate investigation to prevent cost overruns or security risks.  \n- **Low or zero values:** Expected normal state, indicating no direct IAM costs.\n\n**Example Usage:**  \nIn a cost monitoring dashboard, include a widget displaying the IAM UnblendedCost metric with a threshold line at $0.01. Configure an alert rule to notify the SRE team if the metric exceeds this threshold, enabling prompt investigation of potential billing issues or IAM misconfigurations."
+  },
+  {
+    "query": {
+      "Service": "KMS",
+      "MetricName": "UnblendedCost"
+    },
+    "description": "This metric tracks the unblended cost associated with AWS Key Management Service (KMS), reflecting actual charges for key usage and API requests. It helps SREs monitor and control expenses related to encryption key management. A sudden increase beyond a defined threshold—such as a 20% rise over the average monthly cost—may indicate unexpected usage or misconfiguration, potentially leading to higher operational costs. Conversely, consistently low values suggest efficient key usage or underutilization. For example, an alert rule can be set to trigger if the daily unblended cost exceeds $50, prompting investigation into unusual KMS activity. In dashboards, this metric can be visualized alongside usage patterns to correlate cost spikes with operational events."
+  },
+  {
+    "query": {
+      "Service": "SECRETSMANAGER",
+      "MetricName": "UnblendedCost"
+    },
+    "description": "This metric measures the total unblended cost incurred for AWS Secrets Manager usage. It includes charges for secret storage and API requests. Costs are reported in US dollars (USD). The value reflects the actual amount billed without any blended pricing adjustments."
+  },
+  {
+    "query": {
+      "Service": "WAF",
+      "MetricName": "UnblendedCost"
+    },
+    "description": "This metric tracks the unblended cost associated with AWS WAF (Web Application Firewall) usage, including charges for web ACLs, rules, and request inspections. It helps SREs monitor and manage security-related expenses to prevent unexpected cost spikes. A typical alert threshold might be set at a monthly cost increase of 20% over the baseline or an absolute value exceeding your budgeted WAF spend (e.g., $500/month), indicating potential overuse or misconfiguration. High values may signal increased traffic, overly permissive rules causing excessive inspections, or inefficient rule sets, potentially impacting budget and resource allocation. Low values generally indicate normal or reduced WAF activity, aligning with expected security operations. For example, in a dashboard, you can visualize daily unblended WAF costs alongside request volume to correlate cost changes with traffic patterns, and set an alert rule to notify when daily costs exceed $20, enabling proactive cost control."
+  },
+  {
+    "query": {
+      "Service": "SHIELD",
+      "MetricName": "UnblendedCost"
+    },
+    "description": "This metric measures the unblended cost incurred for AWS Shield Advanced DDoS protection services. It includes charges for Shield Advanced subscription fees and any associated data transfer costs. The values are reported in US dollars (USD). This provides the actual billed amount without any blended pricing adjustments."
+  },
+  {
+    "query": {
+      "Service": "GUARDDUTY",
+      "MetricName": "UnblendedCost"
+    },
+    "description": "This metric tracks the actual unblended costs incurred by AWS GuardDuty for threat detection and monitoring activities, as reported in AWS Cost Explorer. It helps SREs monitor GuardDuty expenses to ensure security costs remain within budget. A typical alert threshold might be set when daily or monthly costs exceed expected baselines—e.g., a sudden increase above $100/day or a 30% rise compared to the previous period—indicating unusual activity or misconfiguration. High values may signal increased threat detection activity or potential overuse, impacting budget and prompting investigation; low values suggest normal or reduced GuardDuty usage. For example, an alert rule could trigger if **{\"Service\": \"GUARDDUTY\", \"MetricName\": \"UnblendedCost\"}** exceeds $100/day, and a dashboard widget might display a time series of daily GuardDuty costs alongside security event counts to correlate cost spikes with threat activity."
+  },
+  {
+    "query": {
+      "Service": "INSPECTOR",
+      "MetricName": "UnblendedCost"
+    },
+    "description": "This metric measures the total unblended cost incurred for AWS Inspector security assessments. It reflects the actual charges for running Inspector scans and generating findings. Costs are reported in US dollars (USD) without any discounts or credits applied. This enables accurate tracking of Inspector-related expenses based on standard pricing."
+  },
+  {
+    "query": {
+      "Service": "MACIE",
+      "MetricName": "UnblendedCost"
+    },
+    "description": "This metric tracks the unblended cost incurred by AWS Macie, a data security service that discovers and classifies sensitive data. In Cost Explorer, **{\"Service\": \"MACIE\", \"MetricName\": \"UnblendedCost\"}** helps SREs monitor spending specifically on Macie usage to detect unexpected cost spikes. A typical alert threshold might be set at a monthly cost increase of 20% above the historical average or a fixed amount (e.g., $100) to catch abnormal usage early. High values indicate increased data classification activity or potential misconfiguration leading to excessive scanning, which can impact budget and resource allocation. Low or zero values suggest minimal or no Macie usage, which may be expected or could indicate disabled data security monitoring. For example, an alert rule could trigger when daily unblended Macie costs exceed $5, and a dashboard widget might display a time series graph of daily Macie costs alongside other security service costs to provide cost visibility and support proactive budget management."
+  },
+  {
+    "query": {
+      "Service": "CERTIFICATEMANAGER",
+      "MetricName": "UnblendedCost"
+    },
+    "description": "This metric measures the unblended cost incurred for AWS Certificate Manager services. It reflects the actual charges for provisioning, renewing, and managing SSL/TLS certificates. Costs are reported in US dollars (USD) without any blended pricing adjustments. This enables precise tracking of expenses directly attributable to Certificate Manager usage."
+  },
+  {
+    "query": {
+      "Service": "CLOUDTRAIL",
+      "MetricName": "UnblendedCost"
+    },
+    "description": "This metric tracks the actual unblended costs incurred by AWS CloudTrail for event logging and data transfer, helping SREs monitor and manage CloudTrail-related expenses. In Cost Explorer, **{\"Service\": \"CLOUDTRAIL\", \"MetricName\": \"UnblendedCost\"}** reflects the precise charges for audit logging activities, enabling teams to detect unexpected cost spikes due to increased logging volume or data egress. A typical alert threshold might be set at a monthly cost increase of 20% over the baseline or an absolute cost exceeding $50, signaling potential overuse or misconfiguration. High values may indicate excessive logging or data transfer, leading to unnecessary expenses, while low values suggest normal or minimal CloudTrail usage. For example, an alert rule could trigger when daily CloudTrail costs exceed $2, and a dashboard widget might display a time series graph of daily unblended CloudTrail costs alongside other service costs to correlate spending patterns."
+  },
+  {
+    "query": {
+      "Service": "CONFIG",
+      "MetricName": "UnblendedCost"
+    },
+    "description": "This metric tracks the unblended cost associated with AWS Config, including expenses from Config rules, compliance monitoring, and related data transfer. It helps SREs monitor and manage the financial impact of compliance activities within their AWS environment. A typical alert threshold might be set when daily or monthly costs exceed a predefined budget limit or show an unexpected spike (e.g., a 20% increase compared to the previous period), indicating potential misconfigurations or excessive rule evaluations. High values suggest increased compliance activity or inefficient rule usage, potentially leading to higher operational costs, while low values indicate minimal Config usage or optimized compliance monitoring. For example, an SRE can create a dashboard widget displaying daily unblended costs for AWS Config alongside budget thresholds, and configure an alert rule to notify the team if costs exceed $50/day or increase by more than 20% week-over-week."
+  },
+  {
+    "query": {
+      "Service": "SYSTEMSMANAGER",
+      "MetricName": "UnblendedCost"
+    },
+    "description": "This metric tracks the unblended cost specifically attributed to AWS Systems Manager usage, including expenses from parameters, automation executions, and session manager activities. It helps SREs monitor and control Systems Manager-related spending by providing a clear view of actual charges without blended pricing distortions. A typical alert threshold might be set when daily or monthly unblended costs exceed a predefined budget limit (e.g., $50/day or a 20% increase over the average monthly spend), signaling potential overuse or misconfiguration. High values may indicate excessive automation runs, parameter store usage, or session activity, potentially leading to unexpected billing spikes, while low values suggest efficient or minimal Systems Manager utilization. For example, an SRE can create a dashboard widget displaying daily **UnblendedCost** for Systems Manager alongside usage metrics, and configure an alert rule to notify the team if costs rise above $50/day, enabling proactive cost management and operational adjustments."
+  },
+  {
+    "query": {
+      "Service": "OPSWORKS",
+      "MetricName": "UnblendedCost"
+    },
+    "description": "This metric tracks the unblended cost associated with AWS OpsWorks, reflecting the actual charges incurred for managing configuration and deployment of OpsWorks stacks and instances. Monitoring **{\"Service\": \"OPSWORKS\", \"MetricName\": \"UnblendedCost\"}** in Cost Explorer helps SREs identify unexpected cost increases due to scaling, misconfigurations, or unused resources. A typical alert threshold might be set at a sudden increase of 20% or more compared to the average daily cost over the past week, signaling potential inefficiencies or resource leaks. High values indicate increased operational expenses that may warrant investigation, while consistently low values suggest efficient usage or underutilization. For example, an alert rule could trigger when the daily unblended cost exceeds $50 or rises by more than 20% day-over-day. In dashboards, this metric can be visualized as a time series graph showing daily OpsWorks costs, enabling quick detection of cost anomalies and facilitating proactive cost management."
+  },
+  {
+    "query": {
+      "Service": "CLOUDHSM",
+      "MetricName": "UnblendedCost"
+    },
+    "description": "This metric tracks the unblended cost incurred by AWS CloudHSM services, reflecting the actual charges for CloudHSM hardware security modules and associated data transfer. SREs can use this metric in Cost Explorer to monitor and control expenses related to cryptographic hardware security. A typical alert threshold might be set if daily costs exceed a predefined budget limit (e.g., $50/day), indicating unexpected usage or configuration issues. High values suggest increased CloudHSM usage or potential misconfiguration leading to elevated costs, while low values indicate normal or minimal usage. For example, an alert rule could trigger when **{\"Service\": \"CLOUDHSM\", \"MetricName\": \"UnblendedCost\"}** surpasses $50 in a 24-hour period, enabling timely investigation and cost optimization. This metric can also be visualized in dashboards alongside other security service costs to provide a comprehensive view of cryptographic infrastructure spending."
+  },
+  {
+    "query": {
+      "Service": "DIRECTORY",
+      "MetricName": "UnblendedCost"
+    },
+    "description": "This metric tracks the unblended cost specifically associated with AWS Directory Service, reflecting the actual charges incurred for running directory instances and related data transfer. It helps SREs monitor and control expenses tied to directory infrastructure. A typical alert threshold might be set at a monthly cost increase of 20% above the historical average or a fixed dollar amount (e.g., $100) to detect unexpected cost spikes. High values may indicate increased usage, misconfiguration, or potential security issues causing excess directory activity, while low values suggest normal or reduced directory service consumption. For example, an alert rule could trigger when the daily unblended cost for Directory Service exceeds $5, and a dashboard widget might display a time series graph of daily unblended costs to visualize trends and identify anomalies promptly."
+  },
+  {
+    "query": {
+      "Service": "ORGANIZATIONS",
+      "MetricName": "UnblendedCost"
+    },
+    "description": "This metric measures the unblended cost incurred for managing AWS Organizations. It includes charges related to account management, consolidated billing, and policy enforcement within the organization. Costs are reported in US dollars and reflect the actual amount billed without any blended pricing adjustments."
+  },
+  {
+    "query": {
+      "Service": "SINGLESIGNON",
+      "MetricName": "UnblendedCost"
+    },
+    "description": "This metric measures the total unblended cost incurred for the Single Sign-On (SSO) service. It reflects the actual charges for user authentication, management, and application access through SSO. Costs are reported in the account’s billing currency, without any blended pricing adjustments. This provides a precise view of SSO-related expenses based on usage and pricing at the time of billing."
+  },
+  {
+    "query": {
+      "Service": "TRANSFER",
+      "MetricName": "UnblendedCost"
+    },
+    "description": "This metric measures the unblended cost incurred for AWS Transfer Family services. It includes charges for using SFTP, FTPS, and FTP protocols to transfer files over AWS-managed infrastructure. The cost is reported in US dollars and reflects the actual amount billed without any blended pricing adjustments."
+  },
+  {
+    "query": {
+      "Service": "STORAGEGATEWAY",
+      "MetricName": "UnblendedCost"
+    },
+    "description": "This metric tracks the unblended cost incurred by AWS Storage Gateway services, including file, volume, and tape gateways, as reported in AWS Cost Explorer. It helps SREs monitor and manage Storage Gateway expenses by providing visibility into actual charges before any discounts or credits. An alert threshold should be set based on your typical monthly Storage Gateway spend—e.g., triggering if costs exceed 20% above the average monthly baseline—to quickly identify unexpected cost spikes that may indicate misconfigurations or resource overuse. High values suggest increased usage or potential inefficiencies, possibly impacting budget and resource allocation, while low values indicate normal or reduced usage. For example, you can create a dashboard widget displaying daily unblended costs for Storage Gateway alongside a threshold line, or configure an alert rule that notifies the team when daily costs surpass $50, enabling proactive cost control and operational response."
+  },
+  {
+    "query": {
+      "Service": "BACKUP",
+      "MetricName": "UnblendedCost"
+    },
+    "description": "This metric measures the total unblended cost incurred for AWS Backup services. It includes charges for backup storage, data transfer, and related operations. Costs are reported in the account’s billing currency, reflecting the actual amount billed without any blended pricing adjustments. This provides a precise view of AWS Backup expenses as they appear on the invoice."
+  },
+  {
+    "query": {
+      "Service": "MIGRATIONHUB",
+      "MetricName": "UnblendedCost"
+    },
+    "description": "This metric tracks the unblended cost incurred by AWS Migration Hub, reflecting the actual charges for application discovery and migration tracking services. Monitoring **{\"Service\": \"MIGRATIONHUB\", \"MetricName\": \"UnblendedCost\"}** in Cost Explorer helps SREs understand ongoing expenses related to migration activities. A typical alert threshold might be set if daily costs exceed $10, indicating unexpected or excessive usage that could impact budget. High values suggest increased migration activity or potential misconfigurations leading to unnecessary charges, while low or zero values indicate minimal or no migration-related costs. For example, an alert rule could trigger when the daily unblended cost surpasses $10, and a dashboard widget might display a time series graph of daily Migration Hub costs to track trends and detect anomalies promptly."
+  },
+  {
+    "query": {
+      "Service": "APPLICATIONMIGRATIONSERVICE",
+      "MetricName": "UnblendedCost"
+    },
+    "description": "This metric tracks the unblended cost incurred by the AWS Application Migration Service, reflecting the actual charges for migrating and replicating applications. Monitoring **{\"Service\": \"APPLICATIONMIGRATIONSERVICE\", \"MetricName\": \"UnblendedCost\"}** helps SREs understand ongoing migration expenses and detect unexpected cost spikes. A typical alert threshold might be set if daily costs exceed a predefined budget limit (e.g., $100/day), indicating potential overuse or misconfiguration. High values suggest increased migration activity or resource consumption, potentially impacting budget forecasts, while low or zero values indicate minimal or no migration operations. For example, include this metric in a cost dashboard to visualize daily migration expenses alongside other service costs, and configure an alert rule to notify the team when daily unblended costs surpass the set threshold, enabling timely investigation and cost control."
+  },
+  {
+    "query": {
+      "Service": "DATASYNC",
+      "MetricName": "UnblendedCost"
+    },
+    "description": "This metric measures the unblended cost incurred for AWS DataSync usage. It includes charges for data transfer and agent operations associated with DataSync. Costs are reported in US dollars (USD) and reflect the actual billed amount without any discounts or credits applied. This provides a precise view of the raw expenses related to DataSync services."
+  },
+  {
+    "query": {
+      "Service": "SNOWBALL",
+      "MetricName": "UnblendedCost"
+    },
+    "description": "This metric tracks the unblended cost associated with AWS Snowball service usage, including device rental and data transfer fees. It helps SREs monitor actual expenses incurred from Snowball operations to manage and optimize data migration budgets. A typical alert threshold might be set when daily Snowball costs exceed $100, indicating unexpected or excessive usage that could impact budget forecasts. High values suggest increased data transfer or device usage, potentially signaling large-scale migrations or misconfigurations, while low values indicate minimal Snowball activity and cost. For example, an alert rule could trigger if **{\"Service\": \"SNOWBALL\", \"MetricName\": \"UnblendedCost\"}** exceeds $100 in a 24-hour period, and a dashboard widget might display daily Snowball costs alongside other data transfer expenses to provide cost visibility and trend analysis."
+  },
+  {
+    "query": {
+      "Service": "SNOWMOBILE",
+      "MetricName": "UnblendedCost"
+    },
+    "description": "This metric measures the unblended cost incurred for data transfer services provided by AWS Snowmobile. It reflects the actual charges billed to your account without any blended pricing adjustments. Costs are reported in US dollars (USD). This allows precise tracking of Snowmobile data transfer expenses based on usage."
+  },
+  {
+    "query": {
+      "Service": "SNOWCONE",
+      "MetricName": "UnblendedCost"
+    },
+    "description": "This metric tracks the unblended cost associated with AWS Snowcone edge computing devices, reflecting actual charges for device usage and data transfer. It helps SREs monitor and control expenses related to Snowcone deployments. Set alert thresholds based on your budget or usage patterns—for example, trigger an alert if daily unblended costs exceed $50, indicating potential overuse or unexpected charges. High values may signal increased device activity or data transfer, impacting operational costs, while low values suggest minimal usage. Example alert rule: “Alert if Snowcone UnblendedCost > $50 over 24 hours.” In dashboards, visualize this metric alongside usage metrics to correlate cost spikes with operational events."
+  },
+  {
+    "query": {
+      "Service": "SNOWFAMILY",
+      "MetricName": "UnblendedCost"
+    },
+    "description": "This metric measures the total unblended cost incurred for AWS Snow Family services. It includes charges for Snow Family devices, data transfer, and related usage. The cost is reported in the billing currency without any blended rate adjustments. This value reflects the actual amount billed for these services during the specified period."
+  },
+  {
+    "query": {
+      "Service": "GROUNDSTATION",
+      "MetricName": "UnblendedCost"
+    },
+    "description": "This metric measures the total unblended cost incurred for using AWS Ground Station services. It includes charges for antenna usage and data downlink associated with satellite communications. Costs are reported in US dollars and reflect the actual amount billed without any blended pricing adjustments. This provides a precise view of Ground Station expenses based on usage."
+  },
+  {
+    "query": {
+      "Service": "ROBOMAKER",
+      "MetricName": "UnblendedCost"
+    },
+    "description": "This metric measures the unblended cost incurred for AWS RoboMaker services. It includes charges for running robotics simulations and deploying robot applications. The cost is reported in US dollars (USD) and reflects the actual amount billed without any blended pricing adjustments. This enables precise tracking of RoboMaker usage expenses."
+  },
+  {
+    "query": {
+      "Service": "IOT",
+      "MetricName": "UnblendedCost"
+    },
+    "description": "This metric tracks the unblended cost incurred by AWS IoT Core services, including device messaging, rules engine processing, and device management. It helps SREs monitor and control IoT-related expenses by providing visibility into actual charges without discounts or credits applied. Set alert thresholds based on your typical monthly budget or historical usage patterns—for example, trigger an alert if daily costs exceed $50, indicating unexpected spikes in IoT activity or misconfigurations. High values may signal increased device traffic, inefficient rule executions, or potential security issues causing excess usage, while low values suggest normal or reduced IoT operations. Use this metric in dashboards to visualize daily or weekly cost trends and configure alerts to notify your team when costs surpass predefined limits, enabling proactive cost management and operational investigation."
+  },
+  {
+    "query": {
+      "Service": "IOTANALYTICS",
+      "MetricName": "UnblendedCost"
+    },
+    "description": "This metric measures the total unblended cost incurred for AWS IoT Analytics services. It includes charges for data processing, storage, and related operations within IoT Analytics. Costs are reported in US dollars and reflect the actual amount billed without any discounts or credits applied. This provides a clear view of the raw expenses associated with IoT Analytics usage."
+  },
+  {
+    "query": {
+      "Service": "IOTDEVICEDEFENDER",
+      "MetricName": "UnblendedCost"
+    },
+    "description": "This metric tracks the actual unblended costs incurred for AWS IoT Device Defender security monitoring and audit services. It helps SREs monitor spending specifically related to IoT Device Defender to ensure security costs remain within budget. An alert threshold might be set if daily or monthly costs exceed expected usage patterns—for example, a sudden increase above $100 per day or a 50% rise compared to the previous period—indicating potential overuse or misconfiguration. High values could signal increased security activity or unexpected resource consumption, while low values may indicate underutilization or inactive monitoring. For instance, an alert rule could trigger when the daily UnblendedCost for IoT Device Defender exceeds $100, and a dashboard widget might display a time series graph of this metric to track cost trends and correlate them with security events."
+  },
+  {
+    "query": {
+      "Service": "IOTDEVICEMANAGEMENT",
+      "MetricName": "UnblendedCost"
+    },
+    "description": "This metric tracks the actual unblended costs incurred by IoT Device Management services, reflecting expenses related to fleet operations and job executions. SREs can use this to monitor and control spending on IoT device management activities. A typical alert threshold might be set when daily costs exceed a predefined budget limit (e.g., $100/day), indicating potential overuse or misconfiguration. High values suggest increased usage or inefficiencies that could impact budget adherence, while low values indicate normal or reduced activity. For example, an alert rule could trigger if the 7-day rolling average of UnblendedCost surpasses $700, prompting investigation. In dashboards, this metric helps visualize cost trends over time, enabling proactive cost management and operational adjustments."
+  },
+  {
+    "query": {
+      "Service": "IOTEVENTS",
+      "MetricName": "UnblendedCost"
+    },
+    "description": "This metric tracks the actual unblended costs incurred by AWS IoT Events, reflecting charges for detecting and responding to IoT data in real time. In Cost Explorer, it helps SREs monitor and manage expenses related to IoT Events usage. A typical alert threshold might be set when daily or monthly unblended costs exceed a predefined budget limit (e.g., $100/day), signaling unexpected spikes in IoT Events activity or misconfigurations. High values indicate increased IoT Events processing, which could impact budget and require investigation, while low values suggest normal or reduced usage. For example, an alert rule could trigger if **{\"Service\": \"IOTEVENTS\", \"MetricName\": \"UnblendedCost\"}** surpasses $50 in a 24-hour period, and a dashboard widget might display a time series graph of daily unblended costs to track trends and detect anomalies early."
+  },
+  {
+    "query": {
+      "Service": "IOTGREENGUARD",
+      "MetricName": "UnblendedCost"
+    },
+    "description": "This metric tracks the actual unblended costs incurred by AWS IoT Greengrass services, including local compute and messaging usage. It helps SREs monitor and manage expenses related to IoT Greengrass deployments. A sudden increase beyond a predefined threshold—such as a 20% rise compared to the previous billing period or exceeding a fixed budget limit (e.g., $500/month)—should trigger an alert to investigate potential overuse or misconfiguration. High values may indicate increased device activity or inefficient resource usage, leading to higher operational costs, while low values suggest normal or reduced usage. For example, incorporate **{\"Service\": \"IOTGREENGUARD\", \"MetricName\": \"UnblendedCost\"}** into a cost monitoring dashboard with a threshold alert rule:  \n`IF UnblendedCost > $500/month OR increase > 20% month-over-month THEN trigger alert`  \nThis enables proactive cost control and timely response to unexpected billing changes."
+  },
+  {
+    "query": {
+      "Service": "IOTSITEWISE",
+      "MetricName": "UnblendedCost"
+    },
+    "description": "This metric tracks the actual unblended costs incurred by AWS IoT SiteWise for industrial data collection and modeling, providing precise insight into your real-time spending on this service. Monitoring **{\"Service\": \"IOTSITEWISE\", \"MetricName\": \"UnblendedCost\"}** helps SREs detect unexpected cost spikes that may indicate inefficient usage or configuration issues. A typical alert threshold might be set when daily costs exceed a predefined budget limit (e.g., $50/day), signaling potential overuse or misconfiguration. High values suggest increased consumption of IoT SiteWise resources, possibly due to scaling or data ingestion anomalies, while low values indicate normal or reduced usage. For example, you can create a dashboard widget displaying daily unblended costs with a red alert triggered if costs surpass $50, enabling proactive cost management and operational oversight."
+  },
+  {
+    "query": {
+      "Service": "IOTTHINGSGRAPH",
+      "MetricName": "UnblendedCost"
+    },
+    "description": "This metric tracks the actual unblended costs incurred by AWS IoT Things Graph, reflecting expenses from visual modeling and workflow execution activities. Monitoring **{\"Service\": \"IOTTHINGSGRAPH\", \"MetricName\": \"UnblendedCost\"}** in Cost Explorer helps SREs understand real-time spending trends and identify unexpected cost spikes. A typical alert threshold might be set at a daily cost increase exceeding 20% compared to the previous week’s average, signaling potential overuse or misconfiguration. High values indicate increased usage or inefficient workflows, potentially impacting budget and resource allocation, while low values suggest minimal activity or optimized usage. For example, an SRE can create a dashboard widget displaying daily unblended costs alongside a threshold line at $50/day, triggering alerts when costs surpass this limit to enable timely investigation and cost control."
+  },
+  {
+    "query": {
+      "Service": "IOTTWINMAKER",
+      "MetricName": "UnblendedCost"
+    },
+    "description": "This metric tracks the actual unblended costs incurred by AWS IoT TwinMaker for creating and managing digital twins, providing precise insight into your service usage expenses. Monitoring **{\"Service\": \"IOTTWINMAKER\", \"MetricName\": \"UnblendedCost\"}** in Cost Explorer helps SREs identify unexpected cost spikes that may indicate inefficient resource use or configuration issues. A typical alert threshold might be set when daily unblended costs exceed $50, signaling potential overuse or misconfiguration requiring investigation. High values suggest increased operational expenses possibly due to scaling or excessive resource allocation, while low values indicate controlled or minimal usage. For example, include this metric in a cost dashboard with a daily rolling sum visualization and configure an alert rule to notify the team if costs surpass the $50 threshold within a 24-hour period, enabling proactive cost management and optimization."
+  },
+  {
+    "query": {
+      "Service": "IOTWIRELESS",
+      "MetricName": "UnblendedCost"
+    },
+    "description": "This metric measures the unblended cost incurred for AWS IoT Wireless services. It includes charges related to LoRaWAN network usage and device management. The cost is reported in US dollars and reflects the actual amount billed without any blended pricing adjustments. This provides a clear view of the direct expenses associated with IoT Wireless usage."
+  },
+  {
+    "query": {
+      "Service": "IOT1CLICK",
+      "MetricName": "UnblendedCost"
+    },
+    "description": "This metric measures the total unblended cost incurred for using the AWS IoT 1-Click service. It reflects the actual charges for device management and simple application usage within IoT 1-Click. Costs are reported in US dollars and exclude any blended or amortized pricing. This provides a precise view of the direct expenses associated with IoT 1-Click usage."
+  },
+  {
+    "query": {
+      "Service": "IOTBUTTON",
+      "MetricName": "UnblendedCost"
+    },
+    "description": "This metric tracks the actual unblended costs incurred from using AWS IoT Button devices and their associated simple applications. It helps SREs monitor and control expenses related to IoT Button usage by reflecting the precise charges without discounts or credits. An alert threshold should be set based on your typical monthly budget or historical usage patterns—for example, triggering an alert if daily unblended costs exceed $10, indicating unexpected or excessive device activity. High values may signal increased device usage, potential misconfigurations, or unauthorized activity, leading to higher operational costs, while low values indicate normal or minimal usage. For instance, in a dashboard, you can visualize daily unblended costs for IoT Button alongside other IoT services, and configure an alert rule that notifies the team when costs surpass the defined threshold, enabling timely investigation and cost control."
+  },
+  {
+    "query": {
+      "Service": "IOTDEVICE",
+      "MetricName": "UnblendedCost"
+    },
+    "description": "This metric measures the actual charges incurred for AWS IoT Device management and connectivity services. It reflects the unblended cost, meaning the raw cost before any discounts or credits are applied. The value is expressed in US dollars (USD). This allows precise tracking of expenses directly associated with IoT device usage."
+  }
+]

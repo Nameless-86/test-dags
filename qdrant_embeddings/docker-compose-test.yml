@@ -1,0 +1,27 @@
+services:
+  qdrant:
+    image: qdrant/qdrant
+    ports:
+      - "6333:6333"
+      - "6334:6334"
+    #volumes:
+    #  - ./qdrant_storage:/qdrant/storage
+
+  metrics:
+    build:
+      context: ../
+      dockerfile: qdrant_embeddings/Dockerfile
+
+    environment:
+      - QDRANT_URL=http://qdrant:6333
+    depends_on:
+      - qdrant
+
+  vectors:
+    build: query_client/
+    environment:
+      - QDRANT_URL=http://qdrant:6333
+    depends_on:
+      - qdrant
+    ports:
+      - "8000:8000"
