@@ -29,7 +29,7 @@ pip install -r requirements.txt
 Generate realistic queries from your metric definitions:
 ```bash
 python prepare_dataset.py \
-    --input ../vector/cloudwatch.json \
+    --input ../../utils/vector/cloudwatch.json \
     --output queries/eval_queries.jsonl \
 ```
 

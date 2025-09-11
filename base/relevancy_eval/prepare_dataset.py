@@ -76,7 +76,7 @@ def main():
     llm = ChatOllama(
         model="llama3.1:8b",
         temperature=0.1,
-        base_url="https://ad92bb3e1654.ngrok-free.app/",
+        base_url="https://5222377d817f.ngrok-free.app/",
     )
 
     generated = 0

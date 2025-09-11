@@ -3,3 +3,4 @@ python-dotenv
 deepeval
 pandas
 plotly
+langchain-ollama
