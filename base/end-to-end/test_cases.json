@@ -1,0 +1,2235 @@
+[
+  {
+    "name": "AWS CloudWatch - 5Xxerror (cloudwatch_001)",
+    "prompt": "Does a sustained spike in 5XXError count indicate critical backend failures causing degraded user experience or service unavailability?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "5XXError",
+        "AWS/ApiGateway"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_001",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/ApiGateway",
+        "MetricName": "5XXError",
+        "ApiName": "*",
+        "Stage": "*"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Count (cloudwatch_002)",
+    "prompt": "Do spikes in Count correlate with increased ErrorRate?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "Count",
+        "AWS/ApiGateway"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_002",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/ApiGateway",
+        "MetricName": "Count",
+        "ApiName": "*",
+        "Stage": "*"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Integrationlatency (cloudwatch_003)",
+    "prompt": "Does the IntegrationLatency exceed 500 milliseconds, indicating potential issues with backend responses or integration settings?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "IntegrationLatency",
+        "AWS/ApiGateway"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_003",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/ApiGateway",
+        "MetricName": "IntegrationLatency",
+        "ApiName": "*",
+        "Stage": "*"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Latency (cloudwatch_004)",
+    "prompt": "Does the Latency exceed 500 milliseconds, indicating potential issues with API responsiveness?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "Latency",
+        "AWS/ApiGateway"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_004",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/ApiGateway",
+        "MetricName": "Latency",
+        "ApiName": "*",
+        "Stage": "*"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Activeconnectioncount (cloudwatch_005)",
+    "prompt": "Does the ActiveConnectionCount exceed 5000, indicating potential bottlenecks or resource overutilization?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "ActiveConnectionCount",
+        "AWS/ApplicationELB",
+        "app/*"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_005",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/ApplicationELB",
+        "MetricName": "ActiveConnectionCount",
+        "AvailabilityZone": "*",
+        "LoadBalancer": "app/*"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Anomaloushostcount (cloudwatch_006)",
+    "prompt": "Does the AnomalousHostCount indicate potential security threats or hardware issues due to exceeding its configured threshold?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "AnomalousHostCount",
+        "AWS/ApplicationELB",
+        "app/*",
+        "targetgroup/*"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_006",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/ApplicationELB",
+        "MetricName": "AnomalousHostCount",
+        "AvailabilityZone": "*",
+        "LoadBalancer": "app/*",
+        "TargetGroup": "targetgroup/*"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Clienttlsnegotiationerrorcount (cloudwatch_007)",
+    "prompt": "Are spikes in ClientTLSNegotiationErrorCount indicative of a certificate trust chain issue?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "ClientTLSNegotiationErrorCount",
+        "AWS/ApplicationELB",
+        "app/*"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_007",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/ApplicationELB",
+        "MetricName": "ClientTLSNegotiationErrorCount",
+        "AvailabilityZone": "*",
+        "LoadBalancer": "app/*"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Desyncmitigationmode Noncompliant Request Count (cloudwatch_008)",
+    "prompt": "Does the DesyncMitigationMode_NonCompliant_Request_Count exceed ten, indicating potential issues with request routing or load balancing?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "DesyncMitigationMode_NonCompliant_Request_Count",
+        "AWS/ApplicationELB",
+        "app/*"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_008",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/ApplicationELB",
+        "MetricName": "DesyncMitigationMode_NonCompliant_Request_Count",
+        "AvailabilityZone": "*",
+        "LoadBalancer": "app/*"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Httpcode Target 2Xx Count (cloudwatch_009)",
+    "prompt": "Does a sudden drop in HTTPCode_Target_2XX_Count below 80% of the baseline average indicate potential application downtime or routing problems?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "HTTPCode_Target_2XX_Count",
+        "AWS/ApplicationELB",
+        "app/*",
+        "targetgroup/*"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_009",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/ApplicationELB",
+        "MetricName": "HTTPCode_Target_2XX_Count",
+        "AvailabilityZone": "*",
+        "LoadBalancer": "app/*",
+        "TargetGroup": "targetgroup/*"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Httpcode Target 3Xx Count (cloudwatch_010)",
+    "prompt": "Does the HTTPCode_Target_3XX_Count exceed ten, indicating misconfigured applications or potential security vulnerabilities?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "HTTPCode_Target_3XX_Count",
+        "AWS/ApplicationELB",
+        "app/*",
+        "targetgroup/*"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_010",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/ApplicationELB",
+        "MetricName": "HTTPCode_Target_3XX_Count",
+        "AvailabilityZone": "*",
+        "LoadBalancer": "app/*",
+        "TargetGroup": "targetgroup/*"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Httpcode Target 4Xx Count (cloudwatch_011)",
+    "prompt": "Does the HTTPCode_Target_4XX_Count exceed ten, suggesting a potential application logic or authentication issue?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "HTTPCode_Target_4XX_Count",
+        "AWS/ApplicationELB",
+        "app/*",
+        "targetgroup/*"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_011",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/ApplicationELB",
+        "MetricName": "HTTPCode_Target_4XX_Count",
+        "AvailabilityZone": "*",
+        "LoadBalancer": "app/*",
+        "TargetGroup": "targetgroup/*"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Httpcode Target 5Xx Count (cloudwatch_012)",
+    "prompt": "Does the HTTPCode_Target_5XX_Count exceed ten, indicating potential application or infrastructure performance issues?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "HTTPCode_Target_5XX_Count",
+        "AWS/ApplicationELB",
+        "app/*",
+        "targetgroup/*"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_012",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/ApplicationELB",
+        "MetricName": "HTTPCode_Target_5XX_Count",
+        "AvailabilityZone": "*",
+        "LoadBalancer": "app/*",
+        "TargetGroup": "targetgroup/*"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Healthyhostcount (cloudwatch_013)",
+    "prompt": "Does the HealthyHostCount drop below its normal threshold, indicating potential issues with host health checks?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "HealthyHostCount",
+        "AWS/ApplicationELB",
+        "app/*",
+        "targetgroup/*"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_013",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/ApplicationELB",
+        "MetricName": "HealthyHostCount",
+        "AvailabilityZone": "*",
+        "LoadBalancer": "app/*",
+        "TargetGroup": "targetgroup/*"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Healthystatedns (cloudwatch_014)",
+    "prompt": "Does the HealthyStateDNS count fall below its normal threshold, indicating potential DNS resolution or target availability issues?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "HealthyStateDNS",
+        "AWS/ApplicationELB",
+        "app/*",
+        "targetgroup/*"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_014",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/ApplicationELB",
+        "MetricName": "HealthyStateDNS",
+        "AvailabilityZone": "*",
+        "LoadBalancer": "app/*",
+        "TargetGroup": "targetgroup/*"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Healthystaterouting (cloudwatch_015)",
+    "prompt": "Does the HealthyStateRouting count fall below its normal threshold, indicating potential issues with service discovery or network connectivity?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "HealthyStateRouting",
+        "AWS/ApplicationELB",
+        "app/*",
+        "targetgroup/*"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_015",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/ApplicationELB",
+        "MetricName": "HealthyStateRouting",
+        "AvailabilityZone": "*",
+        "LoadBalancer": "app/*",
+        "TargetGroup": "targetgroup/*"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Mitigatedhostcount (cloudwatch_016)",
+    "prompt": "Does the MitigatedHostCount exceed ten, indicating a potential security risk?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "MitigatedHostCount",
+        "AWS/ApplicationELB",
+        "app/*",
+        "targetgroup/*"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_016",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/ApplicationELB",
+        "MetricName": "MitigatedHostCount",
+        "AvailabilityZone": "*",
+        "LoadBalancer": "app/*",
+        "TargetGroup": "targetgroup/*"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Newconnectioncount (cloudwatch_017)",
+    "prompt": "Does the NewConnectionCount exceed its usual threshold, indicating a potential bottleneck in connection establishment?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "NewConnectionCount",
+        "AWS/ApplicationELB",
+        "app/*"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_017",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/ApplicationELB",
+        "MetricName": "NewConnectionCount",
+        "AvailabilityZone": "*",
+        "LoadBalancer": "app/*"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Peaklcus (cloudwatch_018)",
+    "prompt": "Does a spike in PeakLCUs indicate an overload or saturation of the ALB, potentially leading to slow response times or errors?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "PeakLCUs",
+        "AWS/ApplicationELB",
+        "app/*"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_018",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/ApplicationELB",
+        "MetricName": "PeakLCUs",
+        "LoadBalancer": "app/*"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Processedbytes (cloudwatch_019)",
+    "prompt": "Do spikes in ProcessedBytes indicate network congestion or configuration problems with the Application Load Balancer?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "ProcessedBytes",
+        "AWS/ApplicationELB",
+        "app/*"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_019",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/ApplicationELB",
+        "MetricName": "ProcessedBytes",
+        "AvailabilityZone": "*",
+        "LoadBalancer": "app/*"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Requestcount (cloudwatch_020)",
+    "prompt": "Does the RequestCount exceed 120% of its average peak over the last week, indicating potential overload or DDoS activity?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "RequestCount",
+        "AWS/ApplicationELB",
+        "app/*",
+        "targetgroup/*"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_020",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/ApplicationELB",
+        "MetricName": "RequestCount",
+        "AvailabilityZone": "*",
+        "LoadBalancer": "app/*",
+        "TargetGroup": "targetgroup/*"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Requestcountpertarget (cloudwatch_021)",
+    "prompt": "Does the RequestCountPerTarget exceed ten thousand for any target group, indicating potential instance capacity issues?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "RequestCountPerTarget",
+        "AWS/ApplicationELB",
+        "app/*",
+        "targetgroup/*"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_021",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/ApplicationELB",
+        "MetricName": "RequestCountPerTarget",
+        "AvailabilityZone": "*",
+        "LoadBalancer": "app/*",
+        "TargetGroup": "targetgroup/*"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Targetconnectionerrorcount (cloudwatch_022)",
+    "prompt": "Does the TargetConnectionErrorCount exceed ten, indicating potential infrastructure problems or misconfigured services?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "TargetConnectionErrorCount",
+        "AWS/ApplicationELB",
+        "app/*",
+        "targetgroup/*"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_022",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/ApplicationELB",
+        "MetricName": "TargetConnectionErrorCount",
+        "AvailabilityZone": "*",
+        "LoadBalancer": "app/*",
+        "TargetGroup": "targetgroup/*"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Targetresponsetime (cloudwatch_023)",
+    "prompt": "Do spikes in TargetResponseTime indicate slow or unresponsive instances within the target group?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "TargetResponseTime",
+        "AWS/ApplicationELB",
+        "app/*",
+        "targetgroup/*"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_023",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/ApplicationELB",
+        "MetricName": "TargetResponseTime",
+        "AvailabilityZone": "*",
+        "LoadBalancer": "app/*",
+        "TargetGroup": "targetgroup/*"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Unhealthyhostcount (cloudwatch_024)",
+    "prompt": "Does UnHealthyHostCount exceed five, suggesting potential infrastructure failures or resource degradation?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "UnHealthyHostCount",
+        "AWS/ApplicationELB",
+        "app/*",
+        "targetgroup/*"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_024",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/ApplicationELB",
+        "MetricName": "UnHealthyHostCount",
+        "AvailabilityZone": "*",
+        "LoadBalancer": "app/*",
+        "TargetGroup": "targetgroup/*"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Unhealthyroutingrequestcount (cloudwatch_025)",
+    "prompt": "Do spikes in UnhealthyRoutingRequestCount indicate a significant increase in traffic being sent to unhealthy resources?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "UnhealthyRoutingRequestCount",
+        "AWS/ApplicationELB",
+        "app/*",
+        "targetgroup/*"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_025",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/ApplicationELB",
+        "MetricName": "UnhealthyRoutingRequestCount",
+        "LoadBalancer": "app/*",
+        "AvailabilityZone": "*",
+        "TargetGroup": "targetgroup/*"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Unhealthystatedns (cloudwatch_026)",
+    "prompt": "Does the UnhealthyStateDNS exceed five, indicating potential DNS resolution or target unavailability issues?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "UnhealthyStateDNS",
+        "AWS/ApplicationELB",
+        "app/*",
+        "targetgroup/*"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_026",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/ApplicationELB",
+        "MetricName": "UnhealthyStateDNS",
+        "AvailabilityZone": "*",
+        "LoadBalancer": "app/*",
+        "TargetGroup": "targetgroup/*"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Unhealthystaterouting (cloudwatch_027)",
+    "prompt": "Does UnhealthyStateRouting exceed 0, indicating one or more targets are unreachable or misconfigured?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "UnhealthyStateRouting",
+        "AWS/ApplicationELB",
+        "app/*",
+        "targetgroup/*"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_027",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/ApplicationELB",
+        "MetricName": "UnhealthyStateRouting",
+        "AvailabilityZone": "*",
+        "LoadBalancer": "app/*",
+        "TargetGroup": "targetgroup/*"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Daystoexpiry (cloudwatch_028)",
+    "prompt": "Does the DaysToExpiry exceed thirty, indicating a potential security risk due to expiring certificates?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "DaysToExpiry",
+        "AWS/CertificateManager"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_028",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/CertificateManager",
+        "MetricName": "DaysToExpiry",
+        "CertificateArn": "*"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - 4Xxerrorrate (cloudwatch_029)",
+    "prompt": "Does the 4xxErrorRate exceed five percent, indicating potential issues with client-side configuration or authentication?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "4xxErrorRate",
+        "AWS/CloudFront",
+        "Global"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_029",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/CloudFront",
+        "MetricName": "4xxErrorRate",
+        "DistributionId": "*",
+        "Region": "Global"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - 5Xxerrorrate (cloudwatch_030)",
+    "prompt": "Does the 5xxErrorRate exceed five percent, indicating potential server-side errors impacting application availability?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "5xxErrorRate",
+        "AWS/CloudFront",
+        "Global"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_030",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/CloudFront",
+        "MetricName": "5xxErrorRate",
+        "DistributionId": "*",
+        "Region": "Global"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Bytesdownloaded (cloudwatch_031)",
+    "prompt": "Does the BytesDownloaded exceed 120% of its average daily volume over the past week?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "BytesDownloaded",
+        "AWS/CloudFront",
+        "Global"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_031",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/CloudFront",
+        "MetricName": "BytesDownloaded",
+        "DistributionId": "*",
+        "Region": "Global"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Bytesuploaded (cloudwatch_032)",
+    "prompt": "Do spikes in BytesUploaded exceed 10% of average daily traffic, indicating a potential bottleneck?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "BytesUploaded",
+        "AWS/CloudFront",
+        "Global"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_032",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/CloudFront",
+        "MetricName": "BytesUploaded",
+        "DistributionId": "*",
+        "Region": "Global"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Requests (cloudwatch_033)",
+    "prompt": "Do spikes in Requests correlate with increased latency in the distribution?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "Requests",
+        "AWS/CloudFront",
+        "Global"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_033",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/CloudFront",
+        "MetricName": "Requests",
+        "DistributionId": "*",
+        "Region": "Global"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Accountmaxtablelevelreads (cloudwatch_034)",
+    "prompt": "Does the AccountMaxTableLevelReads exceed 80-90% of our account's on-demand read capacity limit, indicating a potential bottleneck?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "AccountMaxTableLevelReads",
+        "AWS/DynamoDB"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_034",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/DynamoDB",
+        "MetricName": "AccountMaxTableLevelReads"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Accountmaxreads (cloudwatch_035)",
+    "prompt": "Does a low AccountMaxReads value indicate insufficient read capacity for an AWS account?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "AccountMaxReads",
+        "AWS/DynamoDB"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_035",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/DynamoDB",
+        "MetricName": "AccountMaxReads"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Accountmaxtablelevelwrites (cloudwatch_036)",
+    "prompt": "Does the AccountMaxTableLevelWrites exceed its limit, potentially causing performance issues or resource allocation problems?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "AccountMaxTableLevelWrites",
+        "AWS/DynamoDB"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_036",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/DynamoDB",
+        "MetricName": "AccountMaxTableLevelWrites"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Accountmaxwrites (cloudwatch_037)",
+    "prompt": "Does the AccountMaxWrites exceed its limit, indicating potential over-provisioning costs?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "AccountMaxWrites",
+        "AWS/DynamoDB"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_037",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/DynamoDB",
+        "MetricName": "AccountMaxWrites"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Accountprovisionedreadcapacityutilization (cloudwatch_038)",
+    "prompt": "Does the AccountProvisionedReadCapacityUtilization exceed 80%, indicating potential bottlenecks or over-provisioning?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "AccountProvisionedReadCapacityUtilization",
+        "AWS/DynamoDB"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_038",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/DynamoDB",
+        "MetricName": "AccountProvisionedReadCapacityUtilization"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Accountprovisionedwritecapacityutilization (cloudwatch_039)",
+    "prompt": "Does the AccountProvisionedWriteCapacityUtilization exceed 80%, indicating potential performance degradation due to insufficient write capacity?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "AccountProvisionedWriteCapacityUtilization",
+        "AWS/DynamoDB"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_039",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/DynamoDB",
+        "MetricName": "AccountProvisionedWriteCapacityUtilization"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Consumedreadcapacityunits (cloudwatch_040)",
+    "prompt": "Do spikes in ConsumedReadCapacityUnits indicate a potential performance bottleneck or throttling error?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "ConsumedReadCapacityUnits",
+        "AWS/DynamoDB"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_040",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/DynamoDB",
+        "MetricName": "ConsumedReadCapacityUnits",
+        "TableName": "*"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Consumedwritecapacityunits (cloudwatch_041)",
+    "prompt": "Does the ConsumedWriteCapacityUnits exceed the provisioned write capacity, indicating potential performance issues due to insufficient write capacity?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "ConsumedWriteCapacityUnits",
+        "AWS/DynamoDB"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_041",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/DynamoDB",
+        "MetricName": "ConsumedWriteCapacityUnits",
+        "TableName": "*"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Maxprovisionedtablereadcapacityutilization (cloudwatch_042)",
+    "prompt": "Does the MaxProvisionedTableReadCapacityUtilization exceed 80%, indicating potential read capacity bottlenecks?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "MaxProvisionedTableReadCapacityUtilization",
+        "AWS/DynamoDB"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_042",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/DynamoDB",
+        "MetricName": "MaxProvisionedTableReadCapacityUtilization"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Maxprovisionedtablewritecapacityutilization (cloudwatch_043)",
+    "prompt": "Does MaxProvisionedTableWriteCapacityUtilization exceed 80%, indicating potential performance bottlenecks due to insufficient provisioned write capacity?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "MaxProvisionedTableWriteCapacityUtilization",
+        "AWS/DynamoDB"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_043",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/DynamoDB",
+        "MetricName": "MaxProvisionedTableWriteCapacityUtilization"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Provisionedreadcapacityunits (cloudwatch_044)",
+    "prompt": "Is the ProvisionedReadCapacityUnits value below what is required to handle current read traffic?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "ProvisionedReadCapacityUnits",
+        "AWS/DynamoDB"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_044",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/DynamoDB",
+        "MetricName": "ProvisionedReadCapacityUnits",
+        "TableName": "*"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Provisionedwritecapacityunits (cloudwatch_045)",
+    "prompt": "Does the ProvisionedWriteCapacityUnits exceed its allocated value, indicating over-provisioning or inefficient usage?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "ProvisionedWriteCapacityUnits",
+        "AWS/DynamoDB"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_045",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/DynamoDB",
+        "MetricName": "ProvisionedWriteCapacityUnits",
+        "TableName": "*"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Provisionedwritecapacityunits (cloudwatch_046)",
+    "prompt": "Do provisioned write capacity units exceed 50% of the maximum allowed for this table?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "ProvisionedWriteCapacityUnits",
+        "AWS/DynamoDB"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_046",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/DynamoDB",
+        "MetricName": "ProvisionedWriteCapacityUnits",
+        "GlobalSecondaryIndexName": "*",
+        "TableName": "*"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Readthrottleevents (cloudwatch_047)",
+    "prompt": "Do spikes in ReadThrottleEvents indicate that DynamoDB's provisioned read capacity units are insufficient for the current workload?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "ReadThrottleEvents",
+        "AWS/DynamoDB"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_047",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/DynamoDB",
+        "MetricName": "ReadThrottleEvents",
+        "GlobalSecondaryIndexName": "*",
+        "TableName": "*"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Replicationlatency (cloudwatch_048)",
+    "prompt": "Does the ReplicationLatency exceed 100 milliseconds, indicating potential network connectivity or database performance issues?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "ReplicationLatency",
+        "AWS/DynamoDB"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_048",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/DynamoDB",
+        "MetricName": "ReplicationLatency",
+        "ReceivingRegion": "*",
+        "TableName": "*"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Returnedbytes (cloudwatch_049)",
+    "prompt": "Do high ReturnedBytes values indicate inefficient data processing or excessive data transfer?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "ReturnedBytes",
+        "AWS/DynamoDB"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_049",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/DynamoDB",
+        "MetricName": "ReturnedBytes",
+        "Operation": "*",
+        "TableName": "*"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Returneditemcount (cloudwatch_050)",
+    "prompt": "Does the ReturnedItemCount exceed its normal range, suggesting inefficient queries or data inconsistencies?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "ReturnedItemCount",
+        "AWS/DynamoDB"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_050",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/DynamoDB",
+        "MetricName": "ReturnedItemCount",
+        "Operation": "*",
+        "TableName": "*"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Successfulrequestlatency (cloudwatch_051)",
+    "prompt": "Does the SuccessfulRequestLatency exceed 100 milliseconds, indicating potential issues with database configuration or resource utilization?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "SuccessfulRequestLatency",
+        "AWS/DynamoDB"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_051",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/DynamoDB",
+        "MetricName": "SuccessfulRequestLatency",
+        "Operation": "*",
+        "TableName": "*"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Systemerrors (cloudwatch_052)",
+    "prompt": "Do SystemErrors exceed one percent, indicating potential internal service errors within DynamoDB?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "SystemErrors",
+        "AWS/DynamoDB"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_052",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/DynamoDB",
+        "MetricName": "SystemErrors",
+        "Operation": "*",
+        "TableName": "*"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Throttledrequests (cloudwatch_053)",
+    "prompt": "Are ThrottledRequests exceeding the provisioned throughput limits on a resource?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "ThrottledRequests",
+        "AWS/DynamoDB"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_053",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/DynamoDB",
+        "MetricName": "ThrottledRequests",
+        "Operation": "*",
+        "TableName": "*"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Volumeavgreadlatency (cloudwatch_054)",
+    "prompt": "Does VolumeAvgReadLatency exceed ten milliseconds, indicating potential storage performance issues?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "VolumeAvgReadLatency",
+        "AWS/EBS"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_054",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/EBS",
+        "MetricName": "VolumeAvgReadLatency",
+        "VolumeId": "*"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Volumeavgwritelatency (cloudwatch_055)",
+    "prompt": "Does the VolumeAvgWriteLatency exceed 10 seconds, indicating potential disk I/O or resource constraints?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "VolumeAvgWriteLatency",
+        "AWS/EBS"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_055",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/EBS",
+        "MetricName": "VolumeAvgWriteLatency",
+        "VolumeId": "*"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Volumeiopsexceededcheck (cloudwatch_056)",
+    "prompt": "Are the VolumeIOPSExceededCheck values consistently exceeding 1, indicating potential storage bottlenecks or overprovisioning issues?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "VolumeIOPSExceededCheck",
+        "AWS/EBS"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_056",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/EBS",
+        "MetricName": "VolumeIOPSExceededCheck",
+        "VolumeId": "*"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Volumeidletime (cloudwatch_057)",
+    "prompt": "Does the VolumeIdleTime exceed 24 hours, suggesting potential underutilization or storage issues?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "VolumeIdleTime",
+        "AWS/EBS"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_057",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/EBS",
+        "MetricName": "VolumeIdleTime",
+        "VolumeId": "*"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Volumequeuelength (cloudwatch_058)",
+    "prompt": "Does a high VolumeQueueLength indicate insufficient I/O capacity or network congestion for our EBS volumes?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "VolumeQueueLength",
+        "AWS/EBS"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_058",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/EBS",
+        "MetricName": "VolumeQueueLength",
+        "VolumeId": "*"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Volumereadbytes (cloudwatch_059)",
+    "prompt": "Does a high VolumeReadBytes value indicate heavy read load causing increased latency or I/O queueing?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "VolumeReadBytes",
+        "AWS/EBS"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_059",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/EBS",
+        "MetricName": "VolumeReadBytes",
+        "VolumeId": "*"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Volumereadops (cloudwatch_060)",
+    "prompt": "Does the VolumeReadOps exceed ten thousand, suggesting potential storage capacity issues or performance degradation?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "VolumeReadOps",
+        "AWS/EBS"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_060",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/EBS",
+        "MetricName": "VolumeReadOps",
+        "VolumeId": "*"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Volumestallediocheck (cloudwatch_061)",
+    "prompt": "Are stalled I/O operations on any EBS volumes causing the VolumeStalledIOCheck to exceed one?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "VolumeStalledIOCheck",
+        "AWS/EBS"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_061",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/EBS",
+        "MetricName": "VolumeStalledIOCheck",
+        "VolumeId": "*"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Volumethroughputpercentage (cloudwatch_062)",
+    "prompt": "Is the VolumeThroughputPercentage below 50%, indicating inefficient use of provisioned IOPS?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "VolumeThroughputPercentage",
+        "AWS/EBS"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_062",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/EBS",
+        "MetricName": "VolumeThroughputPercentage",
+        "VolumeId": "*"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Volumetotalreadtime (cloudwatch_063)",
+    "prompt": "Does the VolumeTotalReadTime exceed 10 seconds, indicating a potential read operation bottleneck?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "VolumeTotalReadTime",
+        "AWS/EBS"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_063",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/EBS",
+        "MetricName": "VolumeTotalReadTime",
+        "VolumeId": "*"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Volumetotalwritetime (cloudwatch_064)",
+    "prompt": "Do spikes in VolumeTotalWriteTime indicate potential storage capacity issues or I/O contention?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "VolumeTotalWriteTime",
+        "AWS/EBS"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_064",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/EBS",
+        "MetricName": "VolumeTotalWriteTime",
+        "VolumeId": "*"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Volumewritebytes (cloudwatch_065)",
+    "prompt": "Does the VolumeWriteBytes exceed 100 million bytes, indicating a potential storage bottleneck?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "VolumeWriteBytes",
+        "AWS/EBS"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_065",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/EBS",
+        "MetricName": "VolumeWriteBytes",
+        "VolumeId": "*"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Volumewriteops (cloudwatch_066)",
+    "prompt": "Does a sudden increase in VolumeWriteOps exceed the volume's provisioned IOPS, indicating potential I/O saturation?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "VolumeWriteOps",
+        "AWS/EBS"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_066",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/EBS",
+        "MetricName": "VolumeWriteOps",
+        "VolumeId": "*"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Cpuutilization (cloudwatch_067)",
+    "prompt": "Does the CPUUtilization exceed 80, indicating potential resource contention and performance issues?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "CPUUtilization",
+        "AWS/EC2"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_067",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/EC2",
+        "MetricName": "CPUUtilization",
+        "InstanceId": "*"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Diskreadbytes (cloudwatch_068)",
+    "prompt": "Do DiskReadBytes exceed 100 million bytes per second, indicating potential storage capacity issues?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "DiskReadBytes",
+        "AWS/EC2"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_068",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/EC2",
+        "MetricName": "DiskReadBytes",
+        "InstanceId": "*"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Diskreadops (cloudwatch_069)",
+    "prompt": "Do high DiskReadOps values indicate a performance bottleneck or resource contention issue?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "DiskReadOps",
+        "AWS/EC2"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_069",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/EC2",
+        "MetricName": "DiskReadOps",
+        "InstanceId": "*"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Diskwritebytes (cloudwatch_070)",
+    "prompt": "Are sudden spikes in DiskWriteBytes indicative of a storage capacity issue or a resource-intensive application?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "DiskWriteBytes",
+        "AWS/EC2"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_070",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/EC2",
+        "MetricName": "DiskWriteBytes",
+        "InstanceId": "*"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Diskwriteops (cloudwatch_071)",
+    "prompt": "Does the DiskWriteOps rate exceed 1000 operations per second, indicating potential issues with disk performance or storage capacity?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "DiskWriteOps",
+        "AWS/EC2"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_071",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/EC2",
+        "MetricName": "DiskWriteOps",
+        "InstanceId": "*"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Ebsiobalance% (cloudwatch_072)",
+    "prompt": "Does the EBSIOBalance% exceed 80%, indicating potential I/O bottlenecks?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "EBSIOBalance%",
+        "AWS/EC2"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_072",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/EC2",
+        "MetricName": "EBSIOBalance%",
+        "InstanceId": "*"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Networkin (cloudwatch_073)",
+    "prompt": "Does the NetworkIn metric exceed 1000 bytes per second, indicating potential DDoS activity?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "NetworkIn",
+        "AWS/EC2"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_073",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/EC2",
+        "MetricName": "NetworkIn",
+        "InstanceId": "*"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Networkout (cloudwatch_074)",
+    "prompt": "Does the NetworkOut exceed 1000 bytes per second, indicating high network utilization?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "NetworkOut",
+        "AWS/EC2"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_074",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/EC2",
+        "MetricName": "NetworkOut",
+        "InstanceId": "*"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Networkpacketsin (cloudwatch_075)",
+    "prompt": "Do high values of NetworkPacketsIn indicate a potential DDoS attack or network saturation?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "NetworkPacketsIn",
+        "AWS/EC2"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_075",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/EC2",
+        "MetricName": "NetworkPacketsIn",
+        "InstanceId": "*"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Networkpacketsout (cloudwatch_076)",
+    "prompt": "Are the NetworkPacketsOut exceeding ten thousand, indicating potential connectivity issues?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "NetworkPacketsOut",
+        "AWS/EC2"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_076",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/EC2",
+        "MetricName": "NetworkPacketsOut",
+        "InstanceId": "*"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Statuscheckfailed (cloudwatch_077)",
+    "prompt": "Does the StatusCheckFailed metric exceed five, indicating potential configuration, hardware, or software issues with our instances?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "StatusCheckFailed",
+        "AWS/EC2"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_077",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/EC2",
+        "MetricName": "StatusCheckFailed",
+        "InstanceId": "*"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Statuscheckfailed Instance (cloudwatch_078)",
+    "prompt": "Does a StatusCheckFailed_Instance value greater than or equal to 1 indicate an instance experiencing operational failures that require immediate attention?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "StatusCheckFailed_Instance",
+        "AWS/EC2"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_078",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/EC2",
+        "MetricName": "StatusCheckFailed_Instance",
+        "InstanceId": "*"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Statuscheckfailed System (cloudwatch_079)",
+    "prompt": "Does the StatusCheckFailed_System value exceed one, indicating a potential hardware failure or network connectivity issue?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "StatusCheckFailed_System",
+        "AWS/EC2"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_079",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/EC2",
+        "MetricName": "StatusCheckFailed_System",
+        "InstanceId": "*"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Invocationscreated (cloudwatch_080)",
+    "prompt": "Do spikes in InvocationsCreated exceed 1000, potentially overwhelming downstream services?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "InvocationsCreated",
+        "AWS/Events"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_080",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/Events",
+        "MetricName": "InvocationsCreated"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Concurrentexecutions (cloudwatch_081)",
+    "prompt": "Does the ConcurrentExecutions metric exceed its usual threshold, indicating increased load or demand on the system?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "ConcurrentExecutions",
+        "AWS/Lambda"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_081",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/Lambda",
+        "MetricName": "ConcurrentExecutions",
+        "FunctionName": "*",
+        "Resource": "*"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Duration (cloudwatch_082)",
+    "prompt": "Does the Duration exceed 500 milliseconds, indicating potential bottlenecks in function code execution?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "Duration",
+        "AWS/Lambda"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_082",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/Lambda",
+        "MetricName": "Duration",
+        "FunctionName": "*",
+        "Resource": "*"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Errors (cloudwatch_083)",
+    "prompt": "Does the Errors count exceed five, indicating potential issues with Lambda function code or runtime environment?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "Errors",
+        "AWS/Lambda"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_083",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/Lambda",
+        "MetricName": "Errors",
+        "FunctionName": "*",
+        "Resource": "*"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Invocations (cloudwatch_084)",
+    "prompt": "Do spikes in Invocations correlate with increased latency in our API endpoints?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "Invocations",
+        "AWS/Lambda"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_084",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/Lambda",
+        "MetricName": "Invocations",
+        "FunctionName": "*",
+        "Resource": "*"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Throttles (cloudwatch_085)",
+    "prompt": "Are spikes in Throttles indicating that AWS Lambda functions are being invoked beyond their allowed concurrency limits?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "Throttles",
+        "AWS/Lambda"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_085",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/Lambda",
+        "MetricName": "Throttles",
+        "FunctionName": "*",
+        "Resource": "*"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Unreservedconcurrentexecutions (cloudwatch_086)",
+    "prompt": "Does a drop in UnreservedConcurrentExecutions below 100 indicate that the region's resources are being fully utilized?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "UnreservedConcurrentExecutions",
+        "AWS/Lambda"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_086",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/Lambda",
+        "MetricName": "UnreservedConcurrentExecutions",
+        "FunctionName": "*",
+        "Resource": "*"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Delivery (cloudwatch_087)",
+    "prompt": "Does the Delivery metric drop below 90%, suggesting an issue with email content, sender reputation, or recipient server configurations?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "Delivery",
+        "AWS/SES"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_087",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/SES",
+        "MetricName": "Delivery"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Reputation.Bouncerate (cloudwatch_088)",
+    "prompt": "Does a Reputation.BounceRate exceeding 5% indicate poor email list quality or infrastructure issues?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "Reputation.BounceRate",
+        "AWS/SES"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_088",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/SES",
+        "MetricName": "Reputation.BounceRate"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Reputation.Complaintrate (cloudwatch_089)",
+    "prompt": "Does a Reputation.ComplaintRate exceeding 5% indicate poor email sending practices or compromised sender reputations?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "Reputation.ComplaintRate",
+        "AWS/SES"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_089",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/SES",
+        "MetricName": "Reputation.ComplaintRate"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Send (cloudwatch_090)",
+    "prompt": "Do spikes in the Send metric above two times normal volume indicate potential abuse or misconfiguration?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "Send",
+        "AWS/SES"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_090",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/SES",
+        "MetricName": "Send"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Numberofmessagespublished (cloudwatch_091)",
+    "prompt": "Does the NumberOfMessagesPublished exceed ten thousand, indicating potential issues with message delivery or SNS topic configuration?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "NumberOfMessagesPublished",
+        "AWS/SNS"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_091",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/SNS",
+        "MetricName": "NumberOfMessagesPublished",
+        "TopicName": "*"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Numberofnotificationsdelivered (cloudwatch_092)",
+    "prompt": "Does the NumberOfNotificationsDelivered exceed its normal threshold, indicating an issue with message delivery?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "NumberOfNotificationsDelivered",
+        "AWS/SNS"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_092",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/SNS",
+        "MetricName": "NumberOfNotificationsDelivered",
+        "TopicName": "*"
+      }
+    }
+  },
+  {
+    "name": "AWS CloudWatch - Numberofnotificationsfailed (cloudwatch_093)",
+    "prompt": "Does the NumberOfNotificationsFailed exceed five, indicating a possible issue with SNS message delivery?",
+    "env_id": "default",
+    "additional_params": {
+      "where": "aws-cw",
+      "when": "24h",
+      "metricFilters": [
+        "NumberOfNotificationsFailed",
+        "AWS/SNS"
+      ],
+      "useVectorSearch": true
+    },
+    "metadata": {
+      "original_id": "cloudwatch_093",
+      "provider": "cloudwatch",
+      "metric_information": {
+        "Namespace": "AWS/SNS",
+        "MetricName": "NumberOfNotificationsFailed",
+        "TopicName": "*"
+      }
+    }
+  }
+]
