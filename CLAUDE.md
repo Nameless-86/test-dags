@@ -12,6 +12,15 @@ This is a test-dags repository for translating data pipelines to Airflow DAGs. T
 - **relevancy_eval/**: Evaluation scripts for search relevancy and remediation
 - **vector/**: JSON data files containing data for various services (CloudWatch, Loki, Prometheus, etc.)
 
+## Pipeline Translation Planning
+
+Two comprehensive planning documents have been created for translating existing pipelines to Airflow DAGs:
+
+- **END-TO-END.md**: Plans for translating the end-to-end evaluation pipeline
+- **DESCRIPTIONS_EVALUATION.md**: Plans for translating the relevancy evaluation pipeline
+
+Both pipelines are designed as manual-trigger DAGs that use existing test data rather than generating new test cases.
+
 ## Development Commands
 
 ### Qdrant Embeddings Service
@@ -31,10 +40,13 @@ chmod +x qdrant_embeddings/validate_collections.sh
 cd end-to-end
 ```
 
-# Run evaluation with test cases
+# Generate test cases (when needed for new providers/test scenarios)
+```bash
+python3 make_test_cases.py input.jsonl --output test_cases.json
+```
 
+# Run evaluation with existing test cases
 ## Make sure the OPENAI_API_TOKEN is set
-
 ```bash
 python3 run_grun.py \
   --test-cases test_cases.json \
@@ -65,14 +77,25 @@ cd relevancy_eval
 pip install -r requirements.txt
 ```
 
-# Run search evaluation
+# Generate evaluation queries (when needed for new providers)
 ```bash
-python3 run_search.py
+python3 prepare_dataset.py \
+  --input ../vector/cloudwatch.json \
+  --output queries/cloudwatch_queries.jsonl
+```
+
+# Run search evaluation with existing queries
+```bash
+python3 run_search.py \
+  --input queries/cloudwatch_queries.jsonl \
+  --output search_results/cloudwatch_search_results.jsonl \
+  --search-url http://localhost:8000/search \
+  --collection cloudwatch
 ```
 
 # Run evaluation pipeline
 ```bash
-python3 run_evaluation.py
+python3 run_evaluation.py --input search_results.jsonl
 ```
 
 # Analyze reasons
@@ -98,6 +121,7 @@ python3 remediation.py
 - Located in `dags/` directory
 - Initially contains simple test DAG with BashOperator
 - Target is to translate existing pipelines to Airflow format
+- **Planning**: END-TO-END.md and DESCRIPTIONS_EVALUATION.md contain detailed translation plans
 
 ### Evaluation Framework  
 - End-to-end evaluation tests PQL queries against various data sources
